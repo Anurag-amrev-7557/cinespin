@@ -13,7 +13,8 @@ const logger = winston.createLogger({
 
 // Define allowed origins dynamically
 const allowedOrigins = [
-    "http://localhost:5173"
+    "http://localhost:5173",
+    "https://cinespin.vercel.app"
 ];
 
 // CORS Configuration
