@@ -1,0 +1,12 @@
+User-agent: *
+Disallow: /private/
+Disallow: /admin/
+Disallow: /login/
+Allow: /
+
+# Allow search engines to crawl JavaScript, CSS, and images
+Allow: /assets/
+Allow: /static/
+
+# Sitemap for better indexing
+Sitemap: https://yourdomain.com/sitemap.xml
