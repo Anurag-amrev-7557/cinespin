@@ -51,24 +51,35 @@ const Movies = () => {
     const [sortedMovies, setSortedMovies] = useState([]);
     const navigate = useNavigate();
     const location = useLocation();
-    const selectedGenreId = parseInt(new URLSearchParams(location.search).get("genre"), 10);
+
+    useEffect(() => {
+        const searchParams = new URLSearchParams(location.search);
+        const genreFromUrl = parseInt(searchParams.get("genre"), 10);
+        const pageFromUrl = parseInt(searchParams.get("page"), 10);
+    
+        const validGenre = genreFromUrl || genres[0].id;
+        const validPage = pageFromUrl || 1;
+    
+        setSelectedGenre(validGenre);
+        setCurrentPage(validPage);
+        fetchMovies(validGenre, validPage);
+    }, [location.search]);
 
     const handleGenreClick = (genreId) => {
         if (genreId !== selectedGenre) {
             localStorage.setItem("genre", genreId);
-            localStorage.setItem("currentPage", 1);
-            setCurrentPage(1);
+            localStorage.setItem("currentPage", currentPage);
             setSelectedGenre(genreId);
-            navigate(`/movies?genre=${genreId}`);
-            fetchMovies(genreId, 1);
+            navigate(`/movies?genre=${genreId}&page=${currentPage}`);
+            fetchMovies(genreId, currentPage);
         }
     };
 
-    const fetchMovies = useCallback(async (genreId = 0, page = 1) => {
+    const fetchMovies = async (genreId = 0, page = 1) => {
         setIsLoading(true);
         const safeGenreId = typeof genreId === "number" && !isNaN(genreId) ? genreId : 0;
         const safePage = typeof page === "number" && page > 0 ? page : 1;
-        const cacheKey = `genre-${safeGenreId}-page-${safePage}-${selectedRegion}`;
+        const cacheKey = `genre-${safeGenreId}-page-${safePage}-region-${selectedRegion}`;
     
         try {
             // Attempt to retrieve from cache
@@ -120,6 +131,7 @@ const Movies = () => {
             setCurrentPage(safePage);
             localStorage.setItem("currentPage", safePage);
             setPageRangeStart(Math.floor((safePage - 1) / 5) * 5 + 1);
+            navigate(`/movies?genre=${safeGenreId}&page=${safePage}`, { replace: true });
             setToCache(cacheKey, data); // ✅ Save valid data to cache
         } catch (error) {
             console.error("Error fetching movies:", error);
@@ -131,33 +143,48 @@ const Movies = () => {
         } finally {
             setIsLoading(false);
         }
+    };
+
+    useEffect(() => {
+        fetchMovies(selectedGenre, 1);
     }, [selectedRegion]);
 
     useEffect(() => {
-        const handleRegionUpdate = () => {
+        const handleRegionChange = () => {
             const updatedRegion = localStorage.getItem("region") || "Global";
-            setSelectedRegion(updatedRegion);
-            setCurrentPage(1);
-            localStorage.setItem("currentPage", 1);
-            fetchMovies(selectedGenre, 1);
+            if (updatedRegion !== selectedRegion) {
+                setSelectedRegion(updatedRegion);
+                setCurrentPage(1);
+                localStorage.setItem("currentPage", 1);
+                fetchMovies(selectedGenre, 1);
+            }
         };
-      
-        window.addEventListener("regionChange", handleRegionUpdate);
-        return () => window.removeEventListener("regionChange", handleRegionUpdate);
-      }, [selectedGenre, currentPage, fetchMovies]);
-
-      useEffect(() => {
-        const storedGenre = parseInt(localStorage.getItem("genre")) || genres[0].id;
-        const storedPage = parseInt(localStorage.getItem("currentPage"), 10) || 1;
     
-        setSelectedGenre(storedGenre);
-        setCurrentPage(storedPage);
-        fetchMovies(storedGenre, storedPage);
-        }, []);
+        window.addEventListener("regionChange", handleRegionChange);
+        window.addEventListener("storage", handleRegionChange);
+    
+        return () => {
+            window.removeEventListener("regionChange", handleRegionChange);
+            window.removeEventListener("storage", handleRegionChange);
+        };
+    }, [selectedGenre, selectedRegion]);
 
     useEffect(() => {
-        setIsLoadingGenres(false);
-    }, []);
+        const handleStorageChange = (event) => {
+            if (event.key === "region") {
+                const updatedRegion = event.newValue || "Global";
+                setSelectedRegion(updatedRegion);
+                setCurrentPage(1);
+                localStorage.setItem("currentPage", 1);
+                fetchMovies(selectedGenre, 1);
+            }
+        };
+    
+        window.addEventListener("storage", handleStorageChange);
+        return () => {
+            window.removeEventListener("storage", handleStorageChange);
+        };
+    }, [selectedGenre, fetchMovies]);
 
     useEffect(() => {
         if (movies.length > 0) {
@@ -216,13 +243,21 @@ const Movies = () => {
         setShowFilter(false); // Close the filter popup
     };
 
+    useEffect(() => {
+        fetchMovies(selectedGenre, 1); // Always fetch page 1 for a new genre
+    }, [selectedGenre, selectedRegion]);
+    
+    useEffect(() => {
+        setIsLoadingGenres(false);
+    }, []);
+
     return (
         <div className="movies-container">
             <motion.div
-                className="genre-container"
-                initial={{ opacity: 0, y: -20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3, ease: "easeOut" }}
+              className="genre-container"
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, ease: "easeOut", delay: 0.2 }}
             >
                 {!genres.length || isLoadingGenres ? (
                     Array.from({ length: genres.length || 9 }, (_, index) => (
@@ -233,10 +268,10 @@ const Movies = () => {
                 ) : (
                     genres.map((genre) => (
                         <div key={genre.id} className="genre-slide">
-                            <div 
-                                className={`genre ${selectedGenreId === genre.id ? "active" : ""}`}
-                                onClick={() => handleGenreClick(genre.id)}
-                            >
+                                <div 
+                                  className={`genre ${selectedGenre === genre.id ? "active" : ""}`}
+                                  onClick={() => handleGenreClick(genre.id)}
+                                >
                                 <div className="genre-icon">{genre.icon}</div>
                                 {genre.name}
                             </div>

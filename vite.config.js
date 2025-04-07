@@ -19,7 +19,7 @@ export default defineConfig(({ mode }) => {
       outDir: 'dist',
     },
     preview: {
-      allowedHosts: ['cinespin.onrender.com']
+      allowedHosts: ['cinespin.onrender.com', 'cinespin.web.app']
     },
     server: {
       host: true,
