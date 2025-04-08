@@ -249,9 +249,9 @@ const MovieDetails = () => {
                                     stiffness: 300,
                                     damping: 24,
                                     mass: 1,
-                                    delay: 0, // 👈 no delay
+                                    delay: 0, 
                                 }}
-                                whileHover={{ scale: 1.05 }}
+                                whileHover={{ scale: 1.02 }}
                                 whileTap={{ scale: 0.95 }}
                             >
                                 ▶ &nbsp;Watch Trailer
