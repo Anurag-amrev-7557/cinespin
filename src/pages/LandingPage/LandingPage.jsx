@@ -280,7 +280,6 @@ const LandingPage = () => {
                                                 backgroundSize: "cover",
                                                 backgroundPosition: "center",
                                                 }}
-                                                loading="lazy"
                                                 decoding="async"
                                                 {...bounceAnimation}
                                             >
@@ -384,12 +383,8 @@ const LandingPage = () => {
                                                 srcSet={`https://image.tmdb.org/t/p/w500${movie.poster_path}.webp`}
                                                 type="image/webp"
                                             />
-                                            <source
-                                                srcSet={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-                                                type="image/jpeg"
-                                            />
                                             <img
-                                                src={`https://image.tmdb.org/t/p/original${movie.poster_path}`}
+                                                src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
                                                 className="movie-card-img"
                                                 alt={movie.title}
                                                 onError={(e) => {

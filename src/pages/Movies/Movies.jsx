@@ -337,13 +337,21 @@ const Movies = () => {
                                 transition={{ duration: 0.7, ease: [0.4, 0, 0.2, 1] }}
                             >
                                 <picture>
-                                    <img
-                                        loading="lazy"
-                                        decoding="async"
-                                        src={movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : "/default.png"}
-                                        alt={movie.title}
-                                        className="movie-poster"
+                                {movie.poster_path && (
+                                    <source
+                                    srcSet={`https://image.tmdb.org/t/p/w500${movie.poster_path.endsWith(".webp") ? movie.poster_path : `${movie.poster_path}.webp`}`}
+                                    type="image/webp"
                                     />
+                                )}
+                                <img
+                                    loading="lazy"
+                                    decoding="async"
+                                    src={movie.poster_path
+                                    ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
+                                    : "/default.png"}
+                                    alt={movie.title}
+                                    className="movie-poster"
+                                />
                                 </picture>
                                 <span className="movie-title" style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                                     {movie.title.split(" ").slice(0, 3).join(" ")}

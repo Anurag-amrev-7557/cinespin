@@ -47,6 +47,15 @@ const Randomizer = () => {
   const [retryCount, setRetryCount] = useState(0); // Retry logic
   const [currentPage, setCurrentPage] = useState(1); // New state variable for pagination
 
+  useEffect(() => {
+    const saved = localStorage.getItem("randomizerState");
+    if (saved) {
+      const { genre, page } = JSON.parse(saved);
+      if (genre) setSelectedGenre(Number(genre));
+      if (page) setCurrentPage(Number(page));
+    }
+  }, []);
+
   const openTrailer = () => {
     if (trailerButtonRef.current) {
       const rect = trailerButtonRef.current.getBoundingClientRect();
@@ -58,6 +67,10 @@ const Randomizer = () => {
   const closeTrailer = () => {
     setShowTrailer(false);
   };
+
+  useEffect(() => {
+    setCurrentPage(1); // Reset to page 1 when genre changes
+  }, [selectedGenre]);
 
     useEffect(() => {
         const handleRegionUpdate = () => {
@@ -72,56 +85,170 @@ const Randomizer = () => {
     }, []);
 
     const handleRandomize = async () => {
-        if (!selectedGenre) return;
-      
-        setLoading(true);
-        setError(null); // Reset any previous errors
-        try {
-          const cacheKey = `random-${selectedGenre}-page-${currentPage}-${selectedRegion}`;
-          const cachedContent = getFromCache(cacheKey);
+      if (!selectedGenre) return;
+    
+      setLoading(true);
+      setError(null);
+      setContent(null); // Clear old content when randomizing
+    
+      const maxRetries = 3;
 
+      const regionMap = {
+        Global: "",
+        India: "&region=IN",
+      };
+      
+
+      const backoffWithJitter = (attempt) =>
+        Math.pow(2, attempt) * 500 + Math.random() * 300;
+    
+      const fetchWithRetries = async (retryAttempt = 0, region = selectedRegion) => {
+        const cacheKey = `random-${selectedGenre}-page-${currentPage}-${region}`;
+        const regionParam = region?.toLowerCase() === "india" ? "&region=IN" : "";
+
+        try {
+          const cachedContent = getFromCache(cacheKey);
           if (cachedContent) {
             setContent(cachedContent);
             setCurrentPage(prev => prev + 1);
             return;
           }
+    
+          const url = `${TMDB_BASE_URL}/discover/movie?api_key=${TMDB_API_KEY}&with_genres=${selectedGenre}&sort_by=popularity.desc&page=${currentPage}${regionParam}`;
+          const { data } = await axios.get(url);
+    
 
-          const regionParam = selectedRegion === "India" ? "&region=IN&with_original_language=hi" : "";
-          let url = `${TMDB_BASE_URL}/discover/movie?api_key=${TMDB_API_KEY}&with_genres=${selectedGenre}&page=${currentPage}&${regionParam}`;
-      
-          const response = await axios.get(url);
-      
-          // Check if results are found
-          if (response.data.results.length === 0) {
-            setError("No movies found for this genre. Please try another genre.");
-            return;
+          if (!data?.results?.length) {
+            // Retry from page 1 if current page failed
+            if (currentPage > 1 && retryAttempt === 0) {
+              setCurrentPage(1);
+              return fetchWithRetries(retryAttempt + 1, region);
+            }
+            throw new Error("No results found");
           }
-      
-          // If there are movies, select a random one
-          const randomContent =
-            response.data.results[Math.floor(Math.random() * response.data.results.length)];
-      
-          // Fetch additional details (e.g., trailer, similar content)
-          const detailsResponse = await axios.get(
-            `https://api.themoviedb.org/3/movie/${randomContent.id}?api_key=${TMDB_API_KEY}&append_to_response=credits,videos,similar`
-          );
-      
-          setContent(detailsResponse.data);
-          setToCache(cacheKey, detailsResponse.data); // ✅ Cache it
-          // Increment to the next page automatically after loading content
-          setCurrentPage(prevPage => prevPage + 1);  // Increment the page number for the next request
+
+          const qualityFiltered = data.results.filter(movie => {
+            const isSafe = movie?.adult === false;
+            const hasPoster = !!movie?.poster_path;
+            const hasBasicRating = movie?.vote_average >= 3.5; // ↓ from 4
+            const hasSomeVotes = movie?.vote_count >= 3;       // ↓ from 5
+            return isSafe && hasPoster && hasBasicRating && hasSomeVotes;
+          });
+
+          let filtered = qualityFiltered.length ? qualityFiltered : data.results;
+
+          if (!filtered.length) {
+            // If even fallback filtering fails, use all results that have a poster and are not adult
+            filtered = data.results.filter(movie => movie?.poster_path && movie?.adult === false);
+          
+            // If still empty, just use ALL results as last resort (no filters at all)
+            if (!filtered.length) {
+              filtered = data.results;
+            }
+          }
+    
+          const C = 6.5; // average vote across all movies
+          const m = 300; // minimum votes required to be considered
+
+          const bayesianScore = (R, v, m, C, popularity, releaseDate) => {
+            const releaseYear = new Date(releaseDate).getFullYear() || new Date().getFullYear();
+            const ageFactor = 1 / (1 + Math.abs(new Date().getFullYear() - releaseYear));
+            const popularityFactor = Math.log10(popularity + 1);
+            return ((v / (v + m)) * R + (m / (v + m)) * C) * ageFactor * popularityFactor;
+          };
+          
+          const weightedResults = filtered.map(movie => {
+            const R = movie.vote_average || 0;
+            const v = movie.vote_count || 0;
+            const weight = bayesianScore(R, v, m, C, movie.popularity || 1, movie.release_date);
+            return { movie, weight };
+          });
+          
+          const totalWeight = weightedResults.reduce((sum, entry) => sum + entry.weight, 0);
+          const rand = Math.random() * totalWeight;
+          
+          let runningSum = 0;
+          let selectedMovie = weightedResults[0].movie;
+          
+          for (const entry of weightedResults) {
+            runningSum += entry.weight;
+            if (rand <= runningSum) {
+              selectedMovie = entry.movie;
+              break;
+            }
+          }
+
+          // Fetch detailed content
+          const [detailsRes, creditsRes, videosRes, similarRes] = await Promise.all([
+            axios.get(`${TMDB_BASE_URL}/movie/${selectedMovie.id}?api_key=${TMDB_API_KEY}`),
+            axios.get(`${TMDB_BASE_URL}/movie/${selectedMovie.id}/credits?api_key=${TMDB_API_KEY}`),
+            axios.get(`${TMDB_BASE_URL}/movie/${selectedMovie.id}/videos?api_key=${TMDB_API_KEY}`),
+            axios.get(`${TMDB_BASE_URL}/movie/${selectedMovie.id}/similar?api_key=${TMDB_API_KEY}`),
+          ]);
+          
+          const contentData = {
+            ...detailsRes.data,
+            credits: creditsRes.data,
+            videos: videosRes.data,
+            similar: similarRes.data,
+          };
+    
+          setContent(contentData);
+          setToCache(cacheKey, contentData);
+          setCurrentPage(prev => prev + 1);
         } catch (err) {
-          console.error("Error fetching content:", err);
-          setRetryCount(prevCount => prevCount + 1); // Increment retry count
-          if (retryCount < 3) {
-            handleRandomize(); // Retry fetching the data
+          console.error(`Attempt ${retryAttempt + 1}:`, err.message);
+    
+          if (retryAttempt < maxRetries - 1) {
+            const backoffDelay = backoffWithJitter(retryAttempt);
+            setTimeout(() => fetchWithRetries(retryAttempt + 1, region), backoffDelay);
+          } else if (region !== "Global") {
+            console.warn("Region failed. Switching to Global...");
+            return fetchWithRetries(0, "Global"); // fallback to global
           } else {
-            setError("An error occurred while fetching content. Please try again later.");
+            try {
+              // Final attempt with minimal filtering
+              const fallbackUrl = `${TMDB_BASE_URL}/discover/movie?api_key=${TMDB_API_KEY}&with_genres=${selectedGenre}&sort_by=popularity.desc&page=${currentPage}${regionParam}`;
+              const { data } = await axios.get(fallbackUrl);
+          
+              let safeContent = data.results.find(movie => movie?.poster_path);
+              if (!safeContent && data.results.length) {
+                safeContent = data.results[0];
+              }
+          
+              if (safeContent) {
+                const [detailsRes, creditsRes, videosRes, similarRes] = await Promise.all([
+                  axios.get(`${TMDB_BASE_URL}/movie/${safeContent.id}?api_key=${TMDB_API_KEY}`),
+                  axios.get(`${TMDB_BASE_URL}/movie/${safeContent.id}/credits?api_key=${TMDB_API_KEY}`),
+                  axios.get(`${TMDB_BASE_URL}/movie/${safeContent.id}/videos?api_key=${TMDB_API_KEY}`),
+                  axios.get(`${TMDB_BASE_URL}/movie/${safeContent.id}/similar?api_key=${TMDB_API_KEY}`),
+                ]);
+          
+                const fallbackData = {
+                  ...detailsRes.data,
+                  credits: creditsRes.data,
+                  videos: videosRes.data,
+                  similar: similarRes.data,
+                };
+          
+                setContent(fallbackData);
+                setToCache(cacheKey, fallbackData);
+                setError("Used unfiltered fallback due to repeated failures.");
+              } else {
+                setError("Completely failed to fetch any content.");
+              }
+            } catch (finalError) {
+              console.error("Final fallback failed:", finalError);
+              setError("Completely failed to fetch any content.");
+            }
           }
         } finally {
           setLoading(false);
         }
       };
+    
+      await fetchWithRetries();
+    };
 
       const bounceAnimation = {
         initial: { opacity: 0, y: 20 },
@@ -171,9 +298,19 @@ const Randomizer = () => {
         Random Content
       </motion.button>
 
-      {loading && <div className="movie-details-loading">Loading... Please wait a moment...</div>}
+      {loading && (
+        <div className="movie-details-loading">
+          Loading...
+        </div>
+      )}
 
-      {error && !loading && <div className="error-message">{error}</div>}
+      {/* {error && !loading && (
+        <div role="alertdialog" className="error-modal">
+          <h2>Oops!</h2>
+          <p>{error}</p>
+          <button onClick={() => setError(null)}>Close</button>
+        </div>
+      )} */}
 
       {content && !loading && (
         <motion.div className="content-display" {...bounceAnimation}>
@@ -233,29 +370,29 @@ const Randomizer = () => {
                         const sharedGenres = similar.genre_ids.filter(id =>
                           content.genres.map(g => g.id).includes(id)
                         ).length;
-
+                        
                         const releaseYear = parseInt(similar.release_date?.split("-")[0]) || 0;
                         const currentYear = parseInt(content.release_date?.split("-")[0]) || 0;
                         const yearProximity = 1 / (1 + Math.abs(currentYear - releaseYear));
-
-                        const mainCastIds = content.credits?.cast?.slice(0, 5).map(c => c.id) || [];
-                        const similarCastIds = similar.credits?.cast?.slice(0, 5).map(c => c.id) || [];
-                        const sharedCast = mainCastIds.filter(id => similarCastIds.includes(id)).length;
-
-                        const movieDirector = content.credits?.crew?.find(c => c.job === "Director")?.id;
-                        const similarDirector = similar.credits?.crew?.find(c => c.job === "Director")?.id;
-                        const sameDirector = movieDirector && similarDirector && movieDirector === similarDirector ? 1 : 0;
-
+                        
+                        const mainCast = (content.credits?.cast || []).slice(0, 5).map(c => c.id);
+                        const simCast = (similar.credits?.cast || []).slice(0, 5).map(c => c.id);
+                        const sharedCast = mainCast.filter(id => simCast.includes(id)).length;
+                        
+                        const mainDir = content.credits?.crew?.find(c => c.job === "Director")?.id;
+                        const simDir = similar.credits?.crew?.find(c => c.job === "Director")?.id;
+                        const sameDirector = mainDir && simDir && mainDir === simDir ? 1 : 0;
+                        
                         const voteScore = (similar.vote_average || 0) / 10;
-                        const popularityScore = (similar.popularity || 0) / 1000;
-
+                        const popularityScore = Math.log10(similar.popularity || 1);
+                        
                         const relevanceScore =
-                            sharedGenres * 2 +
-                            yearProximity * 2 +
-                            sharedCast * 1.5 +
-                            sameDirector * 3 +
-                            voteScore * 1.5 +
-                            popularityScore;
+                          sharedGenres * 2 +
+                          yearProximity * 2 +
+                          sharedCast * 1.5 +
+                          sameDirector * 3 +
+                          voteScore * 1.5 +
+                          popularityScore;
 
                         return {
                           ...similar,

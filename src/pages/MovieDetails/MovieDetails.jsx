@@ -147,7 +147,6 @@ const MovieDetails = () => {
                     backgroundSize: "cover",
                     backgroundPosition: "center"
                 }}
-                loading="lazy"
                 decoding="async"
                 {...bounceAnimation}
             >
