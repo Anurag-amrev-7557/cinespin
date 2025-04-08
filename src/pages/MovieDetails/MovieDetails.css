@@ -289,7 +289,11 @@
     border-radius: 2rem;
     text-align: center;
     cursor: pointer;
+<<<<<<< HEAD
     transition: background-color 0.3s ease, transform 0.2s ease;
+=======
+    transition: all 0.3s ease;
+>>>>>>> 1450d35 (changes)
 }
 
 .trailer-button:hover {

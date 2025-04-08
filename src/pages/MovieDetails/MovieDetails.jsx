@@ -210,13 +210,14 @@ const MovieDetails = () => {
                     backgroundPosition: "center"
                 }}
                 decoding="async"
-                {...bounceAnimation}
+                variants={fadeUpSpring}
             >
                 <div className="backdrop-overlay"></div>
             </motion.div>
-
-            <motion.div className="movie-content" {...bounceAnimation}>
-                <motion.div className="movie-info" {...bounceAnimation}>
+            
+            <AnimatePresence>
+            <motion.div className="movie-content" variants={fadeUpSpring}>
+                <motion.div className="movie-info" variants={fadeUpSpring}>
                     <motion.h1 variants={fadeUpSpring}>{movie.title}</motion.h1>
                     <div className="movie-meta">
                         <motion.span variants={fadeUpSpring}><FaStar /> {movie.vote_average.toFixed(1)}</motion.span>
@@ -225,15 +226,15 @@ const MovieDetails = () => {
                         <motion.span variants={fadeUpSpring}><FaLanguage /> {movie.original_language.toUpperCase()}</motion.span>
                     </div>
 
-                    <motion.div className="movie-genres" {...bounceAnimation}>
+                    <motion.div className="movie-genres" variants={fadeUpSpring}>
                         {movie.genres.map(genre => (
-                            <motion.span key={genre.id} className="genre-tag" {...bounceAnimation}>
+                            <motion.span key={genre.id} className="genre-tag" variants={fadeUpSpring}>
                                 {genre.name}
                             </motion.span>
                         ))}
                     </motion.div>
 
-                    <motion.div className="movie-overview" {...bounceAnimation}>
+                    <motion.div className="movie-overview" variants={fadeUpSpring}>
                         <h2>Overview</h2>
                         <p>{truncateOverview(movie.overview)}</p>
                         {movie.videos?.results?.length > 0 && (
@@ -241,7 +242,15 @@ const MovieDetails = () => {
                                 onClick={openTrailer}
                                 ref={trailerButtonRef}
                                 className="trailer-button"
-                                variants={fadeUpSpring}
+                                initial={{ opacity: 0, y: 30 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{
+                                    type: "spring",
+                                    stiffness: 300,
+                                    damping: 24,
+                                    mass: 1,
+                                    delay: 0, // 👈 no delay
+                                }}
                                 whileHover={{ scale: 1.05 }}
                                 whileTap={{ scale: 0.95 }}
                             >
@@ -250,8 +259,9 @@ const MovieDetails = () => {
                         )}
                     </motion.div>
 
+                    <AnimatePresence>
                     {movie.similar?.results && movie.similar.results.length > 0 && (
-                        <motion.div className="similar-movies" {...bounceAnimation}>
+                        <motion.div className="similar-movies" variants={fadeUpSpring}>
                             <h2>Similar Movies</h2>
                             <div className="similar-list">
                                 {movie.similar.results
@@ -294,7 +304,7 @@ const MovieDetails = () => {
                                         <motion.a key={similar.id} className="similar-movie" href={`/movie/${similar.id}`} variants={fadeUpSpring}
                                         whileHover={{ scale: 1.03 }}
                                         whileTap={{ scale: 0.97 }}>
-                                            <img 
+                                            <motion.img 
                                                 src={similar.poster_path 
                                                     ? `${IMAGE_BASE_URL}/w500${similar.poster_path}` 
                                                     : "/default.png"
@@ -302,21 +312,24 @@ const MovieDetails = () => {
                                                 alt={similar.title}
                                                 loading="lazy"
                                                 decoding="async"
-                                            />
+                                                variants={fadeUpSpring}
+                                            >
+                                            </motion.img>
                                             <span>{similar.title}</span>
                                         </motion.a>
                                     ))}
                             </div>
                         </motion.div>
                     )}
+                    </AnimatePresence>
                 </motion.div>
                 
                 {movie.credits?.cast && movie.credits.cast.length > 0 && (
-                    <motion.div className="movie-cast" {...bounceAnimation}>
+                    <motion.div className="movie-cast" variants={fadeUpSpring}>
                         <h2>Cast</h2>
                         <div className="cast-list">
                             {movie.credits.cast.map(cast => (
-                                <motion.a key={cast.id} className="cast-member" href={`/cast/${cast.id}`} {...bounceAnimation}>
+                                <motion.a key={cast.id} className="cast-member" href={`/cast/${cast.id}`} variants={fadeUpSpring}>
                                     <picture>
                                     <img 
                                         src={cast.profile_path 
@@ -335,6 +348,7 @@ const MovieDetails = () => {
                     </motion.div>
                 )}
             </motion.div>
+            </AnimatePresence>
 
             <AnimatePresence>
                 {showTrailer && (
