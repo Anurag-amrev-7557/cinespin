@@ -145,24 +145,68 @@ const Series = () => {
     useEffect(() => {
         setIsLoadingGenres(false);
     }, []);
+
+    const fadeInUp = {
+      hidden: { opacity: 0, y: 20 },
+      visible: {
+        opacity: 1,
+        y: 0,
+        transition: {
+          type: "spring",
+          stiffness: 300,
+          damping: 24,
+        },
+      },
+    };
+    
+    const containerStagger = {
+      hidden: {},
+      visible: {
+        transition: {
+          staggerChildren: 0.07,
+          delayChildren: 0.2,
+        },
+      },
+    };
+    
+    const cardSpringVariant = {
+      hidden: { opacity: 0, y: 30, scale: 0.95 },
+      visible: {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        transition: {
+          type: "spring",
+          stiffness: 240,
+          damping: 20,
+          mass: 0.8,
+        },
+      },
+      exit: {
+        opacity: 0,
+        y: 30,
+        scale: 0.95,
+        transition: { duration: 0.3 },
+      },
+    };
     
     return (
         <div className="movies-container">
             <motion.div
               className="genre-container"
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3, ease: "easeOut", delay: 0.3 }}
+              variants={containerStagger}
+              initial="hidden"
+              animate="visible"
             >
                 {!genres.length || isLoadingGenres ? (
                     Array.from({ length: genres.length || 9 }, (_, index) => (
-                        <div key={index} className="genre-slide">
+                        <motion.div key={index} className="genre-slide" variants={fadeInUp}>
                             <SkeletonGenreCard />
-                        </div>
+                        </motion.div>
                     ))
                 ) : (
                     genres.map((genre) => (
-                        <div key={genre.id} className="genre-slide">
+                        <motion.div key={genre.id} className="genre-slide" variants={fadeInUp}>
                                 <div 
                                   className={`genre ${selectedGenre === genre.id ? "active" : ""}`}
                                   onClick={() => handleGenreClick(genre.id)}
@@ -170,7 +214,7 @@ const Series = () => {
                                 <div className="genre-icon">{genre.icon}</div>
                                 {genre.name}
                             </div>
-                        </div>
+                        </motion.div>
                     ))
                 )}
             </motion.div>
@@ -179,17 +223,20 @@ const Series = () => {
             {isLoading ? (
               <div className="loading"></div>
             ) : (
-              <div className="movie-grid">
-                {movies.map((movie, index) => (
+            <AnimatePresence>
+              <motion.div className="movie-grid"
+              variants={containerStagger}
+              initial="hidden"
+              animate="visible"
+              >
+                {movies.map((movie) => (
                   <motion.div
                     key={movie.id}
                     className="movie-card"
+                    variants={cardSpringVariant}
+                    whileHover={{ scale: 1.03, y: -5 }}
+                    whileTap={{ scale: 0.98 }}
                     onClick={() => navigate(`/movie/${movie.id}`)}
-                    initial={{ opacity: 0, y: 30, scale: 0.95 }}
-                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                    exit={{ opacity: 0, y: 30, scale: 0.95 }}
-                    whileHover={{ scale: 1, y: -5 }}
-                    transition={{ duration: 0.7, ease: [0.4, 0, 0.2, 1] }}
                   >
                     <picture>
                     <img
@@ -217,7 +264,8 @@ const Series = () => {
                     </div>
                   </motion.div>
                 ))}
-              </div>
+              </motion.div>
+            </AnimatePresence>
             )}
             {!isLoading && totalPages === 1 && (
               <div className="limited-results-note">
@@ -225,7 +273,10 @@ const Series = () => {
               </div>
             )}
             {totalPages > 1 && (
-              <div className="pagination-controls">
+              <motion.div className="pagination-controls"   
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4 }}>
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
@@ -270,7 +321,7 @@ const Series = () => {
                 >
                   <FaChevronRight />
                 </motion.button>
-              </div>
+              </motion.div>
             )}
           </div>
         </div>

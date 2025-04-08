@@ -52,6 +52,67 @@ const Movies = () => {
     const navigate = useNavigate();
     const location = useLocation();
 
+    const genreCardVariant = {
+        hidden: { opacity: 0, y: 30 },
+        visible: {
+            opacity: 1,
+            y: 0,
+            transition: {
+                type: "spring",
+                stiffness: 300,
+                damping: 25,
+                duration: 0.4
+            }
+        }
+    };
+    
+    const movieCardVariant = {
+        hidden: { opacity: 0, y: 40, scale: 0.95 },
+        visible: {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            transition: {
+                type: "spring",
+                stiffness: 240,
+                damping: 20,
+                mass: 0.8
+            }
+        },
+        exit: {
+            opacity: 0,
+            y: 30,
+            scale: 0.95,
+            transition: { duration: 0.3 }
+        }
+    };
+    
+    const containerStagger = {
+        hidden: {},
+        visible: {
+            transition: {
+                staggerChildren: 0.07,
+                delayChildren: 0.2
+            }
+        }
+    };
+    
+    const popupVariant = {
+        hidden: { opacity: 0, scale: 0.9, y: -10 },
+        visible: {
+            opacity: 1,
+            scale: 1,
+            y: 0,
+            transition: { type: "spring", stiffness: 260, damping: 22 }
+        },
+        exit: {
+            opacity: 0,
+            scale: 0.9,
+            y: -10,
+            transition: { duration: 0.2 }
+        }
+    };
+
     useEffect(() => {
         const searchParams = new URLSearchParams(location.search);
         const genreFromUrl = parseInt(searchParams.get("genre"), 10);
@@ -255,9 +316,9 @@ const Movies = () => {
         <div className="movies-container">
             <motion.div
               className="genre-container"
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3, ease: "easeOut", delay: 0.2 }}
+            variants={containerStagger}
+            initial="hidden"
+            animate="visible"
             >
                 {!genres.length || isLoadingGenres ? (
                     Array.from({ length: genres.length || 9 }, (_, index) => (
@@ -293,10 +354,10 @@ const Movies = () => {
                     {showFilter && (
                         <motion.div 
                             className="popup-menu filter-popup"
-                            initial={{ opacity: 0, scale: 0.8, y: -10 }}
-                            animate={{ opacity: 1, scale: 1, y: 0 }}
-                            exit={{ opacity: 0, scale: 0.8, y: -10 }}
-                            transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                            variants={popupVariant}
+                            initial="hidden"
+                            animate="visible"
+                            exit="exit"
                         >
                             <p onClick={() => handleFilterSelection("filter1")}>Ascending Order</p>
                             <div className="liner"></div>
@@ -308,10 +369,10 @@ const Movies = () => {
                     {showSort && (
                         <motion.div 
                             className="popup-menu sort-popup"
-                            initial={{ opacity: 0, scale: 0.8, y: -10 }}
-                            animate={{ opacity: 1, scale: 1, y: 0 }}
-                            exit={{ opacity: 0, scale: 0.8, y: -10 }}
-                            transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                            variants={popupVariant}
+                            initial="hidden"
+                            animate="visible"
+                            exit="exit"
                         >
                             <p onClick={() => handleSortSelection("year")}>Sort by Year</p>
                             <div className="liner"></div>
@@ -324,17 +385,37 @@ const Movies = () => {
                 {isLoading ? (
                     <div className="loading"></div>
                 ) : (
-                    <div className="movie-grid">
-                        {sortedMovies.map((movie, index) => (
+                <AnimatePresence mode="wait">
+                    <motion.div className="movie-grid"
+                        // initial="hidden"
+                        // animate="visible"
+                        // variants={{
+                        // hidden: {},
+                        // visible: {
+                        //     transition: {
+                        //     staggerChildren: 0.08,
+                        //     delayChildren: 0.1,
+                        //     },
+                        // },
+                        // }}
+                        variants={containerStagger}
+                        initial="hidden"
+                        animate="visible"
+                        exit="hidden"
+                    >
+                        {sortedMovies.map((movie) => (
                             <motion.div
                                 key={movie.id}
+                                layout
                                 className="movie-card"
                                 onClick={() => navigate(`/movie/${movie.id}`)}
-                                initial={{ opacity: 0, y: 30, scale: 0.95 }}
-                                animate={{ opacity: 1, y: 0, scale: 1 }}
-                                exit={{ opacity: 0, y: 30, scale: 0.95 }}
-                                whileHover={{ scale: 1, y: -5 }}
-                                transition={{ duration: 0.7, ease: [0.4, 0, 0.2, 1] }}
+                                variants={movieCardVariant}
+                                // initial={{ opacity: 0, y: 30, scale: 0.95 }}
+                                // animate={{ opacity: 1, y: 0, scale: 1 }}
+                                // exit={{ opacity: 0, y: 30, scale: 0.95 }}
+                                // whileHover={{ scale: 1, y: -5, transition: { type: "spring", stiffness: 300} }}
+                                // transition={{ duration: 0.3, ease: [1] }}
+                                // {...bounceAnimation}
                             >
                                 <picture>
                                 {movie.poster_path && (
@@ -369,7 +450,8 @@ const Movies = () => {
                                 </div>
                             </motion.div>
                         ))}
-                    </div>
+                    </motion.div>
+                </AnimatePresence>
                 )}
                 {(totalPages > 1 || movies.length > 0) && (
                     <div className="pagination-controls">

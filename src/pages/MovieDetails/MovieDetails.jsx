@@ -133,12 +133,74 @@ const MovieDetails = () => {
         );
     }
 
+    const containerVariants = {
+        hidden: {},
+        visible: {
+            transition: {
+                staggerChildren: 0.1,
+                delayChildren: 0.3,
+            },
+        },
+    };
+    
+    const fadeUpSpring = {
+        hidden: { opacity: 0, y: 30 },
+        visible: {
+            opacity: 1,
+            y: 0,
+            transition: {
+                type: "spring",
+                stiffness: 300,
+                damping: 24,
+                mass: 1,
+            },
+        },
+        exit: {
+            opacity: 0,
+            y: -20,
+            transition: { duration: 0.3 }
+        }
+    };
+    
+    const modalOverlayVariants = {
+        hidden: { opacity: 0 },
+        visible: {
+            opacity: 1,
+            transition: { duration: 0.4 }
+        },
+        exit: { opacity: 0, transition: { duration: 0.3 } }
+    };
+    
+    const modalContentVariants = (x, y) => ({
+        hidden: { scale: 0.7, opacity: 0, x, y },
+        visible: {
+            scale: 1,
+            opacity: 1,
+            x: 0,
+            y: 0,
+            transition: {
+                type: "spring",
+                stiffness: 400,
+                damping: 25,
+            }
+        },
+        exit: {
+            scale: 0.7,
+            opacity: 0,
+            transition: {
+                duration: 0.3,
+                ease: "easeInOut"
+            }
+        }
+    });
+
     return (
         <motion.div 
             className="movie-details-container"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5 }}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+            variants={containerVariants}
         >
             <motion.div 
                 className="movie-details-overlay" 
@@ -155,12 +217,12 @@ const MovieDetails = () => {
 
             <motion.div className="movie-content" {...bounceAnimation}>
                 <motion.div className="movie-info" {...bounceAnimation}>
-                    <motion.h1 {...bounceAnimation}>{movie.title}</motion.h1>
+                    <motion.h1 variants={fadeUpSpring}>{movie.title}</motion.h1>
                     <div className="movie-meta">
-                        <motion.span {...bounceAnimation}><FaStar /> {movie.vote_average.toFixed(1)}</motion.span>
-                        <motion.span {...bounceAnimation}><FaCalendar /> {movie.release_date?.split("-")[0]}</motion.span>
-                        <motion.span {...bounceAnimation}><FaClock /> {movie.runtime} min</motion.span>
-                        <motion.span {...bounceAnimation}><FaLanguage /> {movie.original_language.toUpperCase()}</motion.span>
+                        <motion.span variants={fadeUpSpring}><FaStar /> {movie.vote_average.toFixed(1)}</motion.span>
+                        <motion.span variants={fadeUpSpring}><FaCalendar /> {movie.release_date?.split("-")[0]}</motion.span>
+                        <motion.span variants={fadeUpSpring}><FaClock /> {movie.runtime} min</motion.span>
+                        <motion.span variants={fadeUpSpring}><FaLanguage /> {movie.original_language.toUpperCase()}</motion.span>
                     </div>
 
                     <motion.div className="movie-genres" {...bounceAnimation}>
@@ -179,7 +241,9 @@ const MovieDetails = () => {
                                 onClick={openTrailer}
                                 ref={trailerButtonRef}
                                 className="trailer-button"
-                                {...bounceAnimation}
+                                variants={fadeUpSpring}
+                                whileHover={{ scale: 1.05 }}
+                                whileTap={{ scale: 0.95 }}
                             >
                                 ▶ &nbsp;Watch Trailer
                             </motion.button>
@@ -227,7 +291,9 @@ const MovieDetails = () => {
                                     .sort((a, b) => b.relevanceScore - a.relevanceScore)
                                     .slice(0, 10)
                                     .map(similar => (
-                                        <motion.a key={similar.id} className="similar-movie" href={`/movie/${similar.id}`} {...bounceAnimation}>
+                                        <motion.a key={similar.id} className="similar-movie" href={`/movie/${similar.id}`} variants={fadeUpSpring}
+                                        whileHover={{ scale: 1.03 }}
+                                        whileTap={{ scale: 0.97 }}>
                                             <img 
                                                 src={similar.poster_path 
                                                     ? `${IMAGE_BASE_URL}/w500${similar.poster_path}` 
@@ -275,38 +341,23 @@ const MovieDetails = () => {
                     <motion.div
                         className="trailer-modal-overlay"
                         onClick={closeTrailer}
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        transition={{ duration: 0.5, ease: "easeOut" }}
+                        variants={modalOverlayVariants}
+                        initial="hidden"
+                        animate="visible"
+                        exit="exit"
                         role="dialog"
                         aria-modal="true"
                     >
                         <motion.div
                             className="trailer-modal"
                             onClick={(e) => e.stopPropagation()}
-                            initial={{
-                                scale: 0.7, 
-                                opacity: 0,
-                                x: trailerPosition.x - window.innerWidth / 2, 
-                                y: trailerPosition.y - window.innerHeight / 2
-                            }}
-                            animate={{
-                                scale: 1, 
-                                opacity: 1,
-                                x: 0, 
-                                y: 0
-                            }}
-                            exit={{
-                                scale: 0.7, 
-                                opacity: 0
-                            }}
-                            transition={{
-                                scale: { type: "spring", stiffness: 400, damping: 20 }, // Spring for smooth scale transition
-                                opacity: { duration: 0.4 },
-                                x: { type: "spring", stiffness: 300, damping: 30 },
-                                y: { type: "spring", stiffness: 300, damping: 30 },
-                            }}
+                            variants={modalContentVariants(
+                                trailerPosition.x - window.innerWidth / 2,
+                                trailerPosition.y - window.innerHeight / 2
+                            )}
+                            initial="hidden"
+                            animate="visible"
+                            exit="exit"
                             ref={trailerRef}
                         >
                             <iframe

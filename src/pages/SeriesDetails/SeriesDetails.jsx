@@ -56,6 +56,19 @@ const SeriesDetails = () => {
         fetchSeriesDetails();
     }, [id]);
 
+    const handleTrailerOpen = () => {
+        if (trailerButtonRef.current) {
+            const rect = trailerButtonRef.current.getBoundingClientRect();
+            const scrollX = window.scrollX || window.pageXOffset;
+            const scrollY = window.scrollY || window.pageYOffset;
+            setTrailerPosition({
+                x: rect.left + rect.width / 2 + scrollX,
+                y: rect.top + rect.height / 2 + scrollY
+            });
+        }
+        setShowTrailer(true);
+    };
+
     const bounceAnimation = {
         initial: { opacity: 0, y: 20 },
         animate: {
@@ -96,12 +109,78 @@ const SeriesDetails = () => {
         );
     }
 
+    const containerVariants = {
+        hidden: {},
+        visible: {
+            transition: {
+                staggerChildren: 0.1,
+                delayChildren: 0.3,
+            },
+        },
+    };
+    
+    const fadeUpVariant = {
+        hidden: { opacity: 0, y: 30 },
+        visible: {
+            opacity: 1,
+            y: 0,
+            transition: {
+                type: "spring",
+                stiffness: 300,
+                damping: 24,
+                mass: 1,
+            },
+        },
+        exit: {
+            opacity: 0,
+            y: -20,
+            transition: { duration: 0.3 },
+        },
+    };
+    
+    const overlayVariant = {
+        hidden: { opacity: 0 },
+        visible: {
+            opacity: 1,
+            transition: { duration: 0.4 },
+        },
+        exit: {
+            opacity: 0,
+            transition: { duration: 0.3 },
+        },
+    };
+    
+    const modalVariant = (x, y) => ({
+        hidden: { scale: 0.5, opacity: 0, x, y },
+        visible: {
+            scale: 1,
+            opacity: 1,
+            x: 0,
+            y: 0,
+            transition: {
+                scale: { type: "spring", stiffness: 400, damping: 25 },
+                opacity: { duration: 0.3 },
+                x: { type: "spring", stiffness: 300, damping: 30 },
+                y: { type: "spring", stiffness: 300, damping: 30 },
+            },
+        },
+        exit: {
+            scale: 0.7,
+            opacity: 0,
+            transition: {
+                duration: 0.3,
+                ease: "easeInOut",
+            },
+        },
+    });
+
     return (
         <motion.div 
             className="series-details-container"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5 }}
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
         >
             <motion.div className="series-details-overlay" 
                 style={{
@@ -115,45 +194,36 @@ const SeriesDetails = () => {
                 <div className="backdrop-overlay"></div>
             </motion.div>
 
-            <motion.div className="series-content" {...bounceAnimation}>
-                <motion.div className="series-info" {...bounceAnimation}>
-                    <motion.h1 {...bounceAnimation}>{movie.name}</motion.h1>
+            <motion.div className="series-content" variants={fadeUpVariant}>
+                <motion.div className="series-info" variants={fadeUpVariant}>
+                    <motion.h1 variants={fadeUpVariant}>{movie.name}</motion.h1>
                     <div className="series-meta">
-                        <motion.span {...bounceAnimation}><FaStar /> {movie.vote_average.toFixed(1)}</motion.span>
-                        <motion.span {...bounceAnimation}><FaCalendar /> {movie.release_date?.split("-")[0]}</motion.span>
-                        <motion.span {...bounceAnimation}><FaClock /> {movie.runtime} min</motion.span>
-                        <motion.span {...bounceAnimation}><FaLanguage /> {movie.original_language.toUpperCase()}</motion.span>
-                        <motion.span {...bounceAnimation}><FaTv /> {movie.number_of_seasons} season{movie.number_of_seasons > 1 ? "s" : ""}</motion.span>
+                        <motion.span variants={fadeUpVariant}><FaStar /> {movie.vote_average.toFixed(1)}</motion.span>
+                        <motion.span variants={fadeUpVariant}><FaCalendar /> {movie.release_date?.split("-")[0]}</motion.span>
+                        <motion.span variants={fadeUpVariant}><FaClock /> {movie.runtime} min</motion.span>
+                        <motion.span variants={fadeUpVariant}><FaLanguage /> {movie.original_language.toUpperCase()}</motion.span>
+                        <motion.span variants={fadeUpVariant}><FaTv /> {movie.number_of_seasons} season{movie.number_of_seasons > 1 ? "s" : ""}</motion.span>
                     </div>
 
-                    <motion.div className="series-genres" {...bounceAnimation}>
+                    <motion.div className="series-genres" variants={fadeUpVariant}>
                         {movie.genres.map(genre => (
-                            <motion.span key={genre.id} className="genre-tag" {...bounceAnimation}>
+                            <motion.span key={genre.id} className="genre-tag" variants={fadeUpVariant}>
                                 {genre.name}
                             </motion.span>
                         ))}
                     </motion.div>
 
-                    <motion.div className="series-overview" {...bounceAnimation}>
+                    <motion.div className="series-overview" variants={fadeUpVariant}>
                         <h2>Overview</h2>
                         <p>{truncateOverview(movie.overview)}</p>
                         {movie.videos?.results?.length > 0 && (
                             <motion.button
-                                onClick={() => {
-                                    if (trailerButtonRef.current) {
-                                        const rect = trailerButtonRef.current.getBoundingClientRect();
-                                        const scrollX = window.scrollX || window.pageXOffset;
-                                        const scrollY = window.scrollY || window.pageYOffset;
-                                        setTrailerPosition({
-                                            x: rect.left + rect.width / 2 + scrollX,
-                                            y: rect.top + rect.height / 2 + scrollY
-                                        });
-                                    }
-                                    setShowTrailer(true);
-                                }}
+                                onClick={handleTrailerOpen}
                                 className="trailer-button"
                                 ref={trailerButtonRef}
-                                {...bounceAnimation}
+                                variants={fadeUpVariant}
+                                whileHover={{ scale: 1.05 }}
+                                whileTap={{ scale: 0.95 }}
                             >
                                 ▶ &nbsp;Watch Trailer
                             </motion.button>
@@ -161,13 +231,16 @@ const SeriesDetails = () => {
                     </motion.div>
 
                     {movie.similar?.results && movie.similar.results.length > 0 && (
-                        <motion.div className="similar-series" {...bounceAnimation}>
+                        <motion.div className="similar-series" variants={fadeUpVariant}>
                             <h2>Similar Series</h2>
                             <div className="similar-list">
                                 {movie.similar.results
                                     .filter(similar => similar.poster_path && similar.vote_average && (similar.release_date || similar.first_air_date))
                                     .map(similar => (
-                                        <motion.a key={similar.id} className="similar-series" href={`/series/${similar.id}`} {...bounceAnimation}>
+                                        <motion.a key={similar.id} className="similar-series" href={`/series/${similar.id}`}                         
+                                        variants={fadeUpVariant}
+                                        whileHover={{ scale: 1.03 }}
+                                        whileTap={{ scale: 0.97 }}>
                                             <picture>
                                             <img 
                                                 src={`${IMAGE_BASE_URL}/original${similar.poster_path}`} 
@@ -184,11 +257,14 @@ const SeriesDetails = () => {
                     )}
                 </motion.div>
                 {movie.credits?.cast && movie.credits.cast.length > 0 && (
-                        <motion.div className="series-cast" {...bounceAnimation}>
+                        <motion.div className="series-cast" variants={fadeUpVariant}>
                         <h2>Cast</h2>
                         <div className="cast-list">
                             {movie.credits.cast.map(cast => (
-                                <motion.a key={cast.id} className="cast-member" href={`/cast/${cast.id}`} {...bounceAnimation}>
+                                <motion.a key={cast.id} className="cast-member" href={`/cast/${cast.id}`}                     
+                                variants={fadeUpVariant}
+                                whileHover={{ scale: 1.03 }}
+                                whileTap={{ scale: 0.97 }}>
                                     <picture>
                                     <img 
                                         src={cast.profile_path 
@@ -212,30 +288,23 @@ const SeriesDetails = () => {
                 <motion.div
                     className="trailer-modal-overlay"
                     onClick={() => setShowTrailer(false)}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.5, ease: "easeOut" }}
+                    variants={overlayVariant}
+                    initial="hidden"
+                    animate="visible"
+                    exit="exit"
                     role="dialog"
                     aria-modal="true"
                 >
                     <motion.div
                         className="trailer-modal"
                         onClick={(e) => e.stopPropagation()}
-                        initial={{ 
-                            scale: 0.5, 
-                            opacity: 0, 
-                            x: trailerPosition.x - window.innerWidth / 2, 
-                            y: trailerPosition.y - window.innerHeight / 2 
-                        }}
-                        animate={{ scale: 1, opacity: 1, x: 0, y: 0 }}
-                        exit={{ scale: 0.7, opacity: 0 }}
-                        transition={{
-                            scale: { type: "spring", stiffness: 400, damping: 20 }, // Spring for smooth scale transition
-                            opacity: { duration: 0.4 },
-                            x: { type: "spring", stiffness: 300, damping: 30 },
-                            y: { type: "spring", stiffness: 300, damping: 30 },
-                        }}
+                        variants={modalVariant(
+                            trailerPosition.x - window.innerWidth / 2,
+                            trailerPosition.y - window.innerHeight / 2
+                        )}
+                        initial="hidden"
+                        animate="visible"
+                        exit="exit"
                     >
                         <iframe
                             width="100%"
