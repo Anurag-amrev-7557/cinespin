@@ -112,7 +112,7 @@ const MovieDetails = () => {
     if (loading) {
         return (
             <div className="movie-details-loading">
-                <p>Loading.....</p>
+                <div className="loader"></div>
             </div>
         );
     }
@@ -127,8 +127,8 @@ const MovieDetails = () => {
 
     if (!movie) {
         return (
-            <div className="movie-details-error">
-                <p>Movie not found</p>
+            <div className="movie-details-loading">
+                <div className="loader"></div>
             </div>
         );
     }

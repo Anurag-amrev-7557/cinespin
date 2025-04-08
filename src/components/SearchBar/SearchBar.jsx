@@ -3,6 +3,8 @@ import React, { useEffect, useState, useCallback, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import axios from "axios";
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
 import Fuse from "fuse.js";
 import { debounce } from "lodash";
 import { GoCalendar } from "react-icons/go";
@@ -97,7 +99,9 @@ const SearchResultItem = ({ item, type, onClick, isSelected, onKeyDown }) => {
                 </picture>
             </div>
             <div className="result-info">
-                <h4>{item.title || item.name}</h4>
+                <h4>{item.title || item.name}
+                    <span className="autocomplete-year"> ({new Date(item.release_date || item.first_air_date).getFullYear()})</span>
+                </h4>
                 <p className="result-overview">{truncateOverview(item.overview)}</p>
                 <div className="result-meta">
                     <span>⭐ {item.vote_average?.toFixed(1) || 'N/A'}</span>
@@ -145,6 +149,31 @@ const SearchBar = () => {
     const inputRef = useRef(null);
     const resultsRef = useRef(null);
 
+    useEffect(() => {
+        const handleBlur = (e) => {
+          if (!searchRef.current?.contains(e.relatedTarget)) {
+            closeSearch();
+          }
+        };
+      
+        if (inputRef.current) {
+          inputRef.current.addEventListener("blur", handleBlur);
+        }
+      
+        return () => {
+          if (inputRef.current) {
+            inputRef.current.removeEventListener("blur", handleBlur);
+          }
+        };
+      }, [searchRef.current, inputRef.current]);
+
+    useEffect(() => {
+        if (selectedIndex >= 0 && resultsRef.current) {
+          const selectedEl = document.getElementById(`search-result-${searchResults[selectedIndex]?.id}`);
+          if (selectedEl) selectedEl.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+        }
+      }, [selectedIndex, searchResults]);
+
     // Handle keyboard navigation
     const handleKeyDown = useCallback((e) => {
         if (!showResults) return;
@@ -174,6 +203,18 @@ const SearchBar = () => {
                 break;
         }
     }, [showResults, searchResults, selectedIndex]);
+
+    useEffect(() => {
+        if (selectedIndex >= 0 && resultsRef.current) {
+          const el = document.getElementById(`search-result-${searchResults[selectedIndex]?.id}`);
+          if (el) {
+            el.scrollIntoView({
+              behavior: "smooth",
+              block: "nearest"
+            });
+          }
+        }
+      }, [selectedIndex, searchResults]);
 
     // Handle touch interactions
     const handleTouchStart = useCallback((e) => {

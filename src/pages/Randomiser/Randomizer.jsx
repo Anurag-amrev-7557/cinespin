@@ -300,7 +300,7 @@ const Randomizer = () => {
 
       {loading && (
         <div className="movie-details-loading">
-          Loading...
+          <div className="loader"></div>
         </div>
       )}
 
