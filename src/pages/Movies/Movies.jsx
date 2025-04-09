@@ -389,17 +389,6 @@ const Movies = () => {
                 ) : (
                 <AnimatePresence mode="wait">
                     <motion.div className="movie-grid"
-                        // initial="hidden"
-                        // animate="visible"
-                        // variants={{
-                        // hidden: {},
-                        // visible: {
-                        //     transition: {
-                        //     staggerChildren: 0.08,
-                        //     delayChildren: 0.1,
-                        //     },
-                        // },
-                        // }}
                         variants={containerStagger}
                         initial="hidden"
                         animate="visible"
@@ -411,30 +400,28 @@ const Movies = () => {
                                 layout
                                 className="movie-card"
                                 onClick={() => navigate(`/movie/${movie.id}`)}
+                                whileHover={{ scale: 1.03, y: -3, ease: "easeOut" }}
                                 variants={movieCardVariant}
-                                // initial={{ opacity: 0, y: 30, scale: 0.95 }}
-                                // animate={{ opacity: 1, y: 0, scale: 1 }}
-                                // exit={{ opacity: 0, y: 30, scale: 0.95 }}
-                                // whileHover={{ scale: 1, y: -5, transition: { type: "spring", stiffness: 300} }}
-                                // transition={{ duration: 0.3, ease: [1] }}
-                                // {...bounceAnimation}
                             >
                                 <picture>
-                                {movie.poster_path && (
-                                    <source
-                                    srcSet={`https://image.tmdb.org/t/p/w500${movie.poster_path.endsWith(".webp") ? movie.poster_path : `${movie.poster_path}.webp`}`}
-                                    type="image/webp"
+                                    {movie.poster_path && (
+                                        <source
+                                            srcSet={`https://image.tmdb.org/t/p/w500${movie.poster_path.endsWith(".webp") ? movie.poster_path : `${movie.poster_path}.webp`}`}
+                                            type="image/webp"
+                                        />
+                                    )}
+                                    <motion.img
+                                        loading="lazy"
+                                        decoding="async"
+                                        src={movie.poster_path
+                                            ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
+                                            : "/default.png"}
+                                        alt={movie.title}
+                                        className="movie-poster"
+                                        initial={{ opacity: 0, scale: 0.95 }}
+                                        animate={{ opacity: 1, scale: 1 }}
+                                        transition={{ duration: 0.4, ease: "easeOut" }}
                                     />
-                                )}
-                                <img
-                                    loading="lazy"
-                                    decoding="async"
-                                    src={movie.poster_path
-                                    ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
-                                    : "/default.png"}
-                                    alt={movie.title}
-                                    className="movie-poster"
-                                />
                                 </picture>
                                 <span className="movie-title" style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                                     {movie.title.split(" ").slice(0, 3).join(" ")}
