@@ -4,7 +4,7 @@ import "./Register.css";
 import { FaGoogle, FaGithub } from "react-icons/fa";
 import { LuEye, LuEyeOff } from "react-icons/lu";
 import { SiApple } from "react-icons/si";
-import { signInWithEmailAndPassword, GoogleAuthProvider, GithubAuthProvider, signInWithPopup } from 'firebase/auth';
+import { getAuth, createUserWithEmailAndPassword, updateProfile, signInWithEmailAndPassword, GoogleAuthProvider, GithubAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth } from '../../../../firebase';
 
 const Register = () => {
@@ -13,30 +13,60 @@ const Register = () => {
   const [username, setUsername] = useState('');
   const [errorMsg, setErrorMsg] = useState("");
   const [passwordVisible, setPasswordVisible] = useState(false);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+
+  // Client-side validation for email
+  const isEmailValid = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  
+  // Password strength validation
+  const isPasswordStrong = (password) => password.length >= 8; // Add more complexity rules if needed
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrorMsg('');
+    
+    if (!isEmailValid(email)) {
+      setErrorMsg('Please enter a valid email address.');
+      return;
+    }
+    
+    if (!isPasswordStrong(password)) {
+      setErrorMsg('Password must be at least 8 characters long.');
+      return;
+    }
+    
+    setLoading(true);
     try {
-      await createUserWithEmailAndPassword(auth, email, password);
-      await updateProfile(auth.currentUser, {
+      console.log("Creating user...");
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      console.log("User created:", userCredential.user);
+      
+      await updateProfile(userCredential.user, {
         displayName: username,
       });
+      console.log("Profile updated!");
+      
       navigate('/');
     } catch (err) {
+      console.error("Error during registration:", err);
       setErrorMsg(err.message);
+    } finally {
+      setLoading(false);
     }
   };
 
   const handleGoogleSignIn = async () => {
     setErrorMsg('');
+    setLoading(true);
     const provider = new GoogleAuthProvider();
     try {
       await signInWithPopup(auth, provider);
       navigate('/');
     } catch (err) {
       setErrorMsg(err.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -48,12 +78,15 @@ const Register = () => {
 
   const handleGithubSignIn = async () => {
     setErrorMsg('');
+    setLoading(true);
+    const githubProvider = new GithubAuthProvider();
     try {
-      const githubProvider = new GithubAuthProvider();
       await signInWithPopup(auth, githubProvider);
       navigate('/');
     } catch (err) {
       setErrorMsg(err.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -77,12 +110,16 @@ const Register = () => {
                 <label htmlFor="username">Username</label>
                 <input
                   id="username"
-                  type="username"
+                  type="text"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
                   required
                   autoFocus
+                  aria-describedby="username-helper"
                 />
+                <small id="username-helper" className="form-text text-muted">
+                  Choose a unique username.
+                </small>
               </div>
 
               <div className="form-control">
@@ -94,26 +131,36 @@ const Register = () => {
                   onChange={(e) => setEmail(e.target.value)}
                   required
                   autoFocus
+                  aria-describedby="email-helper"
                 />
+                <small id="email-helper" className="form-text text-muted">
+                  Enter your email address.
+                </small>
               </div>
 
               <div className="form-control">
                 <label htmlFor="password">Password</label>
                 <div className="password-container">
                     <input
-                    id="password"
-                    type={passwordVisible ? "text" : "password"}
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
+                      id="password"
+                      type={passwordVisible ? "text" : "password"}
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      required
+                      aria-describedby="password-helper"
                     />
                     <span 
-                    className="password-toggle"
-                    onClick={() => setPasswordVisible(!passwordVisible)}
+                      className="password-toggle"
+                      onClick={() => setPasswordVisible(!passwordVisible)}
+                      role="button" 
+                      aria-label={passwordVisible ? "Hide password" : "Show password"}
                     >
-                    {passwordVisible ? <span><LuEye /></span> : <span><LuEyeOff /></span>}
+                      {passwordVisible ? <LuEye /> : <LuEyeOff />}
                     </span>
                 </div>
+                <small id="password-helper" className="form-text text-muted">
+                  Password must be at least 8 characters.
+                </small>
               </div>
 
               {errorMsg && <div className="error-message">{errorMsg}</div>}
@@ -122,18 +169,19 @@ const Register = () => {
                 <button
                   type="submit"
                   className="submit-button"
+                  disabled={loading}
                 >
-                  Register
+                  {loading ? 'Registering...' : 'Register'}
                 </button>
                 <div className="login-links">
-                  <span><FaGoogle onClick={handleGoogleSignIn} /></span>
-                  <span><SiApple onClick={handleAppleSignIn} /></span>
-                  <span><FaGithub onClick={handleGithubSignIn} /></span>
+                  <span><FaGoogle onClick={handleGoogleSignIn} role="button" aria-label="Sign in with Google" /></span>
+                  <span><SiApple onClick={handleAppleSignIn} role="button" aria-label="Sign in with Apple" /></span>
+                  <span><FaGithub onClick={handleGithubSignIn} role="button" aria-label="Sign in with GitHub" /></span>
                 </div>
               </div>
 
               <div className="form-links">
-                <Link to="/login">Login</Link>
+                <Link to="/login">Already have an account? Login here</Link>
               </div>
             </div>
           </form>
