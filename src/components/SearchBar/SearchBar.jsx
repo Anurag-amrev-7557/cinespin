@@ -458,7 +458,8 @@ const SearchBar = () => {
 
     return (
         <>
-            <div 
+        <AnimatePresence>
+            <motion.div 
                 className="navbar-search" 
                 key={routeKey} 
                 ref={searchRef}
@@ -498,8 +499,8 @@ const SearchBar = () => {
                         <path d="m21 21-4.3-4.3"/>
                     </svg>
                 </div>
-            </div>
-
+            </motion.div>
+        </AnimatePresence>
             <AnimatePresence>
             {showResults && (searchQuery.length >= 2 || (!searchQuery && searchHistory.length > 0)) && (
             <motion.div 

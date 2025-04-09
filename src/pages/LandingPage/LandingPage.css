@@ -556,6 +556,7 @@
     border-radius: 1rem;
     overflow: hidden;
     position: relative;
+    z-index: 1;
     background-size: cover;
     cursor: pointer;
     background-position: center;

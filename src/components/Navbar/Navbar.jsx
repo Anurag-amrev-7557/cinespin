@@ -167,7 +167,7 @@ const Navbar = () => {
         </label>
 
         <div
-          className="profile-container"
+          className={`profile-container ${user ? "logged-in" : "logged-out"}`}
           onMouseEnter={() => setShowDropdown(true)}
           onMouseLeave={() => setShowDropdown(false)}
         >
@@ -201,6 +201,7 @@ const Navbar = () => {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -10 }}
                     transition={{ duration: 0.2, ease: "easeOut" }}
+                    style={{ zIndex: 9999, position: "absolute" }}
                   >
                     <ul>
                       <li onClick={() => navigate("/profile")}><FaUser /> Profile</li>
@@ -211,9 +212,17 @@ const Navbar = () => {
               </AnimatePresence>
             </>
           ) : (
-            <button className="signin-button" onClick={() => navigate("/login")}>
-              Sign In
-            </button>
+            <motion.button
+              className="signin-button"
+              onClick={() => navigate("/login")}
+              whileTap={{ scale: 0.65, transition: { duration: 0.1 } }}
+            >
+            <span>Sign In</span>
+            <svg width="15px" height="10px" viewBox="0 0 13 10">
+              <path d="M1,5 L11,5"></path>
+              <polyline points="8 1 12 5 8 9"></polyline>
+            </svg>
+            </motion.button>
           )}
         </div>
       </div>
