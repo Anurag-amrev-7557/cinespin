@@ -341,9 +341,10 @@ const Randomizer = () => {
 
               <motion.div className="movie-genres" {...bounceAnimation}>
                 {content.genres.map(genre => (
-                  <span key={genre.id} className="genre-tag">
+                  <a key={genre.id} className="genre-tag"
+                    href={`/movies?genre=${genre.id}&page=1`}>
                     {genre.name}
-                  </span>
+                  </a>
                 ))}
               </motion.div>
 
