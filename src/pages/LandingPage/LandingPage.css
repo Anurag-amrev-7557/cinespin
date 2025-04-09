@@ -524,6 +524,12 @@
     overflow: hidden;
 }
 
+@media (max-width: 1305px) {
+    .landing-item-container {
+        padding: 1rem 1.5rem;
+    }
+}
+
 @media (max-width: 1200px) {
     .landing-item-container {
         padding: 1.5rem 1rem;

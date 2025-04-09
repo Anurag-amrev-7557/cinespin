@@ -534,6 +534,12 @@
   #profile-type {
     font-size: 0.8rem;
   }
+
+  @media (max-width: 1305px) {
+    .navbar {
+      margin-bottom: 1rem !important;
+    }
+  }
   
   /* Dropdown root */
   .profile-dropdown {
