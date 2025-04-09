@@ -1,7 +1,11 @@
 import React, { useEffect, useState, useCallback, useRef } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
+import { FaUser } from "react-icons/fa";
+import { PiSignOutFill } from "react-icons/pi";
 import { getFromCache, setToCache } from "../../utils/cache"; // adjust path if needed
 import { FaChevronDown } from "react-icons/fa6";
+import { useAuth } from "../../context/AuthContext";
+import { motion, AnimatePresence } from "framer-motion";
 import "./Navbar.css";
 
 const SearchItem = ({ item, isActive, onClick }) => (
@@ -22,6 +26,8 @@ const Navbar = () => {
   const [isDarkMode, setIsDarkMode] = useState(() =>
     localStorage.getItem("darkMode") === "true" || localStorage.getItem("darkMode") === null
   );
+  const { user, logout, auth, loading } = useAuth();
+  const [showDropdown, setShowDropdown] = useState(false);
 
   const handleRegionChange = (region) => {
     setSelectedRegion(region);
@@ -91,6 +97,8 @@ const Navbar = () => {
     return () => window.removeEventListener("regionChange", handleRegionUpdate);
   }, []);
 
+  const profileImage = user?.photoURL || auth?.currentUser?.photoURL;
+
   return (
     <nav className={`navbar ${isVisible ? "fade-in" : "fade-out"}`} ref={navbarRef}>
       <div
@@ -158,23 +166,55 @@ const Navbar = () => {
           </div>
         </label>
 
-        <div className="profile-container">
-          <div className="profile-picture"></div>
-          <div className="profile-data-container">
-            <span id="profile-name">Anurag</span>
-            <span id="profile-type">Premium</span>
-          </div>
-          <div
-            className="profile-expander"
-            role="button"
-            tabIndex="0"
-            aria-label="Expand profile settings"
-            onKeyDown={(e) => {
-              if (e.key === "Enter" || e.key === " ") handleClick();
-            }}
-          >
-            <FaChevronDown />
-          </div>
+        <div
+          className="profile-container"
+          onMouseEnter={() => setShowDropdown(true)}
+          onMouseLeave={() => setShowDropdown(false)}
+        >
+          {loading ? null : user ? (
+            <>
+              <div
+                className="profile-picture"
+                style={{
+                  backgroundImage: profileImage ? `url(${profileImage})` : undefined,
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                  zIndex: "1"
+                }}
+              ></div>
+              <div className="profile-data-container">
+                <span id="profile-name">{user.displayName || "User"}</span>
+                <span id="profile-type">Premium</span>
+              </div>
+              <motion.div
+                animate={{ rotate: showDropdown ? 180 : 0 }}
+                transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                style={{ display: "inline-block" }}
+              >
+                <FaChevronDown />
+              </motion.div>
+              <AnimatePresence>
+                {showDropdown && (
+                  <motion.div
+                    className="profile-dropdown"
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    transition={{ duration: 0.2, ease: "easeOut" }}
+                  >
+                    <ul>
+                      <li onClick={() => navigate("/profile")}><FaUser /> Profile</li>
+                      <li onClick={logout}><PiSignOutFill />Logout</li>
+                    </ul>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </>
+          ) : (
+            <button className="signin-button" onClick={() => navigate("/login")}>
+              Sign In
+            </button>
+          )}
         </div>
       </div>
     </nav>

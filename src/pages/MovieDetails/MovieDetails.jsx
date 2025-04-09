@@ -112,7 +112,7 @@ const MovieDetails = () => {
     if (loading) {
         return (
             <div className="movie-details-loading">
-                <div aria-live="assertive" role="alert" class="loader"></div>
+                <div aria-live="assertive" role="alert" className="loader"></div>
             </div>
         );
     }

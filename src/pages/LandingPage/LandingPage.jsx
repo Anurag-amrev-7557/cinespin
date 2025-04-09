@@ -258,6 +258,7 @@ const LandingPage = () => {
                             <SkeletonBigCard {...bounceAnimation}/>
                         </div>
                     ) : (
+                        <Suspense fallback={<SkeletonBigCard />}>
                         <Swiper
                             slidesPerView={3}
                             spaceBetween={20}
@@ -273,7 +274,7 @@ const LandingPage = () => {
                                     movie ? (
                                     <SwiperSlide key={index}>
                                         <motion.a
-                                        href={`/movie/${movie.id}`}
+                                        onClick={() => navigate(`/movie/${movie.id}`)}
                                         initial={{ opacity: 0, scale: 0.95 }}
                                         animate={{ opacity: 1, scale: 1 }}
                                         exit={{ opacity: 0, scale: 0.95 }}
@@ -309,6 +310,7 @@ const LandingPage = () => {
                                 )}
                             </AnimatePresence>
                         </Swiper>
+                    </Suspense>
                     )}
                 </motion.div>
             </Suspense>
@@ -378,7 +380,7 @@ const LandingPage = () => {
                                     <SwiperSlide key={uniqueKey}>
                                     <motion.a
                                         className="movie-card"
-                                        href={`/movie/${movie.id}`}
+                                        onClick={() => navigate(`/movie/${movie.id}`)}
                                         initial={{ opacity: 0, y: 30, scale: 0.95 }}
                                         animate={{ opacity: 1, y: 0, scale: 1 }}
                                         exit={{ opacity: 0, y: 30, scale: 0.95 }}

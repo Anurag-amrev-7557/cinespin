@@ -1,3 +1,9 @@
+html[data-theme='dark'] body {
+    background-image: url("/background-dark.webp");
+    background-color: #121212;
+    color: #f5f5f5;
+}
+
 @font-face {
     font-family: "Biotif";
     src: url("/src/assets/fonts/Fontspring-DEMO-biotif-regular.otf") format("opentype");

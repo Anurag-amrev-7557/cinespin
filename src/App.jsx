@@ -1,7 +1,8 @@
 import './App.css';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { AuthProvider } from './context/AuthContext.jsx';
+import ProtectedRoute from './components/Common/ProtectedRoute.jsx';
 import React, { Suspense, lazy } from 'react';
-
 import ErrorBoundary from './components/Common/ErrorBoundary.jsx';
 import Navbar from './components/Navbar/Navbar.jsx';
 import SearchBar from './components/SearchBar/SearchBar.jsx';
@@ -14,6 +15,8 @@ const MovieDetails  = lazy(() => import('./pages/MovieDetails/MovieDetails.jsx')
 const SeriesDetails = lazy(() => import('./pages/SeriesDetails/SeriesDetails.jsx'));
 const CastDetails   = lazy(() => import('./pages/CastDetails/CastDetails.jsx'));
 const Series        = lazy(() => import('./pages/Series/Series.jsx'));
+const Login         = lazy(() => import('./pages/Auth/Login/Login.jsx'));
+const Register      = lazy(() => import('./pages/Auth/Register/Register.jsx'));
 
 // 🔐 Optional: import ProtectedRoute when auth is ready
 // import ProtectedRoute from './components/Common/ProtectedRoute.jsx';
@@ -27,6 +30,8 @@ const routesConfig = [
   { path: '/series/:id', element: <SeriesDetails /> },
   { path: '/cast/:id',   element: <CastDetails /> },
   { path: '/series',     element: <Series /> },
+  { path: '/login',      element: <Login /> },
+  { path: '/register',   element: <Register /> },
   // Future route protection flag (not yet used)
   // { path: '/profile', protected: true, element: <UserProfile /> },
 ];
@@ -65,7 +70,9 @@ const Layout = () => {
 
 const App = () => (
   <Router>
-    <Layout />
+    <AuthProvider>
+      <Layout />
+    </AuthProvider>
   </Router>
 );
 
