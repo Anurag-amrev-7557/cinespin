@@ -25,11 +25,11 @@
 
   @media (max-width: 1305px) {
     .form-content {
-        margin: 15% 10%;
+        margin: 14% 10%;
     }
 
     .form-content {
-        transform: scale(0.95);
+        transform: scale(1);
     }
   }
   

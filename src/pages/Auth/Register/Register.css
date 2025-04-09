@@ -25,7 +25,8 @@
 
   @media (max-width: 1305px) {
     .form-content {
-        margin: 15% 10%;
+        margin: 8% 10% !important;
+        transform: scale(1);
     }
   }
   
