@@ -296,6 +296,7 @@
     justify-content: center;
     gap: 0.5rem;
     width: 250px;
+    cursor: pointer;
     text-decoration: none;
 }
 
@@ -556,6 +557,7 @@
     overflow: hidden;
     position: relative;
     background-size: cover;
+    cursor: pointer;
     background-position: center;
     transition: transform 0.3s ease-out, box-shadow 0.3s ease-out;
 }
