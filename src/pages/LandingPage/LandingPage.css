@@ -57,6 +57,11 @@
     color: rgba(255, 255, 255, 1);
 }
 
+.reset-animation {
+    transform: none !important;
+    transition: transform 0.5s ease-in-out;
+}
+
 /* Optional: Improve small screen stacking */
 @media (max-width: 600px) {
     .genre-container {

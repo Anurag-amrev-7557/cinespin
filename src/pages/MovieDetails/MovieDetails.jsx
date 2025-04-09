@@ -112,7 +112,7 @@ const MovieDetails = () => {
     if (loading) {
         return (
             <div className="movie-details-loading">
-                <div className="loader"></div>
+                <div aria-live="assertive" role="alert" class="loader"></div>
             </div>
         );
     }
@@ -128,7 +128,7 @@ const MovieDetails = () => {
     if (!movie) {
         return (
             <div className="movie-details-loading">
-                <div className="loader"></div>
+                <div aria-live="assertive" role="alert" class="loader"></div>
             </div>
         );
     }
@@ -222,15 +222,23 @@ const MovieDetails = () => {
                     <div className="movie-meta">
                         <motion.span variants={fadeUpSpring}><FaStar /> {movie.vote_average.toFixed(1)}</motion.span>
                         <motion.span variants={fadeUpSpring}><FaCalendar /> {movie.release_date?.split("-")[0]}</motion.span>
-                        <motion.span variants={fadeUpSpring}><FaClock /> {movie.runtime} min</motion.span>
+                        {movie.runtime && (
+                            <motion.span variants={fadeUpSpring}>
+                                <FaClock /> {Math.floor(movie.runtime / 60)}h {movie.runtime % 60}m
+                            </motion.span>
+                        )}
                         <motion.span variants={fadeUpSpring}><FaLanguage /> {movie.original_language.toUpperCase()}</motion.span>
                     </div>
 
                     <motion.div className="movie-genres" variants={fadeUpSpring}>
                         {movie.genres.map(genre => (
-                            <motion.span key={genre.id} className="genre-tag" variants={fadeUpSpring}>
+                            <motion.a
+                                key={genre.id}
+                                href={`/movies?genre=${genre.id}&page=1`}
+                                className="genre-tag"
+                            >
                                 {genre.name}
-                            </motion.span>
+                            </motion.a>
                         ))}
                     </motion.div>
 
@@ -390,5 +398,5 @@ const MovieDetails = () => {
         </motion.div>
     );
 };
-
+ 
 export default MovieDetails;

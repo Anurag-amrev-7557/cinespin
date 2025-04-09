@@ -300,7 +300,7 @@ const Randomizer = () => {
 
       {loading && (
         <div className="movie-details-loading">
-          <div className="loader"></div>
+          <div aria-live="assertive" role="alert" class="loader"></div>
         </div>
       )}
 

@@ -169,10 +169,7 @@ const LandingPage = () => {
 
     const handleGenreClick = (genreId) => {
         localStorage.setItem("selectedGenre", genreId);
-        navigate("/movies", { state: { genreId } });
-        setTimeout(() => {
-            window.location.reload();
-        }, 1);
+        navigate(`/movies?genre=${genreId}&page=1`, { state: { genreId } });
     };
 
     useEffect(() => {
@@ -224,6 +221,16 @@ const LandingPage = () => {
             if (observerRef.current) observerRef.current.disconnect();
         };
     }, [moviesByGenre]); // Run effect only when movies update
+
+    useEffect(() => {
+        // Add a class or force a re-render on back navigation
+        const genreContainer = document.querySelector(".genre-container");
+        if (genreContainer) {
+            genreContainer.classList.remove("reset-animation");
+            void genreContainer.offsetWidth; // force reflow
+            genreContainer.classList.add("reset-animation");
+        }
+    }, [location]);
 
     const bounceAnimation = {
         initial: { opacity: 0, y: 20 },
@@ -305,7 +312,9 @@ const LandingPage = () => {
                 </motion.div>
             </Suspense>
             
-            <motion.div className="genre-container" {...bounceAnimation}>
+            <motion.div className="genre-container"
+                key={location.key}
+                {...bounceAnimation}>
                 {!genres.length || isLoadingGenres ? (
                     Array.from({ length: genres.length || 9 }, (_, index) => (
                         <div key={index} className="genre-slide">
