@@ -288,6 +288,7 @@ const LandingPage = () => {
                                                     backgroundPosition: "center",
                                                 }}
                                                 decoding="async"
+                                                whileHover={{scale: 1.02, y: -3}}
                                                 {...bounceAnimation}
                                             >
                                                 <div className="movie-title-overlay">

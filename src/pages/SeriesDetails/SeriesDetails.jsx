@@ -87,8 +87,7 @@ const SeriesDetails = () => {
     if (loading) {
         return (
             <div className="series-details-loading">
-                <div className="loading-spinner"></div>
-                <p>Loading series details...</p>
+                <div aria-live="assertive" role="alert" class="loader"></div>
             </div>
         );
     }
@@ -103,8 +102,8 @@ const SeriesDetails = () => {
 
     if (!movie) {
         return (
-            <div className="series-details-error">
-                <p>Series not found</p>
+            <div className="series-details-loading">
+                <div aria-live="assertive" role="alert" class="loader"></div>
             </div>
         );
     }
