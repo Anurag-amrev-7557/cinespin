@@ -17,6 +17,9 @@ const CastDetails   = lazy(() => import('./pages/CastDetails/CastDetails.jsx'));
 const Series        = lazy(() => import('./pages/Series/Series.jsx'));
 const Login         = lazy(() => import('./pages/Auth/Login/Login.jsx'));
 const Register      = lazy(() => import('./pages/Auth/Register/Register.jsx'));
+const Profile       = lazy(() => import('./pages/Profile//Profile.jsx'));
+const PasswordChange       = lazy(() => import('./pages/Auth/PasswordChange/PasswordChange.jsx'));
+const ForgotPassword       = lazy(() => import('./pages/Auth/ForgotPassword/ForgotPassword.jsx'));
 
 // 🔐 Optional: import ProtectedRoute when auth is ready
 // import ProtectedRoute from './components/Common/ProtectedRoute.jsx';
@@ -32,6 +35,9 @@ const routesConfig = [
   { path: '/series',     element: <Series /> },
   { path: '/login',      element: <Login /> },
   { path: '/register',   element: <Register /> },
+  { path: '/profile',   element: <Profile /> },
+  { path: '/change-password',   element: <PasswordChange /> },
+  { path: '/forgot-password',   element: <ForgotPassword /> },
   // Future route protection flag (not yet used)
   // { path: '/profile', protected: true, element: <UserProfile /> },
 ];

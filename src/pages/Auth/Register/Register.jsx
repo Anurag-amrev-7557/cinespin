@@ -195,28 +195,43 @@ const Register = () => {
             xmlns="http://www.w3.org/2000/svg"
             className="pattern"
           >
-            <path
-              d="M0,800 C100,700 200,600 300,700 C400,800 500,700 600,600 C700,500 800,600 900,700 L900,0 L0,0 Z"
-              fill="url(#gradient)"
-            >
-              <animate
-                attributeName="d"
-                dur="10s"
-                repeatCount="indefinite"
-                values="
-                  M0,800 C100,700 200,600 300,700 C400,800 500,700 600,600 C700,500 800,600 900,700 L900,0 L0,0 Z;
-                  M0,800 C100,600 200,700 300,600 C400,700 500,600 600,700 C700,600 800,700 900,800 L900,0 L0,0 Z;
-                  M0,800 C100,700 200,600 300,700 C400,800 500,700 600,600 C700,500 800,600 900,700 L900,0 L0,0 Z
-                "
-              />
-            </path>
             <defs>
               <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
                 <stop offset="0%" stopColor="#1E293B" />
                 <stop offset="50%" stopColor="#334155" />
                 <stop offset="100%" stopColor="#475569" />
               </linearGradient>
+              <mask id="mask" x="0" y="0" width="100%" height="100%">
+                <rect width="100%" height="100%" fill="white" />
+                <circle cx="200" cy="400" r="250" fill="black" />
+              </mask>
             </defs>
+
+            <g mask="url(#mask)">
+              <path
+                d="M0,800 C100,700 200,600 300,700 C400,800 500,700 600,600 C700,500 800,600 900,700 L900,0 L0,0 Z"
+                fill="url(#gradient)"
+              >
+                <animate
+                  attributeName="d"
+                  dur="12s"
+                  repeatCount="indefinite"
+                  values="
+                    M0,800 C100,700 200,600 300,700 C400,800 500,700 600,600 C700,500 800,600 900,700 L900,0 L0,0 Z;
+                    M0,800 C100,600 200,700 300,600 C400,700 500,600 600,700 C700,600 800,700 900,800 L900,0 L0,0 Z;
+                    M0,800 C100,700 200,600 300,700 C400,800 500,700 600,600 C700,500 800,600 900,700 L900,0 L0,0 Z
+                  "
+                />
+              </path>
+              <circle cx="200" cy="400" r="250" fill="white" opacity="0.5">
+                <animate
+                  attributeName="r"
+                  dur="8s"
+                  values="250;200;250"
+                  repeatCount="indefinite"
+                />
+              </circle>
+            </g>
           </svg>
         </div>
       </div>
