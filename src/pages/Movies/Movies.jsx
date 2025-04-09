@@ -383,7 +383,9 @@ const Movies = () => {
                     )}
                 </AnimatePresence>
                 {isLoading ? (
-                    <div className="loading"></div>
+                    <div className="movie-details-loading">
+                        <div aria-live="assertive" role="alert" class="loader"></div>
+                    </div>
                 ) : (
                 <AnimatePresence mode="wait">
                     <motion.div className="movie-grid"

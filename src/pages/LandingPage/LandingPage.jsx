@@ -283,9 +283,9 @@ const LandingPage = () => {
                                             <motion.div
                                                 className="landing-item-poster"
                                                 style={{
-                                                backgroundImage: `url(https://image.tmdb.org/t/p/w1280${movie.backdrop_path || movie.poster_path})`,
-                                                backgroundSize: "cover",
-                                                backgroundPosition: "center",
+                                                    backgroundImage: `url(https://image.tmdb.org/t/p/w1280${movie.backdrop_path || movie.poster_path})`,
+                                                    backgroundSize: "cover",
+                                                    backgroundPosition: "center",
                                                 }}
                                                 decoding="async"
                                                 {...bounceAnimation}

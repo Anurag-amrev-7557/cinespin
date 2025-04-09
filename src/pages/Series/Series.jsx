@@ -221,7 +221,9 @@ const Series = () => {
 
           <div className="movies-list">
             {isLoading ? (
-              <div className="loading"></div>
+              <div className="movie-details-loading">
+                <div aria-live="assertive" role="alert" class="loader"></div>
+              </div>
             ) : (
             <AnimatePresence>
               <motion.div className="movie-grid"
