@@ -35,7 +35,7 @@ const routesConfig = [
   { path: '/register',   element: <Register /> },
   { path: '/profile',   element: <ProtectedRoute><Profile /></ProtectedRoute> },
   { path: '/change-password',   element: <ProtectedRoute><PasswordChange /> </ProtectedRoute>},
-  { path: '/forgot-password',   element: <ProtectedRoute><ForgotPassword /></ProtectedRoute> },
+  { path: '/forgot-password',   element: <ForgotPassword /> },
   { path: '/update-profile',   element: <ProtectedRoute><UpdateProfile /></ProtectedRoute> },
 ];
 
