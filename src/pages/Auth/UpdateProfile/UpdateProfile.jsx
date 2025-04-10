@@ -56,10 +56,33 @@ const UpdateProfile = () => {
         folder: "avatars",
         multiple: false,
         maxFileSize: 5 * 1024 * 1024, // 5MB
+        styles: {
+          palette: {
+            window: "#2A303F",
+            sourceBg: "#151B29",
+            windowBorder: "#8E8E8E",
+            tabIcon: "#FFFFFF",
+            inactiveTabIcon: "#D3D3D3",
+            menuIcons: "#FFF",
+            link: "#374151",
+            action: "#FF5722",
+            inProgress: "#FF9800",
+            complete: "#4CAF50",
+            error: "#F44336",
+            textDark: "#000000",
+            textLight: "#FFFFFF"
+          },
+          fonts: {
+            default: null,
+            "'Biotif', sans-serif": {
+              active: true
+            }
+          }
+        }
       },
       (error, result) => {
         if (!error && result.event === "success") {
-          setPhotoURL(result.info.secure_url); // 🔥 hosted photo URL
+          setPhotoURL(result.info.secure_url); 
         }
       }
     );
