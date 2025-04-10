@@ -369,8 +369,8 @@ const Movies = () => {
                 )}
             </motion.div>
 
-            <div className="movies-list">
-                <div className="sorting-container">
+            <div className="big-sorting-container">
+            <div className="sorting-container">
                     <div className="filter" onClick={() => setShowFilter(prev => !prev)} aria-label="Toggle filter options">
                         <RiFilter2Line />
                     </div>
@@ -410,6 +410,9 @@ const Movies = () => {
                         </motion.div>
                     )}
                 </AnimatePresence>
+            </div>
+
+            <div className="movies-list">
                 {isLoading ? (
                     <div className="movie-details-loading">
                         <div aria-live="assertive" role="alert" className="loader"></div>

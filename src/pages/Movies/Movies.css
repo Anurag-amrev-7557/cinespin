@@ -264,6 +264,12 @@
     backface-visibility: hidden;
 }
 
+.big-sorting-container {
+    display: flex;
+    width: 100%;
+    padding-right: 2rem;
+}
+
 @media (max-width: 768px) {
     .genre {
         width: 100%;
@@ -326,14 +332,14 @@
     display: flex;
     justify-content: end;
     align-items: center;
-    background-color: #0B1011;
+    background-color: rgba(255, 255, 255, 0.08);
     border-radius: 2rem;
     font-size: 1.1rem;
     margin-bottom: 1.5rem;
     margin-left: auto;
     width: 6.4rem;
     margin-right: 0.5vw;
-    border: 1px solid rgba(255,255,255, 0.05);
+    border: 1px solid rgba(255,255,255, 0.1);
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
 }
 
@@ -369,9 +375,11 @@
 
 .popup-menu {
     z-index: 200000;
-    background-color: #0B1011;
+    background-color: rgba(0,0,0);
     position: absolute;
     right: 5rem;
+    top: 20rem;
+    border: 1px solid rgba(255,255,255, 0.1);
     color: rgba(255, 255, 255, 0.9);
     padding: 1rem;
     border-radius: 1rem;
