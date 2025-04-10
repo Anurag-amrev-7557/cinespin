@@ -1,5 +1,5 @@
 import './App.css';
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext.jsx';
 import ProtectedRoute from './components/Common/ProtectedRoute.jsx';
 import React, { Suspense, lazy } from 'react';
@@ -34,14 +34,12 @@ const routesConfig = [
   { path: '/login',      element: <Login /> },
   { path: '/register',   element: <Register /> },
   { path: '/profile',   element: <ProtectedRoute><Profile /></ProtectedRoute> },
-  { path: '/change-password',   element: <ProtectedRoute><PasswordChange /></ProtectedRoute> },
+  { path: '/change-password',   element: <ProtectedRoute><PasswordChange /> </ProtectedRoute>},
   { path: '/forgot-password',   element: <ProtectedRoute><ForgotPassword /></ProtectedRoute> },
   { path: '/update-profile',   element: <ProtectedRoute><UpdateProfile /></ProtectedRoute> },
 ];
 
 const Layout = () => {
-  const location = useLocation();
-
   return (
     <>
       <SearchBar />

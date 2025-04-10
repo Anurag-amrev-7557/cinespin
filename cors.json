@@ -1,0 +1,7 @@
+[
+    {
+      "origin": ["http://localhost:3000", "https://cinespin.web.app"],
+      "method": ["GET", "POST", "PUT"],
+      "maxAgeSeconds": 3600
+    }
+  ]

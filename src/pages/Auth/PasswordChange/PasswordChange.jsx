@@ -13,6 +13,21 @@ const PasswordChange = () => {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
+const bounceIn = {
+  initial: { opacity: 0, y: 20 },
+  animate: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      type: "spring",
+      stiffness: 300,
+      damping: 25,
+      mass: 1,
+    },
+  },
+  exit: { opacity: 0, y: -20 },
+};
+
 // Inside the PasswordChange component
 const handleSubmit = async (e) => {
     e.preventDefault();
