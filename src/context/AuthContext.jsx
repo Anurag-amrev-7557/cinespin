@@ -1,8 +1,16 @@
 import React, { createContext, useContext, useEffect, useState, useCallback } from "react";
-import { onAuthStateChanged, signOut } from "firebase/auth";
+import { onAuthStateChanged, signOut, updateProfile } from "firebase/auth";
 import { auth } from "../../firebase";
 
 const AuthContext = createContext();
+
+const updateUserProfile = async ({ displayName, photoURL }) => {
+  if (!auth.currentUser) throw new Error("No user logged in");
+  return updateProfile(auth.currentUser, {
+    displayName,
+    photoURL,
+  });
+};
 
 export const useAuth = () => useContext(AuthContext);
 
@@ -48,6 +56,7 @@ export const AuthProvider = ({ children }) => {
     loading,
     isAuthenticated: !!user,
     logout,
+    updateUserProfile,
   };
 
   return (
