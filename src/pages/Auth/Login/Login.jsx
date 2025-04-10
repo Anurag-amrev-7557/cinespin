@@ -104,19 +104,19 @@ const Login = () => {
   const isValidEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
   const bounceAnimation = {
-    initial: { opacity: 0, y: 20 },
+    initial: { opacity: 0, y: 60 },
     animate: {
-        opacity: 1,
-        y: 0,
-        transition: { 
-            type: "spring", 
-            stiffness: 300, 
-            damping: 25,
-            mass: 1 
-        },
+      opacity: 1,
+      y: 0,
+      transition: {
+        type: "spring",
+        stiffness: 350,
+        damping: 25,
+        mass: 1,
+      },
     },
-    exit: { opacity: 0, y: -20 },
-};
+    exit: { opacity: 0, y: -60 },
+  };
 
   return (
     <div className="login-container">
@@ -129,7 +129,7 @@ const Login = () => {
 
           <motion.div className="form-subtitle" {...bounceAnimation}>
             <motion.p {...bounceAnimation}>Welcome back,</motion.p>
-            <motion.p {...bounceAnimation}>Please sign in to your account.</motion.p>
+            <motion.p {...bounceAnimation}>Please sign in to your account</motion.p>
           </motion.div>
 
           <motion.form onSubmit={handleSubmit} autoComplete="on" noValidate  {...bounceAnimation}>
@@ -200,10 +200,10 @@ const Login = () => {
                 </div>
               </motion.div>
 
-              <div className="form-links">
+              <motion.div className="form-links" {...bounceAnimation}>
                 <Link to="/register">Register</Link>
                 <Link to="/forgot-password">Forgot Your Password?</Link>
-              </div>
+              </motion.div>
             </div>
           </motion.form>
         </motion.div>

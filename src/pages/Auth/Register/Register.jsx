@@ -101,7 +101,7 @@ const Register = () => {
 
           <div className="form-subtitle">
             <p>Welcome,</p>
-            <p>Please sign up to your account.</p>
+            <p>Please sign up to your account</p>
           </div>
 
           <form onSubmit={handleSubmit} autoComplete="on" noValidate>

@@ -81,18 +81,18 @@ const UpdateProfile = () => {
   };
 
   const bounceAnimation = {
-    initial: { opacity: 0, y: 20 },
+    initial: { opacity: 0, y: 60 },
     animate: {
       opacity: 1,
       y: 0,
       transition: {
         type: "spring",
-        stiffness: 300,
+        stiffness: 350,
         damping: 25,
         mass: 1,
       },
     },
-    exit: { opacity: 0, y: -20 },
+    exit: { opacity: 0, y: -60 },
   };
 
   return (
@@ -118,7 +118,7 @@ const UpdateProfile = () => {
               position: "relative",
             }}
           >
-            <div
+            <motion.div
               onClick={openCloudinaryWidget}
               onDragOver={(e) => e.preventDefault()}
               onDrop={(e) => {
@@ -140,21 +140,22 @@ const UpdateProfile = () => {
                 transition: "border-color 0.3s ease",
               }}
               className="profile-photo-drop"
+              {...bounceAnimation}
             >
-              <img
-                src={photoURL || "/profile.webp"}
-                alt="Profile Preview"
-                style={{
-                  width: "100%",
-                  height: "100%",
-                  objectFit: "cover",
-                  borderRadius: "50%",
-                }}
-                onError={(e) => {
-                  e.target.onerror = null;
-                  e.target.src = "/profile.webp";
-                }}
-              />
+                <img
+                  src={photoURL || "/profile.webp"}
+                  alt="Profile Preview"
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
+                    borderRadius: "50%",
+                  }}
+                  onError={(e) => {
+                    e.target.onerror = null;
+                    e.target.src = "/profile.webp";
+                  }}
+                />
               <input
                 id="photoUpload"
                 type="file"
@@ -165,7 +166,7 @@ const UpdateProfile = () => {
                 }}
                 style={{ display: "none" }}
               />
-            </div>
+            </motion.div>
           </motion.div>
 
           <motion.form onSubmit={handleSubmit} autoComplete="on" noValidate {...bounceAnimation}>

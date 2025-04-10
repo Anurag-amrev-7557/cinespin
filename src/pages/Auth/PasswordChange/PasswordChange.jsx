@@ -77,7 +77,7 @@ const handleSubmit = async (e) => {
           </h1>
 
           <div className="form-subtitle">
-            <p>Update your password.</p>
+            <p>Update your password</p>
           </div>
 
           <form onSubmit={handleSubmit} autoComplete="on" noValidate>
