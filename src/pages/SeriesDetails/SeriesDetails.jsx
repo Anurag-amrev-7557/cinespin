@@ -206,9 +206,9 @@ const SeriesDetails = () => {
 
                     <motion.div className="series-genres" variants={fadeUpVariant}>
                         {movie.genres.map(genre => (
-                            <motion.span key={genre.id} className="genre-tag" variants={fadeUpVariant}>
+                            <motion.Link key={genre.id} className="genre-tag" variants={fadeUpVariant}>
                                 {genre.name}
-                            </motion.span>
+                            </motion.Link>
                         ))}
                     </motion.div>
 

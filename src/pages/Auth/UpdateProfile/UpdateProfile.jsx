@@ -51,6 +51,7 @@ const UpdateProfile = () => {
       {
         cloudName: "dkmxpffpk",
         uploadPreset: "unsigned_avatars",
+        integration: "popup",
         sources: ["local", "camera"],
         cropping: true,
         folder: "avatars",
