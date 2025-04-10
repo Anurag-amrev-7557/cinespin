@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./Login.css";
 import { FaGoogle, FaGithub } from "react-icons/fa";
+import {motion, AnimatePresence} from "framer-motion";
 import { LuEye, LuEyeOff } from "react-icons/lu";
 import { SiApple } from "react-icons/si";
 import { signInWithEmailAndPassword, GoogleAuthProvider, GithubAuthProvider, signInWithPopup } from 'firebase/auth';
@@ -102,25 +103,40 @@ const Login = () => {
 
   const isValidEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
+  const bounceAnimation = {
+    initial: { opacity: 0, y: 20 },
+    animate: {
+        opacity: 1,
+        y: 0,
+        transition: { 
+            type: "spring", 
+            stiffness: 300, 
+            damping: 25,
+            mass: 1 
+        },
+    },
+    exit: { opacity: 0, y: -20 },
+};
+
   return (
-    <div className="login-container" style={{ animation: "fadeIn 1s ease-out" }}>
+    <div className="login-container">
       <div className="form-section">
-        <div className="form-content">
-          <h1 className="form-title">
-            <span className="text-highlight">Login</span>{" "}
-            <span className="text-muted">Form</span>
-          </h1>
+        <motion.div className="form-content" {...bounceAnimation}>
+          <motion.h1 className="form-title" {...bounceAnimation}>
+            <motion.span className="text-highlight" {...bounceAnimation}>Login</motion.span>{" "}
+            <motion.span className="text-muted" {...bounceAnimation}>Form</motion.span>
+          </motion.h1>
 
-          <div className="form-subtitle">
-            <p>Welcome back,</p>
-            <p>Please sign in to your account.</p>
-          </div>
+          <motion.div className="form-subtitle" {...bounceAnimation}>
+            <motion.p {...bounceAnimation}>Welcome back,</motion.p>
+            <motion.p {...bounceAnimation}>Please sign in to your account.</motion.p>
+          </motion.div>
 
-          <form onSubmit={handleSubmit} autoComplete="on" noValidate>
+          <motion.form onSubmit={handleSubmit} autoComplete="on" noValidate  {...bounceAnimation}>
             <div className="form-group">
-              <div className="form-control">
-                <label htmlFor="email">Email</label>
-                <input
+              <motion.div className="form-control" {...bounceAnimation}>
+                <motion.label htmlFor="email" {...bounceAnimation}>Email</motion.label>
+                <motion.input
                   id="email"
                   type="email"
                   value={email}
@@ -129,32 +145,35 @@ const Login = () => {
                   autoFocus
                   aria-describedby="emailHelp"
                   aria-invalid={errorMsg ? "true" : "false"}
+                  {...bounceAnimation}
                 />
                 {errorMsg && !isValidEmail(email) && <small id="emailHelp" className="error-text">Please enter a valid email address.</small>}
-              </div>
+              </motion.div>
 
-              <div className="form-control">
-                <label htmlFor="password">Password</label>
-                <div className="password-container">
-                  <input
+              <motion.div className="form-control" {...bounceAnimation}>
+                <motion.label htmlFor="password" {...bounceAnimation}>Password</motion.label>
+                <motion.div className="password-container">
+                  <motion.input
                     id="password"
                     type={passwordVisible ? "text" : "password"}
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
                     aria-invalid={errorMsg ? "true" : "false"}
+                    {...bounceAnimation}
                   />
                   <span 
                     className="password-toggle"
                     onClick={() => setPasswordVisible(!passwordVisible)}
                     aria-label={passwordVisible ? "Hide password" : "Show password"}
+                    {...bounceAnimation}
                   >
                     {passwordVisible ? <LuEye /> : <LuEyeOff />}
                   </span>
-                </div>
-              </div>
+                </motion.div>
+              </motion.div>
 
-              <div className="checkbox-group">
+              <motion.div className="checkbox-group" {...bounceAnimation}>
                 <input
                   id="remember"
                   type="checkbox"
@@ -162,11 +181,11 @@ const Login = () => {
                   onChange={(e) => setRememberMe(e.target.checked)}
                 />
                 <label htmlFor="remember">Remember me</label>
-              </div>
+              </motion.div>
 
               {errorMsg && <div className="error-message" role="alert">{errorMsg}</div>}
 
-              <div className="submit-container">
+              <motion.div className="submit-container" {...bounceAnimation}>
                 <button
                   type="submit"
                   className="submit-button"
@@ -179,25 +198,26 @@ const Login = () => {
                   <span onClick={handleAppleSignIn}><SiApple aria-label="Login with Apple" /></span>
                   <span onClick={handleGithubSignIn}><FaGithub aria-label="Login with GitHub" /></span>
                 </div>
-              </div>
+              </motion.div>
 
               <div className="form-links">
                 <Link to="/register">Register</Link>
                 <Link to="/forgot-password">Forgot Your Password?</Link>
               </div>
             </div>
-          </form>
-        </div>
+          </motion.form>
+        </motion.div>
       </div>
 
-      <div className="pattern-section">
-        <div className="pattern-svg">
-          <svg
+      <motion.div className="pattern-section" {...bounceAnimation}>
+        <motion.div className="pattern-svg" {...bounceAnimation}>
+          <motion.svg
             viewBox="0 0 400 800"
             xmlns="http://www.w3.org/2000/svg"
             className="pattern"
+            {...bounceAnimation}
           >
-            <defs>
+            <motion.defs {...bounceAnimation}>
               <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
                 <stop offset="0%" stopColor="#1E293B" />
                 <stop offset="50%" stopColor="#334155" />
@@ -207,12 +227,13 @@ const Login = () => {
                 <rect width="100%" height="100%" fill="white" />
                 <circle cx="200" cy="400" r="250" fill="black" />
               </mask>
-            </defs>
+            </motion.defs>
 
             <g mask="url(#mask)">
-              <path
+              <motion.path
                 d="M0,800 C100,700 200,600 300,700 C400,800 500,700 600,600 C700,500 800,600 900,700 L900,0 L0,0 Z"
                 fill="url(#gradient)"
+                {...bounceAnimation}
               >
                 <animate
                   attributeName="d"
@@ -224,7 +245,7 @@ const Login = () => {
                     M0,800 C100,700 200,600 300,700 C400,800 500,700 600,600 C700,500 800,600 900,700 L900,0 L0,0 Z
                   "
                 />
-              </path>
+              </motion.path>
               <circle cx="200" cy="400" r="250" fill="white" opacity="0.5">
                 <animate
                   attributeName="r"
@@ -234,9 +255,9 @@ const Login = () => {
                 />
               </circle>
             </g>
-          </svg>
-        </div>
-      </div>
+          </motion.svg>
+        </motion.div>
+      </motion.div>
     </div>
   );
 };
