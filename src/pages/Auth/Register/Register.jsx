@@ -146,7 +146,6 @@ const Register = () => {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
-                  autoFocus
                   aria-describedby="email-helper"
                 />
                 <small id="email-helper" className="form-text text-muted">
