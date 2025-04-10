@@ -127,23 +127,42 @@ const LandingPage = () => {
     
         try {
             const response = await fetch(
-                `https://api.themoviedb.org/3/discover/movie?api_key=${TMDB_API_KEY}&with_genres=${genreId}&page=${page}${regionParam}`
+                `https://api.themoviedb.org/3/discover/movie?api_key=${TMDB_API_KEY}&append_to_response=credits,videos,similar&with_genres=${genreId}&page=${page}${regionParam}`
             );
             const data = await response.json();
-            const movies = data.results || [];
-    
+            const movies = await Promise.all((data.results || []).map(async (movie) => {
+                const details = await fetchMovieDetails(movie.id);
+                return {
+                    ...movie,
+                    runtime: details?.runtime || null,
+                };
+            }));
+            
             setMoviesByGenre(prevMovies => ({
                 ...prevMovies,
                 [genreId]: page === 1
                     ? movies
                     : [...(prevMovies[genreId] || []), ...movies]
             }));
-    
-            setToCache(cacheKey, { results: movies }); // ✅ Cache as object with `results`
+            
+            setToCache(cacheKey, { results: movies });
         } catch (error) {
             console.error("Error fetching movies:", error);
         }
     }, [selectedRegion]);
+
+    const fetchMovieDetails = async (movieId) => {
+        try {
+            const response = await fetch(
+                `https://api.themoviedb.org/3/movie/${movieId}?api_key=${TMDB_API_KEY}`
+            );
+            if (!response.ok) throw new Error("Failed to fetch movie details");
+            return await response.json();
+        } catch (error) {
+            console.error("Error fetching movie details:", error);
+            return null;
+        }
+    };
 
     const fetchPopularMovie = async () => {
         try {
@@ -153,7 +172,18 @@ const LandingPage = () => {
             );
             if (!response.ok) throw new Error("Failed to fetch popular movies");
             const data = await response.json();
-            setPopularMovies(data.results);
+
+            // Fetch runtimes in parallel
+            const moviesWithRuntime = await Promise.all(
+                data.results.map(async (movie) => {
+                    const details = await fetchMovieDetails(movie.id);
+                    return {
+                        ...movie,
+                        runtime: details?.runtime || null,
+                    };
+                })
+            );
+            setPopularMovies(moviesWithRuntime);
         } catch (error) {
             console.error("Error fetching popular movies:", error.message);
         }
@@ -247,6 +277,13 @@ const LandingPage = () => {
         exit: { opacity: 0, y: -20 },
     };
 
+    const formatRuntime = (minutes) => {
+        if (!minutes || isNaN(minutes)) return "";
+        const hrs = Math.floor(minutes / 60);
+        const mins = minutes % 60;
+        return `${hrs}h ${mins}m`;
+    };
+
     return (
         <div className="landing-container">
             <Suspense fallback={<SkeletonBigCard />}>
@@ -297,11 +334,11 @@ const LandingPage = () => {
                                                 {(() => {
                                                     const words = (movie.title || movie.name)?.split(" ");
                                                     return words.length > 4
-                                                    ? `${words.slice(0, 4).join(" ")}...`
-                                                    : words.join(" ");
+                                                        ? `${words.slice(0, 4).join(" ")}...`
+                                                        : words.join(" ");
                                                 })()}
                                                 <div className="movie-extra-details">
-                                                    ⭐ {movie.vote_average.toFixed(1)} 〡 {movie.release_date?.split("-")[0]}
+                                                    ⭐ {movie.vote_average.toFixed(1)} 〡 {movie.release_date?.split("-")[0]} 〡 {formatRuntime(movie.runtime)}
                                                 </div>
                                                 </div>
                                             </motion.div>
@@ -421,19 +458,21 @@ const LandingPage = () => {
                                             />
                                         )}
                                         </motion.div>
-                                        <span className="movie-title">{movie.title}</span>
+                                        <span className="movie-title">                                                
+                                            {(() => {
+                                                    const words = (movie.title || movie.name)?.split(" ");
+                                                    return words.length > 4
+                                                        ? `${words.slice(0, 3).join(" ")}...`
+                                                        : words.join(" ");
+                                            })()}</span>
                                         <motion.div className="movie-details" {...bounceAnimation}>
                                         <span>
                                             <FaStar className="movie-star" /> {movie.vote_average.toFixed(1)}
                                         </span>
                                         <span className="gap">&nbsp;〡&nbsp;</span>
                                         <span>{movie.release_date?.split("-")[0]}</span>
-                                        {movie.runtime && (
-                                            <>
-                                            <span className="gap">&nbsp;〡&nbsp;</span>
-                                            <span>{movie.runtime} min</span>
-                                            </>
-                                        )}
+                                        <span className="gap">&nbsp;〡&nbsp;</span>
+                                        <span>{formatRuntime(movie.runtime)}</span>
                                         </motion.div>
                                     </motion.a>
                                     </SwiperSlide>

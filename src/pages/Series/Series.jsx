@@ -189,6 +189,13 @@ const Series = () => {
         transition: { duration: 0.3 },
       },
     };
+
+    const formatRuntime = (minutes) => {
+      if (!minutes || isNaN(minutes)) return "";
+      const hrs = Math.floor(minutes / 60);
+      const mins = minutes % 60;
+      return `${hrs}h ${mins}m`;
+    };
     
     return (
         <div className="movies-container">
@@ -260,7 +267,7 @@ const Series = () => {
                         {movie.runtime && (
                             <>
                                 <span className="gap">&nbsp;〡&nbsp;</span>
-                                <span>{movie.runtime} min</span>
+                                <span>{formatRuntime(movie.runtime)}</span>
                             </>
                         )}
                     </div>

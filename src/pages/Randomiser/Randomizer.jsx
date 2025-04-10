@@ -265,6 +265,13 @@ const Randomizer = () => {
         exit: { opacity: 0, y: -20 },
     };
 
+    const formatRuntime = (minutes) => {
+      if (!minutes || isNaN(minutes)) return "";
+      const hrs = Math.floor(minutes / 60);
+      const mins = minutes % 60;
+      return `${hrs}h ${mins}m`;
+  };
+
   return (
     <motion.div className="randomizer" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} {...bounceAnimation}>
       <motion.div className="genres" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
@@ -335,7 +342,7 @@ const Randomizer = () => {
               <motion.div className="movie-meta" {...bounceAnimation}>
                 <span><FaStar /> {content.vote_average.toFixed(1)}</span>
                 <span><FaCalendar /> {content.release_date?.split("-")[0]}</span>
-                <span><FaClock /> {content.runtime} min</span>
+                <span><FaClock /> {formatRuntime(content.runtime)}</span>
                 <span><FaLanguage /> {content.original_language.toUpperCase()}</span>
               </motion.div>
 

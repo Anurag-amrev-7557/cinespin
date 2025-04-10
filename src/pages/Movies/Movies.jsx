@@ -136,6 +136,19 @@ const Movies = () => {
         }
     };
 
+    const fetchMovieDetails = async (movieId) => {
+        try {
+            const response = await fetch(
+                `https://api.themoviedb.org/3/movie/${movieId}?api_key=${TMDB_API_KEY}`
+            );
+            if (!response.ok) throw new Error("Failed to fetch movie details");
+            return await response.json();
+        } catch (error) {
+            console.error("Error fetching movie details:", error);
+            return null;
+        }
+    };
+
     const fetchMovies = async (genreId = 0, page = 1) => {
         setIsLoading(true);
         const safeGenreId = typeof genreId === "number" && !isNaN(genreId) ? genreId : 0;
@@ -186,8 +199,16 @@ const Movies = () => {
             if (!Array.isArray(data.results)) {
                 throw new Error("Invalid data structure from TMDB API.");
             }
+
+            const movies = await Promise.all((data.results || []).map(async (movie) => {
+                const details = await fetchMovieDetails(movie.id);
+                return {
+                    ...movie,
+                    runtime: details?.runtime || null,
+                };
+            }));
     
-            setMovies(data.results);
+            setMovies(movies);
             setTotalPages(Number.isInteger(data.total_pages) ? data.total_pages : 1);
             setCurrentPage(safePage);
             localStorage.setItem("currentPage", safePage);
@@ -312,6 +333,13 @@ const Movies = () => {
         setIsLoadingGenres(false);
     }, []);
 
+    const formatRuntime = (minutes) => {
+        if (!minutes || isNaN(minutes)) return "";
+        const hrs = Math.floor(minutes / 60);
+        const mins = minutes % 60;
+        return `${hrs}h ${mins}m`;
+    };
+
     return (
         <div className="movies-container">
             <motion.div
@@ -433,7 +461,7 @@ const Movies = () => {
                                     {movie.runtime && (
                                         <>
                                             <span className="gap">&nbsp;〡&nbsp;</span>
-                                            <span>{movie.runtime} min</span>
+                                            <span>{formatRuntime(movie.runtime)}</span>
                                         </>
                                     )}
                                 </div>
