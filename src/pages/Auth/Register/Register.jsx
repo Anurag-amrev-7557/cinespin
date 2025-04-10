@@ -4,6 +4,7 @@ import "./Register.css";
 import { FaGoogle, FaGithub } from "react-icons/fa";
 import { LuEye, LuEyeOff } from "react-icons/lu";
 import { SiApple } from "react-icons/si";
+import { motion, AnimatePresence } from "framer-motion";
 import { getAuth, createUserWithEmailAndPassword, updateProfile, signInWithEmailAndPassword, GoogleAuthProvider, GithubAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth } from '../../../../firebase';
 
@@ -90,23 +91,38 @@ const Register = () => {
     }
   };
 
+  const bounceAnimation = {
+    initial: { opacity: 0, y: 60 },
+    animate: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        type: "spring",
+        stiffness: 350,
+        damping: 25,
+        mass: 1,
+      },
+    },
+    exit: { opacity: 0, y: -60 },
+  };
+
   return (
     <div className="login-container">
       <div className="form-section">
-        <div className="form-content">
-          <h1 className="form-title">
+        <motion.div className="form-content" {...bounceAnimation}>
+          <motion.h1 className="form-title" {...bounceAnimation}>
             <span className="text-higlight">Signup</span>{" "}
             <span className="text-muted">Form</span>
-          </h1>
+          </motion.h1>
 
-          <div className="form-subtitle">
+          <motion.div className="form-subtitle" {...bounceAnimation}>
             <p>Welcome,</p>
             <p>Please sign up to your account</p>
-          </div>
+          </motion.div>
 
-          <form onSubmit={handleSubmit} autoComplete="on" noValidate>
-            <div className="form-group">
-              <div className="form-control">
+          <motion.form onSubmit={handleSubmit} autoComplete="on" noValidate {...bounceAnimation}>
+            <motion.div className="form-group" {...bounceAnimation}>
+              <motion.div className="form-control" {...bounceAnimation}>
                 <label htmlFor="username">Username</label>
                 <input
                   id="username"
@@ -120,9 +136,9 @@ const Register = () => {
                 <small id="username-helper" className="form-text text-muted">
                   Choose a unique username.
                 </small>
-              </div>
+              </motion.div>
 
-              <div className="form-control">
+              <motion.div className="form-control" {...bounceAnimation}>
                 <label htmlFor="email">Email</label>
                 <input
                   id="email"
@@ -136,9 +152,9 @@ const Register = () => {
                 <small id="email-helper" className="form-text text-muted">
                   Enter your email address.
                 </small>
-              </div>
+              </motion.div>
 
-              <div className="form-control">
+              <motion.div className="form-control" {...bounceAnimation}>
                 <label htmlFor="password">Password</label>
                 <div className="password-container">
                     <input
@@ -161,11 +177,11 @@ const Register = () => {
                 <small id="password-helper" className="form-text text-muted">
                   Password must be at least 8 characters.
                 </small>
-              </div>
+              </motion.div>
 
               {errorMsg && <div className="error-message">{errorMsg}</div>}
 
-              <div className="submit-container">
+              <motion.div className="submit-container" {...bounceAnimation}>
                 <button
                   type="submit"
                   className="submit-button"
@@ -178,14 +194,14 @@ const Register = () => {
                   <span><SiApple onClick={handleAppleSignIn} role="button" aria-label="Sign in with Apple" /></span>
                   <span><FaGithub onClick={handleGithubSignIn} role="button" aria-label="Sign in with GitHub" /></span>
                 </div>
-              </div>
+              </motion.div>
 
               <div className="form-links">
                 <Link to="/login">Already have an account? Login here</Link>
               </div>
-            </div>
-          </form>
-        </div>
+            </motion.div>
+          </motion.form>
+        </motion.div>
       </div>
 
       <div className="pattern-section">

@@ -166,7 +166,7 @@ const UpdateProfile = () => {
               className="profile-photo-drop"
               {...bounceAnimation}
             >
-                <img
+                <motion.img
                   src={photoURL || "/profile.webp"}
                   alt="Profile Preview"
                   style={{
@@ -179,6 +179,7 @@ const UpdateProfile = () => {
                     e.target.onerror = null;
                     e.target.src = "/profile.webp";
                   }}
+                  {...bounceAnimation}
                 />
               <input
                 id="photoUpload"

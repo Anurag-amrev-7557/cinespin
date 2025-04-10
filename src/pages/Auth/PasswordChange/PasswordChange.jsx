@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./PasswordChange.css";
 import { getAuth, reauthenticateWithCredential, EmailAuthProvider, updatePassword } from "firebase/auth";
+import { motion, AnimatePresence } from "framer-motion";
 import { LuEye, LuEyeOff } from "react-icons/lu";
 
 const PasswordChange = () => {
@@ -67,22 +68,37 @@ const handleSubmit = async (e) => {
     }
   };
 
+  const bounceAnimation = {
+    initial: { opacity: 0, y: 60 },
+    animate: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        type: "spring",
+        stiffness: 350,
+        damping: 25,
+        mass: 1,
+      },
+    },
+    exit: { opacity: 0, y: -60 },
+  };
+
   return (
     <div className="login-container">
       <div className="form-section">
-        <div className="form-content">
-          <h1 className="form-title">
+        <motion.div className="form-content" {...bounceAnimation}>
+          <motion.h1 className="form-title"  {...bounceAnimation}>
             <span className="text-highlight">Change</span>{" "}
             <span className="text-muted">Password</span>
-          </h1>
+          </motion.h1>
 
-          <div className="form-subtitle">
+          <motion.div className="form-subtitle"  {...bounceAnimation}>
             <p>Update your password</p>
-          </div>
+          </motion.div>
 
-          <form onSubmit={handleSubmit} autoComplete="on" noValidate>
-            <div className="form-group">
-              <div className="form-control">
+          <motion.form onSubmit={handleSubmit} autoComplete="on" noValidate  {...bounceAnimation}>
+            <motion.div className="form-group"  {...bounceAnimation}>
+              <motion.div className="form-control"  {...bounceAnimation}>
                 <label htmlFor="old-password">Old Password</label>
                 <div className="password-container">
                   <input
@@ -101,9 +117,9 @@ const handleSubmit = async (e) => {
                     {passwordVisible ? <LuEye /> : <LuEyeOff />}
                   </span>
                 </div>
-              </div>
+              </motion.div>
 
-              <div className="form-control">
+              <motion.div className="form-control"  {...bounceAnimation}>
                 <label htmlFor="new-password">New Password</label>
                 <div className="password-container">
                   <input
@@ -122,9 +138,9 @@ const handleSubmit = async (e) => {
                     {passwordVisible ? <LuEye /> : <LuEyeOff />}
                   </span>
                 </div>
-              </div>
+              </motion.div>
 
-              <div className="form-control">
+              <motion.div className="form-control"  {...bounceAnimation}>
                 <label htmlFor="confirm-password">Confirm New Password</label>
                 <div className="password-container">
                   <input
@@ -143,11 +159,11 @@ const handleSubmit = async (e) => {
                     {passwordVisible ? <LuEye /> : <LuEyeOff />}
                   </span>
                 </div>
-              </div>
+              </motion.div>
 
               {errorMsg && <div className="error-message" role="alert">{errorMsg}</div>}
 
-              <div className="submit-container">
+              <motion.div className="submit-container"  {...bounceAnimation}>
                 <button
                   type="submit"
                   className="submit-button"
@@ -158,10 +174,10 @@ const handleSubmit = async (e) => {
                 <div className="form-links">
                   <Link to="/profile">Back to Profile</Link>
                 </div>
-              </div>
-            </div>
-          </form>
-        </div>
+              </motion.div>
+            </motion.div>
+          </motion.form>
+        </motion.div>
       </div>
       <div className="pattern-section">
         <div className="pattern-svg">

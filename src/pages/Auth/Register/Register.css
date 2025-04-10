@@ -19,14 +19,14 @@
   .form-content {
     position: absolute;
     width: 30vw;
-    margin: 7% 10%;
-    transform: scale(1.1);
+    margin: 6% 10% !important;
+    transform: scale(1.1) !important;
   }
 
   @media (max-width: 1305px) {
     .form-content {
         margin: 8% 0 !important;
-        transform: scale(1);
+        transform: scale(1) !important;
         width: 40%;
     }
   }

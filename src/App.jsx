@@ -17,7 +17,7 @@ const CastDetails   = lazy(() => import('./pages/CastDetails/CastDetails.jsx'));
 const Series        = lazy(() => import('./pages/Series/Series.jsx'));
 const Login         = lazy(() => import('./pages/Auth/Login/Login.jsx'));
 const Register      = lazy(() => import('./pages/Auth/Register/Register.jsx'));
-const Profile       = lazy(() => import('./pages/Profile//Profile.jsx'));
+const Profile       = lazy(() => import('./pages/Profile/Profile.jsx'));
 const PasswordChange       = lazy(() => import('./pages/Auth/PasswordChange/PasswordChange.jsx'));
 const ForgotPassword       = lazy(() => import('./pages/Auth/ForgotPassword/ForgotPassword.jsx'));
 const UpdateProfile       = lazy(() => import('./pages/Auth/UpdateProfile/UpdateProfile.jsx'));
