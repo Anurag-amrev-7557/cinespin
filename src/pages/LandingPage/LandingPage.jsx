@@ -286,7 +286,6 @@ const LandingPage = () => {
 
     return (
         <div className="landing-container">
-            <Suspense fallback={<SkeletonBigCard />}>
                 <motion.div className="landing-item-container" {...bounceAnimation}>
                     {popularMovies.length === 0 ? (
                         <div className="skeleton-big-card-container">
@@ -295,7 +294,6 @@ const LandingPage = () => {
                             <SkeletonBigCard {...bounceAnimation}/>
                         </div>
                     ) : (
-                        <Suspense fallback={<SkeletonBigCard />}>
                         <Swiper
                             slidesPerView={3}
                             spaceBetween={20}
@@ -348,14 +346,11 @@ const LandingPage = () => {
                                 )}
                             </AnimatePresence>
                         </Swiper>
-                    </Suspense>
                     )}
                 </motion.div>
-            </Suspense>
             
-            <motion.div className="genre-container"
-                key={location.key}
-                {...bounceAnimation}>
+            <div className="genre-container"
+                key={location.key}>
                 {!genres.length || isLoadingGenres ? (
                     Array.from({ length: genres.length || 9 }, (_, index) => (
                         <div key={index} className="genre-slide">
@@ -364,7 +359,6 @@ const LandingPage = () => {
                     ))
                 ) : (
                     genres.map((genre) => (
-                        <motion.div key={genre.id} className="genre-slide" {...bounceAnimation}>
                             <div 
                                 className={`genre ${selectedGenreId === genre.id ? "active" : ""}`}
                                 onClick={() => handleGenreClick(genre.id)}
@@ -372,10 +366,9 @@ const LandingPage = () => {
                                 <div className="genre-icon">{genre.icon}</div>
                                 {genre.name}
                             </div>
-                        </motion.div>
                     ))
                 )}
-            </motion.div>
+            </div>
 
             {genres.map((genre) => (
                 <div key={genre.id} className="item-container">

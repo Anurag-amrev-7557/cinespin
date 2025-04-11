@@ -109,12 +109,6 @@
     transition: transform 0.3s ease-out;
 }
 
-.genre-slide {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
 .swiper-navigation-container {
     display: flex;
     justify-content: end;

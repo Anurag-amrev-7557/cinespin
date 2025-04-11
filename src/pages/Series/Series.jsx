@@ -8,6 +8,8 @@ import { RiBearSmileFill, RiGhostFill, RiSpaceShipFill } from "react-icons/ri";
 import { SlMagicWand } from "react-icons/sl";
 import { FaMasksTheater, FaChevronLeft, FaChevronRight } from "react-icons/fa6";
 import { MdFamilyRestroom } from "react-icons/md";
+import { RiFilter2Line } from "react-icons/ri";
+import { IoFilterSharp } from "react-icons/io5";
 import { getFromCache, setToCache } from "../../utils/cache";
 import { FaStar } from "react-icons/fa";
 import "./Series.css";
@@ -36,6 +38,10 @@ const SkeletonGenreCard = () => (
 const Series = () => {
     const [selectedGenre, setSelectedGenre] = useState(genres[0].id);
     const [movies, setMovies] = useState([]);
+    const [showFilter, setShowFilter] = useState(false);
+    const [showSort, setShowSort] = useState(false);
+    const [sortOption, setSortOption] = useState("year");
+    const [filterOrder, setFilterOrder] = useState("desc");
     const [totalPages, setTotalPages] = useState(1);
     const [isLoadingGenres, setIsLoadingGenres] = useState(true);
     const [region, setRegion] = useState(() => localStorage.getItem("region") || "Global");
@@ -43,6 +49,7 @@ const Series = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [currentPage, setCurrentPage] = useState(1);
     const [pageRangeStart, setPageRangeStart] = useState(1);
+    const [sortedMovies, setSortedMovies] = useState([]);
     const MOVIES_PER_PAGE = 35; // fallback if needed but grid is now responsive
     const navigate = useNavigate();
 
@@ -146,6 +153,63 @@ const Series = () => {
         setIsLoadingGenres(false);
     }, []);
 
+    useEffect(() => {
+            if (movies.length > 0) {
+                let sorted = [...movies];
+    
+                const direction = filterOrder === "asc" ? 1 : -1;
+    
+                if (sortOption === "year") {
+                    sorted.sort((a, b) => {
+                        const yearA = a.first_air_date ? parseInt(a.first_air_date.slice(0, 4)) : -Infinity;
+                        const yearB = b.first_air_date ? parseInt(b.first_air_date.slice(0, 4)) : -Infinity;
+                        return direction * (yearA - yearB);
+                    });
+                } else if (sortOption === "popularity") {
+                    sorted.sort((a, b) => direction * (b.popularity - a.popularity));
+                } else if (sortOption === "rating") {
+                    sorted.sort((a, b) => direction * (b.vote_average - a.vote_average));
+                }
+    
+                setSortedMovies(sorted);
+            }
+        }, [sortOption, filterOrder, movies]);
+    
+        useEffect(() => {
+            const handleClickOutside = (event) => {
+                if (
+                    showFilter && !event.target.closest(".filter-popup") && !event.target.closest(".filter")
+                ) {
+                    setShowFilter(false);
+                }
+                if (
+                    showSort && !event.target.closest(".sort-popup") && !event.target.closest(".sort")
+                ) {
+                    setShowSort(false);
+                }
+            };
+    
+            document.addEventListener("click", handleClickOutside);
+    
+            return () => {
+                document.removeEventListener("click", handleClickOutside);
+            };
+        }, [showFilter, showSort]);
+    
+        const handleSortSelection = (option) => {
+            setSortOption(option);
+            setShowSort(false); // Close the sort popup
+        };
+    
+        const handleFilterSelection = (option) => {
+            if (option === "filter1") {
+                setFilterOrder("asc");
+            } else if (option === "filter2") {
+                setFilterOrder("desc");
+            }
+            setShowFilter(false); // Close the filter popup
+        };
+
     const fadeInUp = {
       hidden: { opacity: 0, y: 20 },
       visible: {
@@ -190,6 +254,22 @@ const Series = () => {
       },
     };
 
+    const popupVariant = {
+      hidden: { opacity: 0, scale: 0.9, y: -10 },
+      visible: {
+          opacity: 1,
+          scale: 1,
+          y: 0,
+          transition: { type: "spring", stiffness: 260, damping: 22 }
+      },
+      exit: {
+          opacity: 0,
+          scale: 0.9,
+          y: -10,
+          transition: { duration: 0.2 }
+      }
+  };
+
     const formatRuntime = (minutes) => {
       if (!minutes || isNaN(minutes)) return "";
       const hrs = Math.floor(minutes / 60);
@@ -226,10 +306,53 @@ const Series = () => {
                 )}
             </motion.div>
 
+            <div className="big-sorting-container">
+                <div className="sorting-container">
+                    <div className="filter" onClick={() => setShowFilter(prev => !prev)} aria-label="Toggle filter options">
+                        <RiFilter2Line />
+                    </div>
+                    <div className="sort" onClick={() => setShowSort(prev => !prev)} aria-label="Toggle sort options">
+                        <IoFilterSharp />
+                    </div>
+                </div>
+                <AnimatePresence>
+                    {showFilter && (
+                        <motion.div 
+                            className="popup-menu filter-popup"
+                            variants={popupVariant}
+                            initial="hidden"
+                            animate="visible"
+                            exit="exit"
+                        >
+                            <p onClick={() => handleFilterSelection("filter1")}>Ascending Order</p>
+                            <div className="liner"></div>
+                            <p onClick={() => handleFilterSelection("filter2")}>Descending Order</p>
+                        </motion.div>
+                    )}
+                </AnimatePresence>
+                <AnimatePresence>
+                    {showSort && (
+                        <motion.div 
+                            className="popup-menu sort-popup"
+                            variants={popupVariant}
+                            initial="hidden"
+                            animate="visible"
+                            exit="exit"
+                        >
+                            <p onClick={() => handleSortSelection("year")}>Sort by Year</p>
+                            <div className="liner"></div>
+                            <p onClick={() => handleSortSelection("popularity")}>Sort by Popularity</p>
+                            <div className="liner"></div>
+                            <p onClick={() => handleSortSelection("rating")}>Sort by Rating</p>
+                        </motion.div>
+                    )}
+                </AnimatePresence>
+            </div>
+
           <div className="movies-list">
             {isLoading ? (
               <div className="movie-details-loading">
-                <div aria-live="assertive" role="alert" class="loader"></div>
+                <div aria-live="assertive" role="alert" className="loader"></div>
               </div>
             ) : (
             <AnimatePresence>
@@ -238,7 +361,7 @@ const Series = () => {
               initial="hidden"
               animate="visible"
               >
-                {movies.map((movie) => (
+                {sortedMovies.map((movie) => (
                   <motion.div
                     key={movie.id}
                     className="movie-card"
