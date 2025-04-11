@@ -6,9 +6,9 @@ import { motion, AnimatePresence } from "framer-motion";
 import { LuSwords } from "react-icons/lu";
 import { FaHeart } from "react-icons/fa";
 import { RiBearSmileFill, RiGhostFill, RiSpaceShipFill } from "react-icons/ri";
-import { SlMagicWand } from "react-icons/sl";
 import { FaMasksTheater, FaChevronLeft, FaChevronRight } from "react-icons/fa6";
 import { MdFamilyRestroom } from "react-icons/md";
+import { FaHatWizard } from "react-icons/fa6";
 import { FaStar } from "react-icons/fa";
 import { getFromCache, setToCache } from "../../utils/cache";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -48,7 +48,7 @@ const genres = [
     { id: 35, name: "Comedy", icon: <FaMasksTheater /> },
     { id: 18, name: "Drama", icon: <FaHeart /> },
     { id: 27, name: "Horror", icon: <RiGhostFill /> },
-    { id: 14, name: "Fantasy", icon: <SlMagicWand /> },
+    { id: 14, name: "Fantasy", icon: <FaHatWizard /> },
     { id: 878, name: "SciFi", icon: <RiSpaceShipFill /> },
     { id: 10751, name: "Family", icon: <MdFamilyRestroom /> },
     { id: 10770, name: "Series", icon: <AiFillFire /> },
