@@ -16,19 +16,19 @@
     color: inherit;
 }
 
-.cast-info img {
+.cast-details-container .cast-info img {
     width: 15vw;
     margin-bottom: 1rem;
     box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
 }
 
-.cast-info p {
+.cast-details-container .cast-info p {
     width: 85%;
     margin-top: 1rem;
     color: rgba(255,255,255,0.8);
 }
 
-.movie-list {
+.cast-details-container .movie-list {
     display: flex;
     gap: 1rem;
     flex-wrap: wrap;
@@ -37,29 +37,29 @@
     padding-top: 0.5rem;
 }
 
-.movie-card {
+.cast-details-container .movie-card {
     display: flex;
     flex-direction: column;
     gap: 1rem;
     margin-bottom: 2rem;
 }
 
-.movie-card img {
+.cast-details-container .movie-card img {
    width: 185px;
    height: 278px;
    transition: all 0.5s ease-out;
 }
 
-.movie-card:hover img{
+.cast-details-container .movie-card:hover img{
     transform: scale(1.05);
     filter: brightness(1.05);
 }
 
-.movie-card span {
+.cast-details-container .movie-card span {
     width: 185px;
 }
 
-.cast-details-loading {
+.cast-details-container .cast-details-loading {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -73,7 +73,7 @@
     transform: translate(-50%, -50%);
 }
 
-.loading-spinner {
+.cast-details-container .loading-spinner {
     width: 50px;
     height: 50px;
     border: 5px solid #f3f3f3;
@@ -83,7 +83,7 @@
     margin-bottom: 1rem;
 }
 
-.sorting-container {
+.cast-details-container .sorting-container {
     display: inline-flex;
     justify-content: end;
     align-items: center;
@@ -95,7 +95,7 @@
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
 }
 
-.filter, .sort {
+.cast-details-container .filter, .sort {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -106,17 +106,17 @@
     color: #fff;
 }
 
-.filter:hover, .sort:hover {
+.cast-details-container .filter:hover, .cast-details-container .sort:hover {
     background-color: #282828;
 }
 
-.filter {
+.cast-details-container .filter {
     border-right: 1px solid rgba(255,255,255, 0.1);
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
 }
 
-.sort {
+.cast-details-container .sort {
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
 }
@@ -132,12 +132,12 @@
     border-radius: 1rem;
 }
 
-.popup-menu p {
+.cast-details-container .popup-menu p {
     cursor: pointer;
     font-size: 0.7vw;
 }
 
-.liner {
+.cast-details-container .liner {
     height: 1px;
     background-color: rgba(255, 255, 255, 0.1);
     margin: 0.5rem 0;
