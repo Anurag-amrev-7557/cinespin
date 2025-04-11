@@ -49,7 +49,7 @@
     --burger-bg: transparent;
     --burger-color: #333;
     --burger-line-border-radius: 0.1875em;
-    --burger-diameter: 2rem;
+    --burger-diameter: 1.6vw;
     --burger-btn-border-radius: calc(var(--burger-diameter) / 2);
     --burger-line-transition: 0.3s;
     --burger-transition: all 0.1s ease-in-out;
@@ -83,7 +83,7 @@
     --nav-button-padding-x: 1rem;
     --nav-button-padding-y: 0.375em;
     --nav-button-border-radius: 0.375em;
-    --nav-button-font-size: 17px;
+    --nav-button-font-size: 0.85vw !important;
     --nav-button-hover-bg: #191a19;
     --nav-button-hover-text-color: #fff;
     --nav-button-distance: 0.875em;
@@ -686,4 +686,45 @@
 
 .signin-button:active {
   transform: scale(0.95);
+}
+
+
+@media (max-width: 1366px) {
+  .profile-picture {
+    transform: scale(1.2);
+  }
+
+  #profile-type {
+    font-size: 0.9vw !important;
+  }
+
+  #profile-name {
+    font-size: 1vw !important;
+  }
+
+  .profile-container {
+    font-size: 0.95vw;
+    margin-left: 2vw;
+  }
+
+  .theme-switch {
+    transform: scale(0.9);
+  }
+
+  .burger {
+    height: 1.8vw !important;
+    width: 1.8vw !important;
+  }
+
+  .profile-dropdown li{
+    font-size: 1vw !important;
+  }
+
+  .profile-dropdown {
+    border-radius: 0.6rem !important;
+  }
+
+  .region-span {
+    font-size: 0.9vw;
+  }
 }
