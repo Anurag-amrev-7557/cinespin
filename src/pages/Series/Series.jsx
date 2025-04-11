@@ -1,17 +1,28 @@
-import React, { useState, useEffect, useCallback } from "react";
-import { Helmet } from "react-helmet-async";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import { AiFillFire } from "react-icons/ai";
+import { Helmet } from "react-helmet-async";
 import { motion, AnimatePresence } from "framer-motion";
 import { LuSwords } from "react-icons/lu";
+import { BsCameraReelsFill } from "react-icons/bs";
+import { GiDrippingKnife } from "react-icons/gi";
+import { FaHatWizard } from "react-icons/fa6";
+import { GiSpartanHelmet } from "react-icons/gi";
 import { FaHeart } from "react-icons/fa";
 import { RiBearSmileFill, RiGhostFill, RiSpaceShipFill } from "react-icons/ri";
-import { SlMagicWand } from "react-icons/sl";
-import { FaMasksTheater, FaChevronLeft, FaChevronRight } from "react-icons/fa6";
-import { MdFamilyRestroom } from "react-icons/md";
-import { RiFilter2Line } from "react-icons/ri";
-import { IoFilterSharp } from "react-icons/io5";
+import { FaMasksTheater } from "react-icons/fa6";
 import { getFromCache, setToCache } from "../../utils/cache";
+import { PiDetectiveFill } from "react-icons/pi";
+import { IoIosHeart } from "react-icons/io";
+import { MdVideoCameraBack } from "react-icons/md";
+import { RiFilter2Line } from "react-icons/ri";
+import { FaGun } from "react-icons/fa6";
+import { TbMapRoute } from "react-icons/tb";
+import { IoFilterSharp } from "react-icons/io5";
+import { GiSentryGun } from "react-icons/gi";
+import { FaHandcuffs } from "react-icons/fa6";
+import { GiHearts } from "react-icons/gi";
+import { MdFamilyRestroom } from "react-icons/md";
 import { FaStar } from "react-icons/fa";
 import "./Series.css";
 
@@ -20,13 +31,22 @@ const TMDB_API_KEY = import.meta.env.VITE_TMDB_API_KEY;
 const genres = [
     { id: 28, name: "Action", icon: <LuSwords /> },
     { id: 35, name: "Comedy", icon: <FaMasksTheater /> },
-    { id: 18, name: "Drama", icon: <FaHeart /> },
+    { id: 18, name: "Drama", icon: <GiHearts /> },
     { id: 27, name: "Horror", icon: <RiGhostFill /> },
-    { id: 14, name: "Fantasy", icon: <SlMagicWand /> },
+    { id: 14, name: "Fantasy", icon: <FaHatWizard /> },
     { id: 878, name: "SciFi", icon: <RiSpaceShipFill /> },
     { id: 10751, name: "Family", icon: <MdFamilyRestroom /> },
     { id: 10770, name: "Series", icon: <AiFillFire /> },
     { id: 16, name: "Animation", icon: <RiBearSmileFill /> },
+    { id: 53, name: "Thriller", icon: <GiDrippingKnife /> },
+    { id: 80, name: "Crime", icon: <FaHandcuffs /> },
+    { id: 9648, name: "Mystery", icon: <PiDetectiveFill /> },
+    { id: 10749, name: "Romance", icon: <FaHeart /> },
+    { id: 12, name: "Adventure", icon: <TbMapRoute /> },
+    { id: 99, name: "Documentary", icon: <MdVideoCameraBack /> },
+    { id: 36, name: "History", icon: <GiSpartanHelmet /> },
+    { id: 10752, name: "War", icon: <GiSentryGun /> },
+    { id: 37, name: "Western", icon: <FaGun /> },
 ];
 
 const SkeletonGenreCard = () => (
@@ -44,7 +64,6 @@ const Series = () => {
     const [sortOption, setSortOption] = useState("year");
     const [filterOrder, setFilterOrder] = useState("desc");
     const [totalPages, setTotalPages] = useState(1);
-    const [isLoadingGenres, setIsLoadingGenres] = useState(true);
     const [region, setRegion] = useState(() => localStorage.getItem("region") || "Global");
     const [selectedRegion, setSelectedRegion] = useState(localStorage.getItem('region') || "Global"); // Read region from localStorage
     const [isLoading, setIsLoading] = useState(true);
@@ -150,9 +169,6 @@ const Series = () => {
       fetchMovies(selectedGenre, 1); // Always fetch page 1 for a new genre
     }, [selectedGenre, selectedRegion]);
     
-    useEffect(() => {
-        setIsLoadingGenres(false);
-    }, []);
 
     useEffect(() => {
             if (movies.length > 0) {
@@ -290,25 +306,17 @@ const Series = () => {
                     <title>Browse Series by Genre - Cinespin</title>
                     <meta name="description" content="Discover trending TV series across genres like Drama, Action, Comedy and more. Watch the best shows now on Cinespin!" />
                   </Helmet>
-                {!genres.length || isLoadingGenres ? (
-                    Array.from({ length: genres.length || 9 }, (_, index) => (
-                        <motion.div key={index} className="genre-slide" variants={fadeInUp}>
-                            <SkeletonGenreCard />
-                        </motion.div>
-                    ))
-                ) : (
-                    genres.map((genre) => (
-                        <motion.div key={genre.id} className="genre-slide" variants={fadeInUp}>
-                                <div 
-                                  className={`genre ${selectedGenre === genre.id ? "active" : ""}`}
-                                  onClick={() => handleGenreClick(genre.id)}
-                                >
-                                <div className="genre-icon">{genre.icon}</div>
-                                {genre.name}
-                            </div>
-                        </motion.div>
-                    ))
-                )}
+                {genres.map((genre) => (
+                    <motion.div key={genre.id} className="genre-slide" variants={fadeInUp}>
+                        <div 
+                          className={`genre ${selectedGenre === genre.id ? "active" : ""}`}
+                          onClick={() => handleGenreClick(genre.id)}
+                        >
+                            <div className="genre-icon">{genre.icon}</div>
+                            {genre.name}
+                        </div>
+                    </motion.div>
+                ))}
             </motion.div>
 
             <div className="big-sorting-container">

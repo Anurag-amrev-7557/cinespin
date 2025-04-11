@@ -378,7 +378,7 @@
         height: 18vw;
     }
 
-    .genre-container {
+    .landing-container .genre-container {
         gap: 0.6vw !important;
     }
 

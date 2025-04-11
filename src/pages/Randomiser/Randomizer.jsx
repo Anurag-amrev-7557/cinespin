@@ -1,33 +1,56 @@
 import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import "./Randomizer.css";
-import { Helmet } from "react-helmet-async";
-import { LuSwords } from "react-icons/lu";
-import { FaHeart } from "react-icons/fa";
-import { FaTheaterMasks } from "react-icons/fa";
-import { RiGhostFill, RiSpaceShipFill, RiBearSmileFill } from "react-icons/ri";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 import { AiFillFire } from "react-icons/ai";
-import { FaStar, FaCalendar, FaClock, FaLanguage } from "react-icons/fa";
-import { getFromCache, setToCache } from "../../utils/cache"; // adjust path if needed
+import { Helmet } from "react-helmet-async";
 import { motion, AnimatePresence } from "framer-motion";
-import { Link } from "react-router-dom";
+import { LuSwords } from "react-icons/lu";
+import { BsCameraReelsFill } from "react-icons/bs";
+import { FaCalendar, FaClock, FaLanguage } from "react-icons/fa";
+import { GiDrippingKnife } from "react-icons/gi";
+import { FaHatWizard } from "react-icons/fa6";
+import { GiSpartanHelmet } from "react-icons/gi";
+import { FaHeart } from "react-icons/fa";
+import { RiBearSmileFill, RiGhostFill, RiSpaceShipFill } from "react-icons/ri";
+import { FaMasksTheater } from "react-icons/fa6";
+import { getFromCache, setToCache } from "../../utils/cache";
+import { PiDetectiveFill } from "react-icons/pi";
+import { IoIosHeart } from "react-icons/io";
+import { MdVideoCameraBack } from "react-icons/md";
+import { RiFilter2Line } from "react-icons/ri";
+import { FaGun } from "react-icons/fa6";
+import { TbMapRoute } from "react-icons/tb";
+import { IoFilterSharp } from "react-icons/io5";
+import { GiSentryGun } from "react-icons/gi";
+import { FaHandcuffs } from "react-icons/fa6";
+import { GiHearts } from "react-icons/gi";
 import { MdFamilyRestroom } from "react-icons/md";
-import { SlMagicWand } from "react-icons/sl";
+import { FaStar } from "react-icons/fa";
 
 const TMDB_API_KEY = import.meta.env.VITE_TMDB_API_KEY;
 const TMDB_BASE_URL = "https://api.themoviedb.org/3";
 const IMAGE_BASE_URL = "https://image.tmdb.org/t/p";
 
 const genres = [
-  { id: 28, name: "Action", icon: <LuSwords /> },
-  { id: 35, name: "Comedy", icon: <FaTheaterMasks /> },
-  { id: 18, name: "Drama", icon: <FaHeart /> },
-  { id: 27, name: "Horror", icon: <RiGhostFill /> },
-  { id: 14, name: "Fantasy", icon: <SlMagicWand /> },
-  { id: 878, name: "SciFi", icon: <RiSpaceShipFill /> },
-  { id: 10751, name: "Family", icon: <MdFamilyRestroom /> },
-  { id: 10770, name: "Series", icon: <AiFillFire /> },
-  { id: 16, name: "Animation", icon: <RiBearSmileFill /> },
+    { id: 28, name: "Action", icon: <LuSwords /> },
+    { id: 35, name: "Comedy", icon: <FaMasksTheater /> },
+    { id: 18, name: "Drama", icon: <GiHearts /> },
+    { id: 27, name: "Horror", icon: <RiGhostFill /> },
+    { id: 14, name: "Fantasy", icon: <FaHatWizard /> },
+    { id: 878, name: "SciFi", icon: <RiSpaceShipFill /> },
+    { id: 10751, name: "Family", icon: <MdFamilyRestroom /> },
+    { id: 10770, name: "Series", icon: <AiFillFire /> },
+    { id: 16, name: "Animation", icon: <RiBearSmileFill /> },
+    { id: 53, name: "Thriller", icon: <GiDrippingKnife /> },
+    { id: 80, name: "Crime", icon: <FaHandcuffs /> },
+    { id: 9648, name: "Mystery", icon: <PiDetectiveFill /> },
+    { id: 12, name: "Adventure", icon: <TbMapRoute /> },
+    { id: 10749, name: "Romance", icon: <FaHeart /> },
+    { id: 99, name: "Documentary", icon: <MdVideoCameraBack /> },
+    { id: 36, name: "History", icon: <GiSpartanHelmet /> },
+    { id: 10752, name: "War", icon: <GiSentryGun /> },
+    { id: 37, name: "Western", icon: <FaGun /> },
 ];
 
 const truncateOverview = (text) => {
@@ -320,7 +343,7 @@ const Randomizer = () => {
 
       {loading && (
         <div className="movie-details-loading">
-          <div aria-live="assertive" role="alert" class="loader"></div>
+          <div aria-live="assertive" role="alert" className="loader"></div>
         </div>
       )}
 

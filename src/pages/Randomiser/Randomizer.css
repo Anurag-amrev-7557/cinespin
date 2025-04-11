@@ -33,7 +33,7 @@
 
 .randomizer .genre-container{
     display: flex;
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
     align-items: center;
     gap: clamp(0.7vw, 1.15vw, 1.5vw);
     margin-top: clamp(1rem, 0.5vw, 3rem);
