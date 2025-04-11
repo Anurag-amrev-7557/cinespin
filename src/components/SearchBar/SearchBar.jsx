@@ -231,8 +231,8 @@ const SearchBar = () => {
     const closeSearch = useCallback(() => {
         const searchoverlay = document.querySelector(".search-bar-overlay");
         if (searchoverlay) {
-            searchoverlay.style.width = "2.4rem";
-            searchoverlay.style.height = "2.4rem";
+            searchoverlay.style.width = "2vw";
+            searchoverlay.style.height = "2vw";
             searchoverlay.style.borderRadius = "50%";
             searchoverlay.style.border = "2px solid transparent";
             setShowResults(false);
@@ -251,7 +251,7 @@ const SearchBar = () => {
     useEffect(() => {
         const handleClickOutside = (event) => {
             const searchoverlay = document.querySelector(".search-bar-overlay");
-            const isSearchExpanded = searchoverlay?.style.width === "98.5%";
+            const isSearchExpanded = searchoverlay?.style.width === "98.65%";
             
             // Check if click is outside the search bar
             if (
@@ -278,12 +278,12 @@ const SearchBar = () => {
         const searchoverlay = document.querySelector(".search-bar-overlay");
 
         if (searchoverlay) {
-            if (searchoverlay.style.width === "98.5%") {
+            if (searchoverlay.style.width === "98.65%") {
                 closeSearch();
             } else {
                 // Expand the search bar
-                searchoverlay.style.width = "98.5%";
-                searchoverlay.style.height = "88%";
+                searchoverlay.style.width = "98.65%";
+                searchoverlay.style.height = "87%";
                 searchoverlay.style.borderRadius = "2rem";
                 searchoverlay.style.border = "1px solid rgba(255,255,255,0.05)";
 
