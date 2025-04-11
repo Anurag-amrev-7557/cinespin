@@ -69,10 +69,12 @@ const MovieDetails = () => {
         const fetchMovieDetails = async () => {
             const cached = getFromCache(cacheKey);
             if (cached) {
-                setMovie(cached);
-                setLoading(false);
+                setTimeout(() => {
+                  setMovie(cached);
+                  setLoading(false);
+                }, 200); // or 100ms if you want a visible loading flicker
                 return;
-            }
+              }
     
             try {
                 const response = await fetch(
