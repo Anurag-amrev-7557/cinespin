@@ -23,7 +23,7 @@ const genres = [
   { id: 18, name: "Drama", icon: <FaHeart /> },
   { id: 27, name: "Horror", icon: <RiGhostFill /> },
   { id: 14, name: "Fantasy", icon: <SlMagicWand /> },
-  { id: 878, name: "Sci‒Fi", icon: <RiSpaceShipFill /> },
+  { id: 878, name: "SciFi", icon: <RiSpaceShipFill /> },
   { id: 10751, name: "Family", icon: <MdFamilyRestroom /> },
   { id: 10770, name: "Series", icon: <AiFillFire /> },
   { id: 16, name: "Animation", icon: <RiBearSmileFill /> },
@@ -322,7 +322,7 @@ const Randomizer = () => {
       {content && !loading && (
         <motion.div className="content-display" {...bounceAnimation}>
           <div className="movie-content">
-          <Link to={`/movie/${content.id}`}>
+          <Link to={`/movie/${content.id}`} className="random-image">
             <picture>
             <motion.img
               src={content.poster_path
