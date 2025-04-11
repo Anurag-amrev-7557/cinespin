@@ -374,6 +374,10 @@
 }
 
 @media (max-width: 1366px) {
+    .landing-item-poster {
+        height: 18vw;
+    }
+
     .genre-container {
         gap: 0.6vw !important;
     }

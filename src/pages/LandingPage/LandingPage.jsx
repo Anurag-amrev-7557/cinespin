@@ -359,7 +359,7 @@ const LandingPage = () => {
                     ))
                 ) : (
                     genres.map((genre) => (
-                            <div 
+                            <div key={genre.id}
                                 className={`genre ${selectedGenreId === genre.id ? "active" : ""}`}
                                 onClick={() => handleGenreClick(genre.id)}
                             >
