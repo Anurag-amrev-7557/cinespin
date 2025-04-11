@@ -316,19 +316,28 @@ const LandingPage = () => {
                                         whileHover={{ scale: 1.03 }}
                                         transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
                                         >
-                                            <motion.div
-                                                className="landing-item-poster"
-                                                style={{
-                                                    backgroundImage: `url(https://image.tmdb.org/t/p/w1280${movie.backdrop_path || movie.poster_path})`,
-                                                    backgroundSize: "cover",
-                                                backgroundPosition: "center",
-                                                position: "relative",
-                                                }}
-                                                decoding="async"
-                                                whileHover={{scale: 1.02, y: -3}}
-                                                {...bounceAnimation}
-                                            >
-                                                <div className="movie-title-overlay">
+                                        <motion.div className="landing-item-poster" whileHover={{scale: 1.02, y: -3}} {...bounceAnimation}>
+                                            <picture>
+                                                <source
+                                                    srcSet={`https://image.tmdb.org/t/p/w780${movie.backdrop_path || movie.poster_path}.webp`}
+                                                    type="image/webp"
+                                                />
+                                                <img
+                                                    src={`https://image.tmdb.org/t/p/w780${movie.backdrop_path || movie.poster_path}`}
+                                                    alt={movie.title || movie.name}
+                                                    decoding="async"
+                                                    style={{
+                                                        width: "100%",
+                                                        height: "100%",
+                                                        objectFit: "cover",
+                                                        position: "absolute",
+                                                        top: 0,
+                                                        left: 0,
+                                                        borderRadius: "inherit"
+                                                    }}
+                                                />
+                                            </picture>
+                                            <div className="movie-title-overlay">
                                                 {(() => {
                                                     const words = (movie.title || movie.name)?.split(" ");
                                                     return words.length > 4
@@ -338,8 +347,8 @@ const LandingPage = () => {
                                                 <div className="movie-extra-details">
                                                     ⭐ {movie.vote_average.toFixed(1)} 〡 {movie.release_date?.split("-")[0]}{formatRuntime(movie.runtime)}
                                                 </div>
-                                                </div>
-                                            </motion.div>
+                                            </div>
+                                        </motion.div>
                                         </motion.a>
                                     </SwiperSlide>
                                     ) : null

@@ -431,8 +431,7 @@ const Movies = () => {
                                 layout
                                 className="movie-card"
                                 onClick={() => navigate(`/movie/${movie.id}`)}
-                                whileHover={{ scale: 1.03, y: -3 }}
-                                transition={{ ease: "easeOut"}}
+                                whileHover={{ scale: 1.03, y: -3, transition: { ease: "easeOut" } }}
                                 variants={movieCardVariant}
                             >
                                 <picture>

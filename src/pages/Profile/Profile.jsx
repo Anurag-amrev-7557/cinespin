@@ -58,7 +58,8 @@ const Profile = () => {
       <div className="form-section">
         <motion.div className="form-content" {...bounceAnimation} style={{ margin: "10%"}}>
           <motion.h1 className="form-title" {...bounceAnimation}>
-            <motion.span className="text-highlight" {...bounceAnimation}>Profile</motion.span>
+            <motion.span className="text-highlight" {...bounceAnimation}>Profile</motion.span>{" "}
+            <motion.span className="text-muted" {...bounceAnimation}>Page</motion.span>
           </motion.h1>
 
           <motion.div
@@ -71,8 +72,8 @@ const Profile = () => {
                 backgroundImage: `url(${userDetails.photoURL})`,
                 backgroundSize: "cover",
                 backgroundPosition: "center",
-                width: "8rem",
-                height: "8rem",
+                width: "7vw",
+                height: "7vw",
                 borderRadius: "50%",
                 overflow: "hidden",
                 border: "3px solid #ccc",

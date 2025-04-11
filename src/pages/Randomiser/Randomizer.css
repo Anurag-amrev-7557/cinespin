@@ -3,13 +3,13 @@
     padding: 0 2vw;
 }
 
-.genres, .moods {
+.randomizer .genres, .moods {
     display: flex;
     flex-direction: column;
     justify-content: center;
 }
 
-.genre-title-container, .mood-title-container {
+.randomizer .genre-title-container, .mood-title-container {
     display: flex;
     font-size: 1.4vw;
     color: rgba(255, 255, 255, 0.9);
@@ -31,7 +31,7 @@
     margin-top: 0.5rem;
 }
 
-.genre-container, .mood-container {
+.randomizer .genre-container{
     display: flex;
     flex-wrap: nowrap;
     align-items: center;
@@ -40,11 +40,12 @@
     flex: 1;
     overflow-x: auto;
     padding-right: 0;
+    margin-bottom: 0 !important;
     scrollbar-width: none; 
     -ms-overflow-style: none; 
 }
 
-.genre, .mood {
+.randomizer .genre {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -175,27 +176,27 @@
     box-shadow: none;
 }
 
-.movie-content {
+.randomizer .movie-content {
     display: grid;
     grid-template-columns: 0.35fr 1fr;
     gap: 1.5vw;
     margin: 0 auto;
-    margin-top: 2.5vw;
+    margin-top: 3vw;
     overflow: hidden;
     padding-bottom: 0;
     color: rgba(255, 255, 255, 0.9);
 }
 
-.movie-content a {
+.randomizer .movie-content a {
     text-decoration: none;
     color: inherit;
 }
 
-.movie-info {
+.randomizer .movie-info {
     flex-grow: 1;
 }
 
-.movie-info h1 {
+.randomizer .movie-info h1 {
     font-size: 2.2vw;
     margin-bottom: 0.7vw;
     color: #fff;
@@ -203,7 +204,7 @@
     font-weight: 500;
 }
 
-.movie-meta {
+.randomizer .movie-meta {
     display: flex;
     gap: 1.3vw;
     margin-bottom: 1.3vw;
@@ -211,20 +212,20 @@
     color: rgba(255,255, 255, 0.8);
 }
 
-.movie-meta span {
+.randomizer .movie-meta span {
     display: flex;
     align-items: center;
     gap: 0.3vw;
 }
 
-.movie-genres {
+.randomizer .movie-genres {
     display: flex;
     flex-wrap: wrap;
     gap: 0.5vw;
     margin-bottom: 1.3vw;
 }
 
-.genre-tag {
+.randomizer .genre-tag {
     background: rgba(255, 255, 255, 0.1);
     padding: 0.4vw 0.8vw;
     border-radius: 2rem;
@@ -232,20 +233,20 @@
     transition: all 0.2s ease;
 }
 
-.genre-tag:hover {
+.randomizer .genre-tag:hover {
     background: rgba(255, 255, 255, 0.2);
 }
 
-.movie-overview {
+.randomizer .movie-overview {
     margin-bottom: 1.7vw;
 }
 
-.movie-overview h2 {
+.randomizer .movie-overview h2 {
     font-size: 1.2vw;
     margin-bottom: 1rem;
 }
 
-.movie-overview p {
+.randomizer .movie-overview p {
     line-height: 1.6;
     font-size: 0.9vw;
 }
@@ -257,17 +258,17 @@
     overflow: hidden;
 }
 
-.movie-cast, .similar-movies {
+.randomizer .movie-cast, .similar-movies {
     margin-bottom: 2rem;
     overflow: scroll;
 }
 
-.movie-cast h2, .similar-movies h2 {
+.randomizer .movie-cast h2, .similar-movies h2 {
     font-size: 1.2vw;
     margin-bottom: 1rem;
 }
 
-.cast-list, .similar-list {
+.randomizer .cast-list, .randomizer .similar-list {
     display: flex;
     gap: 0.9vw;
     overflow-x: auto;
@@ -276,20 +277,20 @@
     overflow-y: scroll;
 }
 
-.movie-cast {
+.randomizer .movie-cast {
     height: 69vh;
 }
 
-.similar-list {
+.randomizer .similar-list {
     height: 25vh;
 } 
 
-.cast-member, .similar-movie {
+.randomizer .cast-member, .randomizer .similar-movie {
     flex-shrink: 0;
     text-align: center;
 }
 
-.cast-member img, .similar-movie img {
+.randomizer .cast-member img, .randomizer .similar-movie img {
     width: 6.5vw;
     height: 10vw;
     object-fit: cover;
@@ -302,13 +303,13 @@
     transform-style: preserve-3d;
 }
 
-.cast-member:hover img, .similar-movie:hover img {
+.randomizer .cast-member:hover img, .randomizer .similar-movie:hover img {
     box-shadow: rgba(0, 0, 0, 0.2) 0px 10px 20px -5px, rgba(0, 0, 0, 0.2) 0px 10px 10px -5px;
     filter: brightness(1.05);
     transform: scale(1.05);
 }
 
-.cast-member span, .similar-movie span {
+.randomizer .cast-member span, .randomizer .similar-movie span {
     display: block;
     font-size: 0.8vw;
     max-width: 120px;
@@ -318,7 +319,7 @@
     text-align: start;
 }
 
-.movie-details-loading {
+.randomizer .movie-details-loading {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -331,7 +332,7 @@
     transform: translate(-50%, -50%);
 }
 
-.loading-spinner {
+.randomizer .loading-spinner {
     width: 2.604vw;
     height: 2.604vw;
     border: 2px solid #f3f3f3;
@@ -440,24 +441,25 @@
     }
   } 
 
-  .movie-poster {
-    width: 22vw;
+  .randomizer  .movie-poster {
+    width: 22vw !important;
     margin-bottom: 2rem;
     border-radius: 1.5rem;
+    height: 33vw;
     will-change: transform, filter;
     image-rendering: high-quality;
     backface-visibility: hidden;
     transform-style: preserve-3d;
   }
 
-  .movie-details-loading {
+  .randomizer  .movie-details-loading {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
   }
 
-.loader {
+.randomizer .loader {
     --hue: 210;
     --size: 40px;
     --border: 4px;
@@ -465,7 +467,7 @@
     --blur: var(--border);
   }
   
-  .loader {
+  .randomizer .loader {
     width: var(--border);
     aspect-ratio: 1;
     background: white;
@@ -478,7 +480,7 @@
     left: 50%;
   }
   
-  .loader::before {
+  .randomizer .loader::before {
     content: "";
     position: absolute;
     inset: calc(var(--border) * -0.5);
@@ -488,7 +490,7 @@
     z-index: -1;
   }
   
-  .loader::after {
+  .randomizer .loader::after {
     content: "";
     width: var(--size);
     aspect-ratio: 1;

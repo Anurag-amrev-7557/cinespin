@@ -105,7 +105,6 @@ const Navbar = () => {
         className="navbar-logo"
         onClick={() => {
           navigate("/", { replace: true });
-          setTimeout(() => window.location.reload(), 1); // Optional: remove if client-side routing handles data fine
         }}
       >
         <Link to="/">CineSpin</Link>

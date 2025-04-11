@@ -434,7 +434,7 @@ const SearchBar = () => {
             "What to Watch": "/watch",
         };
 
-        window.location.href = routes[item];
+        navigate(routes[item]);
     };
 
     useEffect(() => {

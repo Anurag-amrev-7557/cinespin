@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { FaStar, FaCalendar, FaClock, FaLanguage } from "react-icons/fa";
 import { getFromCache, setToCache } from "../../utils/cache";
 import { motion, AnimatePresence } from "framer-motion";
@@ -28,6 +28,7 @@ const MovieDetails = () => {
     const [error, setError] = useState(null);
     const [showTrailer, setShowTrailer] = useState(false);
     const trailerRef = useRef();
+    const navigate = useNavigate();
     const trailerButtonRef = useRef(null);
     const [trailerPosition, setTrailerPosition] = useState({ x: 0, y: 0 });
 
@@ -307,9 +308,8 @@ const MovieDetails = () => {
                                         };
                                     })
                                     .sort((a, b) => b.relevanceScore - a.relevanceScore)
-                                    .slice(0, 10)
                                     .map(similar => (
-                                        <motion.a key={similar.id} className="similar-movie" href={`/movie/${similar.id}`} variants={fadeUpSpring}
+                                        <motion.a key={similar.id} className="similar-movie" onClick={() => navigate(`/movie/${similar.id}`)} variants={fadeUpSpring}
                                         whileHover={{ scale: 1.03 }}
                                         whileTap={{ scale: 0.97 }}>
                                             <motion.img 
@@ -337,7 +337,7 @@ const MovieDetails = () => {
                         <h2>Cast</h2>
                         <div className="cast-list">
                             {movie.credits.cast.map(cast => (
-                                <motion.a key={cast.id} className="cast-member" href={`/cast/${cast.id}`} variants={fadeUpSpring}>
+                                <motion.a key={cast.id} className="cast-member" onClick={() => navigate(`/cast/${cast.id}`)} variants={fadeUpSpring}>
                                     <picture>
                                     <img 
                                         src={cast.profile_path 

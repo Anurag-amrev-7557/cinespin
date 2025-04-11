@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { getFromCache, setToCache } from "../../utils/cache";
 import { RiFilter2Line } from "react-icons/ri";
@@ -26,6 +26,7 @@ const CastDetails = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [showFilter, setShowFilter] = useState(false);
+    const navigate = useNavigate();
     const [showSort, setShowSort] = useState(false);
     const [sortOption, setSortOption] = useState("year");
     const [filterOrder, setFilterOrder] = useState("desc");
@@ -232,7 +233,7 @@ const CastDetails = () => {
                                         layout 
                                         key={`${movie.id}-${movie.credit_id}`} 
                                         className="movie-card" 
-                                        href={`/movie/${movie.id}`}
+                                        onClick={() => navigate(`/movie/${movie.id}`)}
                                         initial={{ opacity: 0, y: 30 }}
                                         animate={{ opacity: 1, y: 0 }}
                                         exit={{ opacity: 0, y: 30 }}

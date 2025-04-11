@@ -107,7 +107,7 @@ const Register = () => {
   };
 
   return (
-    <div className="login-container">
+    <div className="register-container">
       <div className="form-section">
         <motion.div className="form-content" {...bounceAnimation}>
           <motion.h1 className="form-title" {...bounceAnimation}>

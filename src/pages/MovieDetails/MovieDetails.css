@@ -367,6 +367,7 @@
 @media (max-width: 1366px) {
     .movie-content {
         grid-template-columns: 1.37fr 1fr;
+        transform: translateY(2.5rem) !important;
     }
 
     .cast-list {
