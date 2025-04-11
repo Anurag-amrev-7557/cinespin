@@ -113,7 +113,7 @@
     justify-content: center;
     align-items: center;
     background-color: rgba(255, 255, 255, 0.1);
-    border-radius: 1rem;
+    border-radius: .8rem;
     outline: none;
     font-family: "Biotif", "sans-serif";
     border: none;
@@ -516,7 +516,7 @@
 
 @media (max-width: 1366px) {
     .genre {
-        font-size: 0.9vw;
+        font-size: 0.95vw;
     }
 
     .similar-list {
@@ -547,6 +547,11 @@
 
     .movie-meta {
         font-size: 0.97vw;
+    }
+
+    .randomizer-button {
+        font-size: 0.95vw;
+        padding: 1.25vw 1vw;
     }
 
     .genre-tag {
