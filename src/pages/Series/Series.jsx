@@ -338,9 +338,9 @@ const Series = () => {
                             animate="visible"
                             exit="exit"
                         >
-                            <p onClick={() => handleFilterSelection("filter1")}>Ascending Order</p>
+                            <p onClick={() => handleFilterSelection("filter1")}>Descending Order</p>
                             <div className="liner"></div>
-                            <p onClick={() => handleFilterSelection("filter2")}>Descending Order</p>
+                            <p onClick={() => handleFilterSelection("filter2")}>Ascending Order</p>
                         </motion.div>
                     )}
                 </AnimatePresence>
