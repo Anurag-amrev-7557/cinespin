@@ -7,6 +7,7 @@ import { Helmet } from "react-helmet-async";
 import { motion, AnimatePresence } from "framer-motion";
 import { LuSwords } from "react-icons/lu";
 import { BsCameraReelsFill } from "react-icons/bs";
+import { GiDramaMasks } from "react-icons/gi";
 import { FaCalendar, FaClock, FaLanguage } from "react-icons/fa";
 import { GiDrippingKnife } from "react-icons/gi";
 import { FaHatWizard } from "react-icons/fa6";
@@ -35,7 +36,7 @@ const IMAGE_BASE_URL = "https://image.tmdb.org/t/p";
 const genres = [
     { id: 28, name: "Action", icon: <LuSwords /> },
     { id: 35, name: "Comedy", icon: <FaMasksTheater /> },
-    { id: 18, name: "Drama", icon: <GiHearts /> },
+    { id: 18, name: "Drama", icon: <GiDramaMasks /> },
     { id: 27, name: "Horror", icon: <RiGhostFill /> },
     { id: 14, name: "Fantasy", icon: <FaHatWizard /> },
     { id: 878, name: "SciFi", icon: <RiSpaceShipFill /> },

@@ -9,6 +9,7 @@ import { GiDrippingKnife } from "react-icons/gi";
 import { FaHatWizard } from "react-icons/fa6";
 import { GiSpartanHelmet } from "react-icons/gi";
 import { FaHeart } from "react-icons/fa";
+import { GiDramaMasks } from "react-icons/gi";
 import { RiBearSmileFill, RiGhostFill, RiSpaceShipFill } from "react-icons/ri";
 import { FaMasksTheater } from "react-icons/fa6";
 import { getFromCache, setToCache } from "../../utils/cache";
@@ -31,7 +32,7 @@ const TMDB_API_KEY = import.meta.env.VITE_TMDB_API_KEY;
 const genres = [
     { id: 28, name: "Action", icon: <LuSwords /> },
     { id: 35, name: "Comedy", icon: <FaMasksTheater /> },
-    { id: 18, name: "Drama", icon: <GiHearts /> },
+    { id: 18, name: "Drama", icon: <GiDramaMasks /> },
     { id: 27, name: "Horror", icon: <RiGhostFill /> },
     { id: 14, name: "Fantasy", icon: <FaHatWizard /> },
     { id: 878, name: "SciFi", icon: <RiSpaceShipFill /> },

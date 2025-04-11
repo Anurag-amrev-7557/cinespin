@@ -14,6 +14,7 @@ import { FaMasksTheater } from "react-icons/fa6";
 import { getFromCache, setToCache } from "../../utils/cache";
 import { PiDetectiveFill } from "react-icons/pi";
 import { IoIosHeart } from "react-icons/io";
+import { GiDramaMasks } from "react-icons/gi";
 import { MdVideoCameraBack } from "react-icons/md";
 import { RiFilter2Line } from "react-icons/ri";
 import { FaGun } from "react-icons/fa6";
@@ -31,7 +32,7 @@ const TMDB_API_KEY = import.meta.env.VITE_TMDB_API_KEY;
 const genres = [
     { id: 28, name: "Action", icon: <LuSwords /> },
     { id: 35, name: "Comedy", icon: <FaMasksTheater /> },
-    { id: 18, name: "Drama", icon: <GiHearts /> },
+    { id: 18, name: "Drama", icon: <GiDramaMasks /> },
     { id: 27, name: "Horror", icon: <RiGhostFill /> },
     { id: 14, name: "Fantasy", icon: <FaHatWizard /> },
     { id: 878, name: "SciFi", icon: <RiSpaceShipFill /> },
