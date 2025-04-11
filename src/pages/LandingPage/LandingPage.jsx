@@ -66,6 +66,14 @@ const LandingPage = () => {
     const [selectedGenreId, setSelectedGenreId] = useState(localStorage.getItem("selectedGenre") || genres[0].id); // Default to first genre
     const swipersRef = useRef({});
     const observerRef = useRef(null);
+    const focusRef = useRef(null);
+
+    useEffect(() => {
+        // Automatically focus on the element when the component mounts
+        if (focusRef.current) {
+          focusRef.current.focus();
+        }
+      }, []);
 
     const handleSwiperNext = (genreId) => {
         if (swipersRef.current[genreId]) {
@@ -381,7 +389,7 @@ const LandingPage = () => {
 
             {genres.map((genre) => (
                 <div key={genre.id} className="item-container">
-                    <motion.div className="item-container-heading" {...bounceAnimation}>
+                    <motion.div className="item-container-heading" ref={focusRef} {...bounceAnimation}>
                         Trending in {genre.name}
                         <div className="swiper-navigation-container">
                             <div className="swiper-navigation" id={`swiper-prev-${genre.id}`} onClick={() => handleSwiperPrev(genre.id)}>
