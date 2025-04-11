@@ -121,18 +121,20 @@
     border-bottom-left-radius: 0;
 }
 
-.popup-menu {
+.cast-details-container .popup-menu {
     z-index: 200000;
     background-color: #0B1011;
     position: absolute;
     color: rgba(255, 255, 255, 0.9);
-    padding: 1rem;
+    padding: 0.7vw;
+    right: 67%;
+    top: 13%;
     border-radius: 1rem;
 }
 
 .popup-menu p {
     cursor: pointer;
-    font-size: 0.95rem;
+    font-size: 0.7vw;
 }
 
 .liner {
