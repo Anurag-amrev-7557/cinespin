@@ -281,7 +281,7 @@ const LandingPage = () => {
         if (!minutes || isNaN(minutes)) return "";
         const hrs = Math.floor(minutes / 60);
         const mins = minutes % 60;
-        return `${hrs}h ${mins}m`;
+        return ` 〡 ${hrs}h ${mins}m`;
     };
 
     return (
@@ -338,7 +338,7 @@ const LandingPage = () => {
                                                         : words.join(" ");
                                                 })()}
                                                 <div className="movie-extra-details">
-                                                    ⭐ {movie.vote_average.toFixed(1)} 〡 {movie.release_date?.split("-")[0]} 〡 {formatRuntime(movie.runtime)}
+                                                    ⭐ {movie.vote_average.toFixed(1)} 〡 {movie.release_date?.split("-")[0]}{formatRuntime(movie.runtime)}
                                                 </div>
                                                 </div>
                                             </motion.div>
@@ -471,8 +471,7 @@ const LandingPage = () => {
                                         </span>
                                         <span className="gap">&nbsp;〡&nbsp;</span>
                                         <span>{movie.release_date?.split("-")[0]}</span>
-                                        <span className="gap">&nbsp;〡&nbsp;</span>
-                                        <span>{formatRuntime(movie.runtime)}</span>
+                                        <span className="movie-runtime">{formatRuntime(movie.runtime)}</span>
                                         </motion.div>
                                     </motion.a>
                                     </SwiperSlide>
