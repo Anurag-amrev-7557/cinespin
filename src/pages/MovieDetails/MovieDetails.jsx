@@ -233,13 +233,22 @@ const MovieDetails = () => {
 
                     <motion.div className="movie-genres" variants={fadeUpSpring}>
                         {movie.genres.map(genre => (
-                            <motion.a
+                            <motion.div
                                 key={genre.id}
-                                href={`/movies?genre=${genre.id}&page=1`}
                                 className="genre-tag"
+                                onClick={() => navigate(`/movies?genre=${genre.id}&page=1`)}
+                                role="button"
+                                tabIndex={0}
+                                onKeyDown={(e) => {
+                                    if (e.key === 'Enter') {
+                                        navigate(`/movies?genre=${genre.id}&page=1`);
+                                    }
+                                }}
+                                whileHover={{ scale: 1.05 }}
+                                whileTap={{ scale: 0.95 }}
                             >
                                 {genre.name}
-                            </motion.a>
+                            </motion.div>
                         ))}
                     </motion.div>
 

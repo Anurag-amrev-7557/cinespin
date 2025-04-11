@@ -83,6 +83,7 @@
     padding: 0.5rem 1rem;
     border-radius: 2rem;
     font-size: 0.9rem;
+    cursor: pointer;
 }
 
 .series-overview {

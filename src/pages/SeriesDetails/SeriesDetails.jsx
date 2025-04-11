@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { FaStar, FaCalendar, FaClock, FaLanguage, FaTv } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
 import { getFromCache, setToCache } from "../../utils/cache";
@@ -21,6 +21,7 @@ const SeriesDetails = () => {
     const [error, setError] = useState(null);
     const [showTrailer, setShowTrailer] = useState(false);
     const trailerButtonRef = useRef(null);
+    const navigate = useNavigate();
     const [trailerPosition, setTrailerPosition] = useState({ x: 0, y: 0 });
 
     useEffect(() => {
@@ -87,7 +88,7 @@ const SeriesDetails = () => {
     if (loading) {
         return (
             <div className="series-details-loading">
-                <div aria-live="assertive" role="alert" class="loader"></div>
+                <div aria-live="assertive" role="alert" className="loader"></div>
             </div>
         );
     }
@@ -103,7 +104,7 @@ const SeriesDetails = () => {
     if (!movie) {
         return (
             <div className="series-details-loading">
-                <div aria-live="assertive" role="alert" class="loader"></div>
+                <div aria-live="assertive" role="alert" className="loader"></div>
             </div>
         );
     }
@@ -206,9 +207,9 @@ const SeriesDetails = () => {
 
                     <motion.div className="series-genres" variants={fadeUpVariant}>
                         {movie.genres.map(genre => (
-                            <motion.Link key={genre.id} className="genre-tag" variants={fadeUpVariant}>
+                            <motion.div key={genre.id} className="genre-tag" variants={fadeUpVariant} onClick={() => navigate(`/movies?genre=${genre.id}&page=1`)}>
                                 {genre.name}
-                            </motion.Link>
+                            </motion.div>
                         ))}
                     </motion.div>
 
