@@ -12,34 +12,19 @@
   .form-section {
     width: 50vw !important;
     background-color: rgba(17, 24, 39, 0.6);
-    padding: 2rem;
+    padding: 2vw !important;
     color: white;
   }
   
   .form-content {
     position: absolute;
     width: 30vw;
-    margin: 10% 10%;
+    margin: 10vw !important;
     transform: scale(1.1) !important;
-  }
-
-  @media (max-width: 1305px) {
-    .form-content {
-        margin: 15% 2%;
-        width: 40%;
-    }
-
-    .form-content {
-        transform: scale(1) !important;
-    }
-
-    .form-content path, circle {
-      transform: scale(1) !important;
-    }
   }
   
   .form-title {
-    font-size: 2rem;
+    font-size: 1.667vw;
     font-weight: 400;
   }
   
@@ -52,21 +37,21 @@
   }
   
   .form-subtitle {
-    margin-top: 1.5rem;
-    margin-bottom: 2rem;
+    margin-top: 1.3vw;
+    margin-bottom: 1.3vw;
     color: #d1d5db;
   }
   
   .form-group {
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    gap: 1.4vw;
   }
   
   .form-control {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 0.4vw;
   }
   
   .form-control label {
@@ -74,7 +59,7 @@
   }
   
   .form-control input {
-    padding: 0.8rem 0.75rem;
+    padding: 0.6vw 0.65vw;
     background-color: transparent;
     border: 1px solid #4b5563;
     border-radius: 2rem;
@@ -90,14 +75,14 @@
   .checkbox-group {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
-    font-size: 0.875rem;
+    gap: 0.4vw;
+    font-size: 0.729vw;
     color: #9ca3af;
   }
   
   .submit-button {
-    width: 8rem;
-    padding: 0.7rem 0.5rem !important;
+    width: 6.667vw;
+    padding: 0.6vw 0.4vw !important;
     background-color: #4b5563;
     color: white;
     border: none;
@@ -113,8 +98,8 @@
   .form-links {
     display: flex;
     justify-content: space-between;
-    padding-top: 1rem;
-    font-size: 0.875rem;
+    padding-top: 0.7vw;
+    font-size: 0.729vw;
   }
   
   .form-links a {
@@ -132,10 +117,6 @@
   }
   
   @media (min-width: 768px) {
-    .form-section {
-      width: 50%;
-      padding: 3rem;
-    }
   
     .pattern-section {
       display: block;
@@ -171,13 +152,13 @@
   .password-toggle {
     cursor: pointer;
     position: absolute;
-    right: 1rem;
+    right: 0.8vw;
     top: 55%;
     transform: translateY(-50%);
   }
 
   .password-toggle span {
-    font-size: 1.2rem;
+    font-size: 1vw;
   }
 
   .submit-container {
@@ -189,16 +170,63 @@
   .login-links {
     display: flex;
     align-items: center;
-    gap: 1.5rem;
+    gap: 1.3vw;
     color: rgba(255,255,255,0.7);
-    font-size: 1.2rem;
+    font-size: 1vw;
 }
 
 .login-links span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   transition: all 0.2s ease-out;
     cursor: pointer !important;
 }
 
 .login-links span:hover {
   color: #fff;
+}
+
+@media (max-width: 1366px) {
+    .form-content {
+      transform: scale(1) !important;
+      margin: 15vw 4vw !important;
+      width: 40%;
+    }
+
+    .form-group {
+      margin-top: 2rem;
+    }
+
+    .form-subtitle {
+      font-size: 1.1vw;
+    }
+
+    .form-control input {
+      padding: 0.8vw 1vw;
+    }
+
+    .form-control label {
+      font-size: 1.1vw;
+    }
+
+    .form-title {
+      font-size: 2vw;
+    }
+
+    .form-links {
+      font-size: 1vw;
+    }
+
+    .login-links svg {
+      font-size: 1.2vw;
+    }
+
+    .checkbox-group {
+      font-size: 0.9vw;
+    }
+
+    .submit-button {
+      font-size: 1.1vw !important;
+    }
 }
