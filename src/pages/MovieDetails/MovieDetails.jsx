@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
+import { Helmet } from "react-helmet-async";
 import { useParams, useNavigate } from "react-router-dom";
 import { FaStar, FaCalendar, FaClock, FaLanguage } from "react-icons/fa";
 import { getFromCache, setToCache } from "../../utils/cache";
@@ -203,6 +204,12 @@ const MovieDetails = () => {
             exit="exit"
             variants={containerVariants}
         >
+            {movie && (
+              <Helmet>
+                <title>{movie.title} - Movie Details</title>
+                <meta name="description" content={truncateOverview(movie.overview)} />
+              </Helmet>
+            )}
             <motion.div 
                 className="movie-details-overlay" 
                 style={{

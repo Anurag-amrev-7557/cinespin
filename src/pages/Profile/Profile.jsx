@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 import "./Profile.css";
 
 const Profile = () => {
@@ -55,6 +56,12 @@ const Profile = () => {
 
   return (
     <div className="login-container">
+      {userDetails.name && (
+        <Helmet>
+          <title>{userDetails.name}'s Profile - Cinespin</title>
+          <meta name="description" content={`View ${userDetails.name}'s profile, watch history, and account settings on Cinespin.`} />
+        </Helmet>
+      )}
       <div className="form-section">
         <motion.div className="form-content" {...bounceAnimation} style={{ margin: "10%"}}>
           <motion.h1 className="form-title" {...bounceAnimation}>

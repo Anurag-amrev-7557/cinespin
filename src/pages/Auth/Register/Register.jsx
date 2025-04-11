@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./Register.css";
+import { Helmet } from "react-helmet-async";
 import { FaGoogle, FaGithub } from "react-icons/fa";
 import { LuEye, LuEyeOff } from "react-icons/lu";
 import { SiApple } from "react-icons/si";
@@ -106,8 +107,13 @@ const Register = () => {
     exit: { opacity: 0, y: -60 },
   };
 
+  // Inserted dynamic SEO metadata
   return (
     <div className="register-container">
+      <Helmet>
+        <title>Register for Cinespin</title>
+        <meta name="description" content="Create your free Cinespin account to discover movies, track your favorites, and enjoy a personalized viewing experience." />
+      </Helmet>
       <div className="form-section">
         <motion.div className="form-content" {...bounceAnimation}>
           <motion.h1 className="form-title" {...bounceAnimation}>

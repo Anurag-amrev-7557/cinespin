@@ -4,6 +4,7 @@ import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { useAuth } from "../../../context/AuthContext";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 import "./UpdateProfile.css";
 
 const UpdateProfile = () => {
@@ -120,6 +121,11 @@ const UpdateProfile = () => {
   };
 
   return (
+    <>
+    <Helmet>
+      <title>Update Profile - Cinespin</title>
+      <meta name="description" content="Update your Cinespin profile information including display name and profile picture for a personalized experience." />
+    </Helmet>
     <div className="login-container">
       <div className="form-section">
         <motion.div className="form-content" {...bounceAnimation}>
@@ -274,6 +280,7 @@ const UpdateProfile = () => {
         </motion.div>
       </motion.div>
     </div>
+    </>
   );
 };
 

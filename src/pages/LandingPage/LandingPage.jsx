@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef, Suspense } from "react";
 import "./LandingPage.css";
+import { Helmet } from "react-helmet-async";
 import { AiFillFire } from "react-icons/ai";
 import { motion, AnimatePresence } from "framer-motion";
 import { LuSwords } from "react-icons/lu";
@@ -291,6 +292,11 @@ const LandingPage = () => {
         const mins = minutes % 60;
         return ` 〡 ${hrs}h ${mins}m`;
     };
+
+    <Helmet>
+    <title>Welcome to Cinespin - Discover Movies & Series</title>
+    <meta name="description" content="Explore the best movies and TV shows on Cinespin. Watch trailers, view cast info, and find your next favorite film." />
+    </Helmet>
 
     return (
         <div className="landing-container">

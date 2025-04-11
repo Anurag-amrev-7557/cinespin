@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { Helmet } from "react-helmet-async";
 import { useParams, useNavigate } from "react-router-dom";
 import { FaStar, FaCalendar, FaClock, FaLanguage, FaTv } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
@@ -108,6 +109,18 @@ const SeriesDetails = () => {
             </div>
         );
     }
+
+    <Helmet>
+        <title>{movie?.name ? `${movie.name} - Series Details | Cinespin` : "Series Details - Cinespin"}</title>
+        <meta
+            name="description"
+            content={
+                movie?.overview
+                    ? `${movie.name} (${movie.first_air_date?.split("-")[0]}) - ${truncateOverview(movie.overview)}`
+                    : "Explore TV series details including rating, language, seasons, genres, and cast on Cinespin."
+            }
+        />
+    </Helmet>;
 
     const containerVariants = {
         hidden: {},

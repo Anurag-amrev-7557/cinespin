@@ -1,6 +1,8 @@
 import './App.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext.jsx';
+import ReactDOM from 'react-dom/client';
+import { HelmetProvider } from 'react-helmet-async';
 import ProtectedRoute from './components/Common/ProtectedRoute.jsx';
 import React, { Suspense, lazy } from 'react';
 import ErrorBoundary from './components/Common/ErrorBoundary.jsx';
@@ -69,11 +71,17 @@ const Layout = () => {
 };
 
 const App = () => (
-  <Router>
-    <AuthProvider>
-      <Layout />
-    </AuthProvider>
-  </Router>
+  <HelmetProvider>
+    <Router>
+      <AuthProvider>
+        <Layout />
+      </AuthProvider>
+    </Router>
+  </HelmetProvider>
+);
+
+ReactDOM.createRoot(document.getElementById('root')).render(
+  <App />
 );
 
 export default App;

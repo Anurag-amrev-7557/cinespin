@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import "./Randomizer.css";
+import { Helmet } from "react-helmet-async";
 import { LuSwords } from "react-icons/lu";
 import { FaHeart } from "react-icons/fa";
 import { FaTheaterMasks } from "react-icons/fa";
@@ -273,6 +274,18 @@ const Randomizer = () => {
   };
 
   return (
+    <>
+    <Helmet>
+      <title>{content ? `${content.title} - Random Pick | Cinespin` : 'Random Movie Picker - Cinespin'}</title>
+      <meta
+        name="description"
+        content={
+          content
+            ? `Discover "${content.title}" (${content.release_date?.split('-')[0]}) - a ${content.genres?.map(g => g.name).join(', ')} movie. Picked just for you!`
+            : "Feeling indecisive? Let Cinespin's Randomizer pick a great movie for you by genre and region!"
+        }
+      />
+    </Helmet>
     <motion.div className="randomizer" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} {...bounceAnimation}>
       <motion.div className="genres" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
         <div className="genre-title-container">
@@ -473,6 +486,7 @@ const Randomizer = () => {
         </motion.div>
       )}
     </motion.div>
+    </>
   );
 };
 

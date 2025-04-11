@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { AiFillFire } from "react-icons/ai";
+import { Helmet } from "react-helmet-async";
 import { motion, AnimatePresence } from "framer-motion";
 import { LuSwords } from "react-icons/lu";
 import { FaHeart } from "react-icons/fa";
@@ -341,6 +342,11 @@ const Movies = () => {
     };
 
     return (
+        <>
+        <Helmet>
+          <title>Browse Movies by Genre - Cinespin</title>
+          <meta name="description" content="Explore a wide range of movies sorted by genres like Action, Comedy, Drama and more. Discover new favorites with Cinespin!" />
+        </Helmet>
         <div className="movies-container">
             <motion.div
               className="genre-container"
@@ -507,6 +513,7 @@ const Movies = () => {
                 )}
             </div>
         </div>
+    </>
     );
 };
 

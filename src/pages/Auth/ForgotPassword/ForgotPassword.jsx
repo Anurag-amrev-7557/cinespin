@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { getAuth, sendPasswordResetEmail } from "firebase/auth";
+import { Helmet } from "react-helmet-async";
 import "./ForgotPassword.css";
 
 const ForgotPassword = () => {
@@ -34,6 +35,11 @@ const ForgotPassword = () => {
   };
 
   return (
+    <>
+    <Helmet>
+      <title>Reset Your Password - Cinespin</title>
+      <meta name="description" content="Enter your email to receive a password reset link and regain access to your Cinespin account." />
+    </Helmet>
     <div className="login-container">
       <div className="form-section">
         <div className="form-content">
@@ -126,6 +132,7 @@ const ForgotPassword = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 

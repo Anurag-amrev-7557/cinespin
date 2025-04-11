@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { getFromCache, setToCache } from "../../utils/cache";
 import { RiFilter2Line } from "react-icons/ri";
 import { IoFilterSharp } from "react-icons/io5";
-import { Helmet } from "react-helmet";
+import { Helmet } from "react-helmet-async";
 import "./CastDetails.css";
 
 const TMDB_API_KEY = import.meta.env.VITE_TMDB_API_KEY;
@@ -138,10 +138,12 @@ const CastDetails = () => {
 
     return (
         <>
+            {cast && (
             <Helmet>
-                <title>{cast ? `${cast.name} - Cast Details` : "Loading... | Cast Details"}</title>
-                <meta name="description" content={`Explore movies and biography of ${cast?.name || "a popular cast member"} on our platform.`} />
+                <title>{cast.name} - Cast Details</title>
+                <meta name="description" content={`Details about ${cast.name}`} />
             </Helmet>
+            )}
             <AnimatePresence>
                 {error && (
                     <motion.div 

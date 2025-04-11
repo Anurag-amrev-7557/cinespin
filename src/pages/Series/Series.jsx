@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
+import { Helmet } from "react-helmet-async";
 import { useNavigate } from "react-router-dom";
 import { AiFillFire } from "react-icons/ai";
 import { motion, AnimatePresence } from "framer-motion";
@@ -276,7 +277,7 @@ const Series = () => {
       const mins = minutes % 60;
       return `${hrs}h ${mins}m`;
     };
-    
+
     return (
         <div className="movies-container">
             <motion.div
@@ -285,6 +286,10 @@ const Series = () => {
               initial="hidden"
               animate="visible"
             >
+                  <Helmet>
+                    <title>Browse Series by Genre - Cinespin</title>
+                    <meta name="description" content="Discover trending TV series across genres like Drama, Action, Comedy and more. Watch the best shows now on Cinespin!" />
+                  </Helmet>
                 {!genres.length || isLoadingGenres ? (
                     Array.from({ length: genres.length || 9 }, (_, index) => (
                         <motion.div key={index} className="genre-slide" variants={fadeInUp}>
