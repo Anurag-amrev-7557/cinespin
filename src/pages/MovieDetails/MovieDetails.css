@@ -151,6 +151,7 @@
 .cast-member, .similar-movie {
     flex-shrink: 0;
     text-align: center;
+    cursor: pointer;
 }
 
 .cast-member img, .similar-movie img {
