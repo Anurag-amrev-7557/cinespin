@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { AiFillFire } from "react-icons/ai";
 import { Helmet } from "react-helmet-async";
@@ -343,10 +343,17 @@ const Movies = () => {
 
     return (
         <>
-        <Helmet>
-          <title>Browse Movies by Genre - Cinespin</title>
-          <meta name="description" content="Explore a wide range of movies sorted by genres like Action, Comedy, Drama and more. Discover new favorites with Cinespin!" />
-        </Helmet>
+        {selectedGenre && (
+
+                <Helmet>
+                <title>{`Browse ${genres.find(g => g.id === selectedGenre)?.name || 'Movies'} Movies - Cinespin`}</title>
+                <meta
+                    name="description"
+                    content={`Explore the best ${genres.find(g => g.id === selectedGenre)?.name || 'movies'} movies by genre. Discover new favorites with Cinespin!`}
+                />
+                </Helmet>
+            
+        )}
         <div className="movies-container">
             <motion.div
               className="genre-container"
