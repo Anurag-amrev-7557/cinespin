@@ -209,7 +209,7 @@ picture {
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
 }
 
-.loading {
+.movies-container .loading {
     color: rgba(255, 255, 255, 0.9);
 }
 
@@ -262,14 +262,14 @@ picture {
     margin: 0.3vw 0;
 }
 
-.movie-details-loading {
+.movies-container .movie-details-loading {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
   }
 
-.loading-spinner {
+  .movies-container .loading-spinner {
     width: 2.604vw;
     height: 2.604vw;
     border: 2px solid #f3f3f3;
