@@ -542,7 +542,7 @@
     right: 1vw;
     background-color: var(--dropdown-bg, #ffffff);
     background-color: rgba(8, 15, 19);
-    border-radius: 1.3rem;
+    border-radius: 1rem;
     box-shadow: 0 10px 35px rgba(0, 0, 0, 0.15);
     padding: 0rem 0;
     z-index: 999999999999999999999999 !important;
