@@ -293,12 +293,12 @@ const LandingPage = () => {
         return ` 〡 ${hrs}h ${mins}m`;
     };
 
-    <Helmet>
-    <title>Welcome to Cinespin - Discover Movies & Series</title>
-    <meta name="description" content="Explore the best movies and TV shows on Cinespin. Watch trailers, view cast info, and find your next favorite film." />
-    </Helmet>
-
     return (
+        <>
+        <Helmet>
+            <title>Welcome to Cinespin - Discover Movies & Series</title>
+            <meta name="description" content="Explore the best movies and TV shows on Cinespin. Watch trailers, view cast info, and find your next favorite film." />
+        </Helmet>
         <div className="landing-container">
                 <motion.div className="landing-item-container" {...bounceAnimation}>
                     {popularMovies.length === 0 ? (
@@ -502,6 +502,7 @@ const LandingPage = () => {
                 </div>
             ))}
         </div>
+        </>
     );
 };
 
