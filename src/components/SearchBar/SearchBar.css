@@ -108,6 +108,7 @@
     left: auto;
     right: 0.208vw;
     border-radius: 50%;
+    z-index: 2;
     transition: width 0.3s ease-in-out;
 }
 
@@ -129,45 +130,6 @@
     color: #fff;
     background-color: rgb(20, 26, 35);
 }
-
-/* Responsive Design */
-/* @media (max-width: 768px) {
-    .navbar-search {
-        width: 70vw;
-        max-width: 280px;
-        padding: 0.4rem 1rem;
-        gap: 1rem;
-    }
-
-    .search-results-container {
-        width: 70vw;
-        max-width: 280px;
-        top: 4.5rem;
-    }
-
-    .search-bar-overlay {
-        width: 2rem;
-        height: 2rem;
-    }
-}
-
-@media (max-width: 480px) {
-    .navbar-search {
-        width: 85vw;
-        gap: 0.8rem;
-        padding: 0.35rem 0.8rem;
-    }
-
-    .search-results-container {
-        width: 85vw;
-        top: 4rem;
-    }
-
-    .search-bar-overlay {
-        width: 1.8rem;
-        height: 1.8rem;
-    }
-} */
 
 .search-input {
     width: 90%;
