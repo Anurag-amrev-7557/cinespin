@@ -392,7 +392,6 @@ const LandingPage = () => {
                     ))
                 )}
             </div>
-
             {genres.map((genre) => (
                 <div key={genre.id} className="item-container">
                     <motion.div className="item-container-heading" ref={focusRef} {...bounceAnimation}>

@@ -216,39 +216,38 @@
 }
 
 .skeleton-card {
-    width: 15vw;
-    height: 27.5vw;
+    width: 12.25vw;
+    height: 23vw;
     display: flex;
     flex-direction: column;
     align-items: center;
-    background: rgb(255, 255, 255, 0.2);
+    background: rgb(255, 255, 255, 0.8);
     border-radius: 10px;
     padding: 10px;
-    border-radius: 2rem;
+    border-radius: 1.5rem;
+    z-index: 10000;
     animation: pulse 1.5s infinite;
 }
 
-.skeleton-img {
+.landing-container .skeleton-img {
     width: 100%;
-    height: 22rem;
+    height: 18vw;
     background: rgba(255, 255, 255, 0.15);
     border-radius: 1.3rem;
 }
 
 .skeleton-title {
-    width: 80%;
+    width: 100%;
     height: 1.3rem;
     background: rgba(255, 255, 255, 0.15);
     margin: 0.75rem 0;
-    margin-left: -3rem;
     border-radius: 0.5rem;
 }
 
 .skeleton-details {
-    width: 60%;
+    width: 100%;
     height: 1.2rem;
     margin-top: 0.1rem;
-    margin-left: -5.5rem;
     background: rgba(255, 255, 255, 0.15);
     border-radius: 0.5rem;
 }
