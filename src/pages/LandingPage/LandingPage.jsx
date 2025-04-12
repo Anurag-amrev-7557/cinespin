@@ -371,7 +371,6 @@ const LandingPage = () => {
                         </Swiper>
                     )}
                 </motion.div>
-            
             <div className="genre-container"
                 key={location.key}>
                 {!genres.length || isLoadingGenres ? (
