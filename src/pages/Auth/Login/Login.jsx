@@ -22,44 +22,47 @@ const Login = () => {
     e.preventDefault();
     setErrorMsg('');
     setIsLoading(true);
-    
+
     // Basic email and password validation
     if (!email || !password) {
       setErrorMsg("Email and password are required.");
       setIsLoading(false);
       return;
     }
-  
+
     if (!isValidEmail(email)) {
       setErrorMsg("Please enter a valid email address.");
       setIsLoading(false);
       return;
     }
-  
+
     try {
       await signInWithEmailAndPassword(auth, email, password);
       navigate('/');
     } catch (err) {
-      console.log("Firebase error: ", err); // Debugging log to inspect the error object
-      // Handle specific Firebase Auth error codes
-      switch (err.code) {
-        case "auth/wrong-password":
-          setErrorMsg("Incorrect password. Please try again.");
-          break;
-        case "auth/user-not-found":
-          setErrorMsg("No account found with this email address.");
-          break;
-        case "auth/invalid-email":
-          setErrorMsg("The email address is not valid.");
-          break;
-        case "auth/network-request-failed":
-          setErrorMsg("Network error. Please check your connection and try again.");
-          break;
-        case "auth/too-many-requests":
-          setErrorMsg("Too many attempts. Please try again later.");
-          break;
-        default:
-          setErrorMsg("An error occurred. Please try again later.");
+      console.error("Firebase error: ", err); // Keep for debugging
+      if (err.code) {
+        switch (err.code) {
+          case "auth/wrong-password":
+            setErrorMsg("Incorrect password. Please try again.");
+            break;
+          case "auth/user-not-found":
+            setErrorMsg("No account found with this email address.");
+            break;
+          case "auth/invalid-email":
+            setErrorMsg("The email address is not valid.");
+            break;
+          case "auth/network-request-failed":
+            setErrorMsg("Network error. Please check your connection and try again.");
+            break;
+          case "auth/too-many-requests":
+            setErrorMsg("Too many attempts. Please try again later.");
+            break;
+          default:
+            setErrorMsg("An error occurred. Please try again later.");
+        }
+      } else {
+        setErrorMsg("An unknown error occurred. Please try again.");
       }
     } finally {
       setIsLoading(false);

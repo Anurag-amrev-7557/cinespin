@@ -8,7 +8,7 @@ const firebaseConfig = {
     apiKey: "AIzaSyAAi57N5bP4EoGmiT6B2ME7QuW6ps0yObA",
     authDomain: "cinespin.firebaseapp.com",
     projectId: "cinespin",
-    storageBucket: "cinespin.firebasestorage.app",
+    storageBucket: "cinespin.appspot.com",
     messagingSenderId: "434323836110",
     appId: "1:434323836110:web:65a4c9cff05581c628549f"
 };
