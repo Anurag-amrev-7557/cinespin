@@ -296,7 +296,7 @@ const LandingPage = () => {
     return (
         <>
         <Helmet>
-            <title>CineStream - Stream the Best, Forget the Rest</title>
+            <title>CineSpin - Stream the Best, Forget the Rest</title>
             <meta name="description" content="Explore the best movies and TV shows on Cinespin. Watch trailers, view cast info, and find your next favorite film." />
         </Helmet>
         <div className="landing-container">
