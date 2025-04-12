@@ -232,7 +232,7 @@ const movieDownloadLinks = {
   "The Curse Of Medea": "https://new17.gdtot.dad/file/2047362104",
   "A Perfect Getaway": "https://new17.gdtot.dad/file/2290762231",
   "The Tall Man": "https://new17.gdtot.dad/file/2362280884",
-  "Stree 2: Sarkate Ka Aatank": "https://new17.gdtot.dad/file/2714176379",
+  "Stree 2": "https://new17.gdtot.dad/file/2714176379",
   "You Can’t Run Forever": "https://new17.gdtot.dad/file/2675522434",
   "Succubus": "https://new17.gdtot.dad/file/2080477267",
   "Vanam": "https://new17.gdtot.dad/file/2590223784",
