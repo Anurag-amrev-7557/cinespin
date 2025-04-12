@@ -1,23 +1,33 @@
 .navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1.4vw 1.5vw;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.4vw 1.5vw;
 }
 
 .navbar a {
-    text-decoration: none;
-    color: rgba(255, 255, 255, 0.9);
+  text-decoration: none;
+  color: rgba(255, 255, 255, 0.9);
 }
 
 .navbar-logo {
-    display: flex;
-    gap: 0.8vw;
+  display: flex;
+  gap: 0.8vw;
+  justify-content: center;
+  align-items: center;
+}
+
+.navbar-logo img {
+  width: 1.4vw;
 }
 
 .navbar-logo a{
-    font-size: 1.4vw;
-    color: rgba(255, 255, 255, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3vw;
+  gap: 0.5rem;
+  color: rgba(255, 255, 255, 0.9);
 }
 
 

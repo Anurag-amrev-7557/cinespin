@@ -107,7 +107,7 @@ const Navbar = () => {
           navigate("/", { replace: true });
         }}
       >
-        <Link to="/">CineSpin</Link>
+        <Link to="/"><img src="/logo.webp"></img>CineStream</Link>
       </div>
 
       <div className="navbar-content">
