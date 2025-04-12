@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import { Helmet } from "react-helmet-async";
 import { useParams, useNavigate } from "react-router-dom";
+import { LuDownload } from "react-icons/lu";
 import { FaStar, FaCalendar, FaClock, FaLanguage } from "react-icons/fa";
 import { getFromCache, setToCache } from "../../utils/cache";
 import { motion, AnimatePresence } from "framer-motion";
+import movieDownloadLinks from "../../utils/movieDownloadLinks"; // adjust path as needed
 import "./MovieDetails.css";
 
 const TMDB_API_KEY = import.meta.env.VITE_TMDB_API_KEY;
@@ -198,6 +200,8 @@ const MovieDetails = () => {
         }
     });
 
+    const downloadLink = movieDownloadLinks[movie.title] || null;
+
     return (
         <motion.div 
             className="movie-details-container"
@@ -284,6 +288,27 @@ const MovieDetails = () => {
                                 ▶ &nbsp;Watch Trailer
                             </motion.button>
                         )}
+                        {downloadLink && (
+                            <motion.a
+                                href={downloadLink}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="trailer-button download-button"
+                                initial={{ opacity: 0, y: 30 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{
+                                type: "spring",
+                                stiffness: 300,
+                                damping: 24,
+                                mass: 1,
+                                delay: 0, 
+                                }}
+                                whileHover={{ scale: 1.02 }}
+                                whileTap={{ scale: 0.95 }}
+                            >
+                                <span><LuDownload /></span>&nbsp; Download
+                            </motion.a>
+                            )}
                     </motion.div>
 
                     <AnimatePresence>

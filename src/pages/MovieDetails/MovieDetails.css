@@ -248,23 +248,46 @@
 }
 
 .trailer-button {
-    display: inline-block;
+    display: inline;
     margin-top: 1rem;
-    padding: 0.65vw 1.1vw;
+    padding: 0.6vw 1vw;
     font-size: 0.83vw;
+    align-items: center;
+    justify-content: center;
     color: #fff;
     background-color: rgba(255, 255, 255, 0.15);
     outline: none;
     border: none;
     border-radius: 2rem;
-    text-align: center;
     cursor: pointer;
+    margin-right: 0.7vw;
     transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.trailer-button span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1vw;
 }
 
 .trailer-button:hover {
     background-color: #b81d24;
     transform: translateY(-2px);
+}
+
+.download-button {
+    font-family: "Biotif", sans-serif;
+    padding: 0.43vw 1vw;
+    transform: translate(0, 0.22vw) !important;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.download-button:hover {
+    background-color: #b81d24;
+    transform: translateY(0px);
 }
 
 .trailer-modal-overlay {
