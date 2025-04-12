@@ -18,14 +18,14 @@
 }
 
 .navbar-logo img {
-  width: 1.4vw;
+  width: 1.3vw;
 }
 
 .navbar-logo a{
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.3vw;
+  font-size: 1.25vw;
   gap: 0.5rem;
   color: rgba(255, 255, 255, 0.9);
 }
