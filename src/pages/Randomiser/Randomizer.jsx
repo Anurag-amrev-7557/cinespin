@@ -61,6 +61,7 @@ const Randomizer = () => {
   const [error, setError] = useState(null);
   const [showTrailer, setShowTrailer] = useState(false);
   const trailerRef = useRef();
+  const [logoUrl, setLogoUrl] = useState(null);
   const trailerButtonRef = useRef(null);
   const [trailerPosition, setTrailerPosition] = useState({ x: 0, y: 0 });
   const [selectedRegion, setSelectedRegion] = useState(localStorage.getItem('region') || "Global"); // Read region from localStorage
@@ -272,6 +273,37 @@ const Randomizer = () => {
       await fetchWithRetries();
     };
 
+        const fetchLogo = async (movieId) => {
+            const apiKey = TMDB_API_KEY;
+            try {
+                const response = await fetch(`https://api.themoviedb.org/3/movie/${movieId}/images?api_key=${apiKey}&include_image_language=en,null`);
+                const data = await response.json();
+        
+                // Attempt to find a logo with a .webp extension
+                const webpLogo = data.logos.find(logo => logo.file_path.endsWith('.webp'));
+                if (webpLogo) {
+                    setLogoUrl(`https://image.tmdb.org/t/p/original${webpLogo.file_path}`);
+                    return;
+                }
+        
+                // If no .webp logo is found, fall back to the first available logo
+                const fallbackLogo = data.logos[0]?.file_path;
+                if (fallbackLogo) {
+                    setLogoUrl(`https://image.tmdb.org/t/p/original${fallbackLogo}`);
+                } else {
+                    console.log('No logo available.');
+                }
+            } catch (error) {
+                console.error('Error fetching logo:', error);
+            }
+        };
+        
+        useEffect(() => {
+          if (content?.id) {
+              fetchLogo(content.id);
+          }
+      }, [content]);
+
       const bounceAnimation = {
         initial: { opacity: 0, y: 20 },
         animate: {
@@ -287,6 +319,25 @@ const Randomizer = () => {
         exit: { opacity: 0, y: -20 },
     };
 
+    const fadeUpSpring = {
+      hidden: { opacity: 0, y: 30 },
+      visible: {
+          opacity: 1,
+          y: 0,
+          transition: {
+              type: "spring",
+              stiffness: 300,
+              damping: 24,
+              mass: 1,
+          },
+      },
+      exit: {
+          opacity: 0,
+          y: -20,
+          transition: { duration: 0.3 }
+      }
+  };
+
     const formatRuntime = (minutes) => {
       if (!minutes || isNaN(minutes)) return "";
       const hrs = Math.floor(minutes / 60);
@@ -295,10 +346,10 @@ const Randomizer = () => {
   };
 
   const downloadLink = content?.title
-    ? movieDownloadLinks[Object.keys(movieDownloadLinks).find(key =>
-        key.toLowerCase().trim() === content.title.toLowerCase().trim()
-      )] || null
-    : null;
+  ? movieDownloadLinks[Object.keys(movieDownloadLinks).find(key =>
+      key.toLowerCase().trim() === content.title.toLowerCase().trim()
+    )] || null
+  : null;
 
   return (
     <>
@@ -378,7 +429,13 @@ const Randomizer = () => {
             </picture>
             </Link>
             <motion.div className="movie-info" {...bounceAnimation}>
-              <h1>{content.title}</h1>
+                <motion.h1 variants={fadeUpSpring}>
+                    {logoUrl ? (
+                        <img src={logoUrl} alt="Movie Logo" className="movie-title" />
+                    ) : (
+                        content.title // Display the movie title if logoUrl is not available
+                    )}
+                </motion.h1>
               <motion.div className="movie-meta" {...bounceAnimation}>
                 <span><FaStar /> {content.vote_average.toFixed(1)}</span>
                 <span><FaCalendar /> {content.release_date?.split("-")[0]}</span>

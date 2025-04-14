@@ -194,6 +194,10 @@
     color: inherit;
 }
 
+.randomizer .movie-title {
+    width: 10vw;
+}
+
 .randomizer .movie-info {
     flex-grow: 1;
 }
