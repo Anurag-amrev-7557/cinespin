@@ -247,7 +247,7 @@
     border-radius: 0.5rem;
 }
 
-.trailer-button {
+.movie-details-container .trailer-button {
     display: inline;
     margin-top: 1rem;
     padding: 0.6vw 1vw;
@@ -264,18 +264,18 @@
     transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-.trailer-button span {
+.movie-details-container .trailer-button span {
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 1vw;
 }
 
-.trailer-button:hover, .download-button:hover {
+.movie-details-container .trailer-button:hover, .download-button:hover {
     background-color: #b81d24;
 }
 
-.download-button {
+.movie-details-container .download-button {
     font-family: "Biotif", sans-serif;
     padding: 0.47vw 1vw;
     background-color: rgba(255, 255, 255, 0.15);
@@ -285,7 +285,7 @@
     align-items: center;
 }
 
-.download-button:hover {
+.movie-details-container .download-button:hover {
     background-color: #b81d24;
 }
 
