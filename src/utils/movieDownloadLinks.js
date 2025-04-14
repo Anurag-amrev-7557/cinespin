@@ -7283,7 +7283,7 @@ const movieDownloadLinks = {
   "Dream Girl": "https://vcloud.lol/rhmverg3ihcsmvj",
   "Non Stop Dhamaal": "https://new17.gdtot.dad/file/1704181126",
   "Rakshak Indias Braves": "https://new17.gdtot.dad/file/1838235530",
-  "Koi Mil Gaya": "https://new17.gdtot.dad/file/2719048945",
+  "Koi... Mil Gaya": "https://new17.gdtot.dad/file/2719048945",
   "Satyaprem Ki Katha": "https://new17.gdtot.dad/file/3294955083",
   "Anwar": "https://new17.gdtot.dad/file/4284420775",
   "Satyameva Jayate 2": "https://new17.gdtot.dad/file/2574496880",
