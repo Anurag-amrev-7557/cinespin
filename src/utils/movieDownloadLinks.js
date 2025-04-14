@@ -7011,7 +7011,7 @@ const movieDownloadLinks = {
   "Moomal Rano": "https://new17.gdtot.dad/file/1358983770",
   "Crakk – Jeetega Toh Jiyegaa": "https://new17.gdtot.dad/file/3329304539",
   "Yodha": "https://new17.gdtot.dad/file/3215803670",
-  "Laapataa Ladies": "https://new17.gdtot.dad/file/2920005169",
+  "Lost Ladies": "https://new17.gdtot.dad/file/2920005169",
   "Gabru Gang": "https://new17.gdtot.dad/file/2076008314",
   "Dange": "https://new17.gdtot.dad/file/2568708289",
   "Kaagaz 2": "https://new17.gdtot.dad/file/2396671066",
