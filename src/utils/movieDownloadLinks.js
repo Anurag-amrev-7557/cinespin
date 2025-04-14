@@ -7444,7 +7444,7 @@ const movieDownloadLinks = {
   "Zero": "https://new17.gdtot.dad/file/3021152764",
   "Tadka – ZEE5 Original": "https://new17.gdtot.dad/file/3280974435",
   "Tubelight": "https://new17.gdtot.dad/file/4036300853",
-  "Toilet: Ek Prem Katha": "https://new17.gdtot.dad/file/66870388519",
+  "Toilet: A Love Story": "https://new17.gdtot.dad/file/66870388519",
   "Blackmail": "https://vcloud.lol/nzin1npnj-l8enw",
   "Gali Guleiyan": "https://new17.gdtot.dad/file/2464623981",
   "Tales of the Jedi": "https://new17.gdtot.dad/file/1282000576",
