@@ -7290,7 +7290,7 @@ const movieDownloadLinks = {
   "Saawariya": "https://new17.gdtot.dad/file/4278071535",
   "Kabzaa": "https://new17.gdtot.dad/file/3968377871",
   "Gadar – Ek Prem Katha": "https://new17.gdtot.dad/file/3158341436",
-  "OMG: Oh My God": "https://new17.gdtot.dad/file/36334323321",
+  "OMG: Oh My God!": "https://new17.gdtot.dad/file/36334323321",
   "Lakshya": "https://new17.gdtot.dad/file/63230261745",
   "Mujrim": "https://new17.gdtot.dad/file/4423594386",
   "Uri The Surgical Strike": "https://vcloud.lol/ixakhlr-r_-our8",
