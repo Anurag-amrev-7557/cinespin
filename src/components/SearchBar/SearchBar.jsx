@@ -429,7 +429,7 @@ const SearchBar = () => {
         const routes = {
             "Movies": "/movies",
             "Series": "/series",
-            "Originals": "/originals",
+            "Sports": "/sports",
             "What to Watch": "/watch",
         };
 
@@ -440,7 +440,7 @@ const SearchBar = () => {
         const pathToItem = {
             "/movies": "Movies",
             "/series": "Series",
-            "/originals": "Originals",
+            "/sports": "Sports",
             "/watch": "What to Watch",
         };
 
@@ -466,7 +466,7 @@ const SearchBar = () => {
                 aria-label="Main navigation"
             >
                 <div className="search-bar-overlay"></div>
-                {["Movies", "Series", "Originals", "What to Watch"].map((item) => (
+                {["Movies", "Series", "Sports", "What to Watch"].map((item) => (
                     <SearchItem 
                         key={item}
                         item={item}

@@ -17,6 +17,7 @@ const MovieDetails  = lazy(() => import('./pages/MovieDetails/MovieDetails.jsx')
 const SeriesDetails = lazy(() => import('./pages/SeriesDetails/SeriesDetails.jsx'));
 const CastDetails   = lazy(() => import('./pages/CastDetails/CastDetails.jsx'));
 const Series        = lazy(() => import('./pages/Series/Series.jsx'));
+const Sports        = lazy(() => import('./pages/Sports/sports.jsx'));
 const Login         = lazy(() => import('./pages/Auth/Login/Login.jsx'));
 const Register      = lazy(() => import('./pages/Auth/Register/Register.jsx'));
 const Profile       = lazy(() => import('./pages/Profile/Profile.jsx'));
@@ -33,6 +34,7 @@ const routesConfig = [
   { path: '/series/:id', element: <SeriesDetails /> },
   { path: '/cast/:id',   element: <CastDetails /> },
   { path: '/series',     element: <Series /> },
+  { path: '/sports',     element: <Sports /> },
   { path: '/login',      element: <Login /> },
   { path: '/register',   element: <Register /> },
   { path: '/profile',   element: <ProtectedRoute><Profile /></ProtectedRoute> },
