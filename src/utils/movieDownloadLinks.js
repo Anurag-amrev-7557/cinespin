@@ -7811,7 +7811,7 @@ const movieDownloadLinks = {
   "ABCD 2": "https://new17.gdtot.dad/file/72608143188",
   "Chandni Chowk to China": "https://new17.gdtot.dad/file/3092300322",
   "Yuvvraaj": "https://vcloud.lol/ftaappregttk-mj",
-  "Robot 2.0": "https://new17.gdtot.dad/file/2541575730",
+  "2.0": "https://new17.gdtot.dad/file/2541575730",
   "Kalank": "https://new17.gdtot.dad/file/30254515667",
   "ABCD": "https://vcloud.lol/n9pyvezbr69dvuk",
   "The Stoneman Murders": "https://vcloud.lol/1fafoefr3emketl",
