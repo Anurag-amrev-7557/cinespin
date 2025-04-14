@@ -32,6 +32,7 @@ const MovieDetails = () => {
     const [showTrailer, setShowTrailer] = useState(false);
     const trailerRef = useRef();
     const navigate = useNavigate();
+    const [logoUrl, setLogoUrl] = useState(null);
     const trailerButtonRef = useRef(null);
     const [trailerPosition, setTrailerPosition] = useState({ x: 0, y: 0 });
 
@@ -98,6 +99,24 @@ const MovieDetails = () => {
         };
     
         fetchMovieDetails();
+    }, [id]);
+
+    const fetchLogo = async (movieId) => {
+        const apiKey = TMDB_API_KEY;
+        const response = await fetch(`https://api.themoviedb.org/3/movie/${movieId}/images?api_key=${apiKey}&include_image_language=en,null`);
+        const data = await response.json();
+        
+        const logoPath = data.logos[0]?.file_path;
+        if (logoPath) {
+            const logoUrl = `https://image.tmdb.org/t/p/original${logoPath}`;
+            setLogoUrl(logoUrl); // Set the logo URL in state
+        } else {
+            console.log('No logo available.');
+        }
+    };
+    
+    useEffect(() => {
+        fetchLogo(id); // Fetch the logo when the component mounts
     }, [id]);
 
     const bounceAnimation = {
@@ -236,7 +255,13 @@ const MovieDetails = () => {
             <AnimatePresence>
             <motion.div className="movie-content" variants={fadeUpSpring}>
                 <motion.div className="movie-info" variants={fadeUpSpring}>
-                    <motion.h1 variants={fadeUpSpring}>{movie.title}</motion.h1>
+                <motion.h1 variants={fadeUpSpring}>
+                    {logoUrl ? (
+                        <img src={logoUrl} alt="Movie Logo" className="movie-title" />
+                    ) : (
+                        movie.title // Display the movie title if logoUrl is not available
+                    )}
+                </motion.h1>
                     <div className="movie-meta">
                         <motion.span variants={fadeUpSpring}><FaStar /> {movie.vote_average.toFixed(1)}</motion.span>
                         <motion.span variants={fadeUpSpring}><FaCalendar /> {movie.release_date?.split("-")[0]}</motion.span>
