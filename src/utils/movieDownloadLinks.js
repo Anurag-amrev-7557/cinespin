@@ -7132,7 +7132,7 @@ const movieDownloadLinks = {
   "Water": "https://new17.gdtot.dad/file/2392862320",
   "Pink": "https://new17.gdtot.dad/file/2393555297",
   "Satyameva Jayate": "https://new17.gdtot.dad/file/2414292484",
-  "GOLD": "https://new17.gdtot.dad/file/2562639203",
+  "Gold": "https://new17.gdtot.dad/file/2562639203",
   "Baazaar": "https://new17.gdtot.dad/file/2760719886",
   "Jalebi": "https://new17.gdtot.dad/file/293949234",
   "Guthlee Ladoo": "https://new17.gdtot.dad/file/2108186364",
