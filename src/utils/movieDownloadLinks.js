@@ -7121,7 +7121,7 @@ const movieDownloadLinks = {
   "Six Nine Five": "https://new17.gdtot.dad/file/2401877914",
   "Starfish": "https://new17.gdtot.dad/file/3335425577",
   "Thackeray": "https://new17.gdtot.dad/file/3178664977",
-  "Padman": "https://new17.gdtot.dad/file/2399957939",
+  "Pad Man": "https://new17.gdtot.dad/file/2399957939",
   "Hichki": "https://new17.gdtot.dad/file/2066788841",
   "Simmba": "https://new17.gdtot.dad/file/2710981479",
   "Dehati Ladke": "https://new17.gdtot.dad/file/4659145676",
