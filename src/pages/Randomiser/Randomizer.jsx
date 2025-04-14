@@ -11,6 +11,7 @@ import { FaCalendar, FaClock, FaLanguage } from "react-icons/fa";
 import { GiDrippingKnife } from "react-icons/gi";
 import { FaHatWizard } from "react-icons/fa6";
 import { GiSpartanHelmet } from "react-icons/gi";
+import { LuDownload } from "react-icons/lu";
 import { FaHeart } from "react-icons/fa";
 import { RiBearSmileFill, RiGhostFill, RiSpaceShipFill } from "react-icons/ri";
 import { FaMasksTheater } from "react-icons/fa6";
@@ -22,6 +23,7 @@ import { FaGun } from "react-icons/fa6";
 import { TbMapRoute } from "react-icons/tb";
 import { GiSentryGun } from "react-icons/gi";
 import { FaHandcuffs } from "react-icons/fa6";
+import movieDownloadLinks from "../../utils/movieDownloadLinks"; // adjust path as needed
 import { MdFamilyRestroom } from "react-icons/md";
 import { FaStar } from "react-icons/fa";
 
@@ -293,7 +295,7 @@ const Randomizer = () => {
       return `${hrs}h ${mins}m`;
   };
 
-  const downloadLink = movieDownloadLinks[movie.title] || null;
+  const downloadLink = content?.title ? movieDownloadLinks[content.title] : null;
 
   return (
     <>
