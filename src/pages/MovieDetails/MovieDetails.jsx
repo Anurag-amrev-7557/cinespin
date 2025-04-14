@@ -103,15 +103,26 @@ const MovieDetails = () => {
 
     const fetchLogo = async (movieId) => {
         const apiKey = TMDB_API_KEY;
-        const response = await fetch(`https://api.themoviedb.org/3/movie/${movieId}/images?api_key=${apiKey}&include_image_language=en,null`);
-        const data = await response.json();
-        
-        const logoPath = data.logos[0]?.file_path;
-        if (logoPath) {
-            const logoUrl = `https://image.tmdb.org/t/p/original${logoPath}`;
-            setLogoUrl(logoUrl); // Set the logo URL in state
-        } else {
-            console.log('No logo available.');
+        try {
+            const response = await fetch(`https://api.themoviedb.org/3/movie/${movieId}/images?api_key=${apiKey}&include_image_language=en,null`);
+            const data = await response.json();
+    
+            // Attempt to find a logo with a .webp extension
+            const webpLogo = data.logos.find(logo => logo.file_path.endsWith('.webp'));
+            if (webpLogo) {
+                setLogoUrl(`https://image.tmdb.org/t/p/original${webpLogo.file_path}`);
+                return;
+            }
+    
+            // If no .webp logo is found, fall back to the first available logo
+            const fallbackLogo = data.logos[0]?.file_path;
+            if (fallbackLogo) {
+                setLogoUrl(`https://image.tmdb.org/t/p/original${fallbackLogo}`);
+            } else {
+                console.log('No logo available.');
+            }
+        } catch (error) {
+            console.error('Error fetching logo:', error);
         }
     };
     
