@@ -277,7 +277,6 @@ const MovieDetails = () => {
                                 onClick={openTrailer}
                                 ref={trailerButtonRef}
                                 className="trailer-button"
-                                initial={{ opacity: 0, y: 30 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{
                                     type: "spring",
@@ -297,7 +296,6 @@ const MovieDetails = () => {
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="trailer-button download-button"
-                                initial={{ opacity: 0, y: 30 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{
                                 type: "spring",
