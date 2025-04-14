@@ -62,6 +62,7 @@ const Movies = () => {
     const [selectedRegion, setSelectedRegion] = useState(() => localStorage.getItem("region") || "Global");
     const [isLoading, setIsLoading] = useState(true);
     const [currentPage, setCurrentPage] = useState(1);
+    const [pageNumber, setPageNumber] = useState(parseInt(localStorage.getItem("currentPage")) || 1); // Get from localStorage or default to 1
     const [pageRangeStart, setPageRangeStart] = useState(1);
     const [showFilter, setShowFilter] = useState(false);
     const [showSort, setShowSort] = useState(false);

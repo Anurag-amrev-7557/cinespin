@@ -15,6 +15,10 @@
     bottom: 1.5vw;
 }
 
+body {
+    background-color: #000;
+}
+
 .backdrop-overlay {
     position: absolute;
     top: 0;
@@ -26,7 +30,6 @@
         rgba(0, 0, 0, 0.6) 0%,
         rgba(0, 0, 0, 0.7) 100%
     );
-    overflow: hidden;
 }
 
 .movie-poster {
@@ -43,7 +46,6 @@
     gap: 1.5vw;
     margin: 0 auto;
     position: absolute;
-    overflow: hidden;
     bottom: 1.5vw;
     padding: 1.5vw;
     padding-bottom: 0;
