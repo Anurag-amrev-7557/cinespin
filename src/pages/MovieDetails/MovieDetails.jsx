@@ -200,7 +200,11 @@ const MovieDetails = () => {
         }
     });
 
-    const downloadLink = movieDownloadLinks[movie.title] || null;
+    const downloadLink = movie?.title
+    ? movieDownloadLinks[Object.keys(movieDownloadLinks).find(key =>
+        key.toLowerCase().trim() === movie.title.toLowerCase().trim()
+      )] || null
+    : null;
 
     return (
         <motion.div 

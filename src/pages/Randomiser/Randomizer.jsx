@@ -294,7 +294,11 @@ const Randomizer = () => {
       return `${hrs}h ${mins}m`;
   };
 
-  const downloadLink = content?.title ? movieDownloadLinks[content.title] : null;
+  const downloadLink = content?.title
+    ? movieDownloadLinks[Object.keys(movieDownloadLinks).find(key =>
+        key.toLowerCase().trim() === content.title.toLowerCase().trim()
+      )] || null
+    : null;
 
   return (
     <>
