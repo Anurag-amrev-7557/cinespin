@@ -15,6 +15,7 @@ import { FaHeart } from "react-icons/fa";
 import { RiBearSmileFill, RiGhostFill, RiSpaceShipFill } from "react-icons/ri";
 import { FaMasksTheater } from "react-icons/fa6";
 import { getFromCache, setToCache } from "../../utils/cache";
+import movieDownloadLinks from "../../utils/movieDownloadLinks"; // adjust path as needed
 import { PiDetectiveFill } from "react-icons/pi";
 import { MdVideoCameraBack } from "react-icons/md";
 import { FaGun } from "react-icons/fa6";
@@ -292,6 +293,8 @@ const Randomizer = () => {
       return `${hrs}h ${mins}m`;
   };
 
+  const downloadLink = movieDownloadLinks[movie.title] || null;
+
   return (
     <>
     <Helmet>
@@ -399,6 +402,27 @@ const Randomizer = () => {
                     ▶ &nbsp;Watch Trailer
                   </button>
                 )}
+                {downloadLink && (
+                    <motion.a
+                        href={downloadLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="trailer-button download-button"
+                        initial={{ opacity: 0, y: 30 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{
+                        type: "spring",
+                        stiffness: 300,
+                        damping: 24,
+                        mass: 1,
+                        delay: 0, 
+                        }}
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.95 }}
+                    >
+                        <span><LuDownload /></span>&nbsp; Download
+                    </motion.a>
+                  )}
               </motion.div>
 
               {content.similar?.results && content.similar.results.length > 0 && (
