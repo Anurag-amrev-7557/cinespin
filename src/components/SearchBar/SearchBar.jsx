@@ -247,32 +247,31 @@ const SearchBar = () => {
         }
     }, []);
 
-    // Add click outside handler
     useEffect(() => {
         const handleClickOutside = (event) => {
-            const searchoverlay = document.querySelector(".search-bar-overlay");
-            const isSearchExpanded = searchoverlay?.style.width === "98.65%";
-            
-            // Check if click is outside the search bar
-            if (
-                isSearchExpanded && 
-                searchRef.current && 
-                !searchRef.current.contains(event.target)
-            ) {
-                closeSearch();
-            }
+          const searchOverlay = document.querySelector(".search-bar-overlay");
+          const isSearchExpanded = searchOverlay?.style.width === "98.65%";
+    
+          // Check if click is outside the search bar and if search is expanded
+          if (
+            isSearchExpanded && 
+            searchRef.current && 
+            !searchRef.current.contains(event.target)
+          ) {
+            closeSearch(); // Close the search overlay
+          }
         };
-
+    
         // Add event listeners for both mouse and touch events
         document.addEventListener('mousedown', handleClickOutside);
         document.addEventListener('touchstart', handleClickOutside);
-
-        // Cleanup event listeners
+    
+        // Cleanup event listeners on component unmount
         return () => {
-            document.removeEventListener('mousedown', handleClickOutside);
-            document.removeEventListener('touchstart', handleClickOutside);
+          document.removeEventListener('mousedown', handleClickOutside);
+          document.removeEventListener('touchstart', handleClickOutside);
         };
-    }, [closeSearch]);
+      }, [closeSearch]);
 
     const handleSearch = useCallback(() => {
         const searchoverlay = document.querySelector(".search-bar-overlay");

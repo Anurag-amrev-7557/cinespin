@@ -422,7 +422,6 @@ const Randomizer = () => {
                         mass: 1,
                         delay: 0, 
                         }}
-                        whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.95 }}
                     >
                         <span><LuDownload /></span>&nbsp; Download

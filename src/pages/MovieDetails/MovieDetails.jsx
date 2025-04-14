@@ -286,8 +286,7 @@ const MovieDetails = () => {
                                     mass: 1,
                                     delay: 0, 
                                 }}
-                                whileHover={{ scale: 1.02 }}
-                                whileTap={{ scale: 0.95 }}
+                                whileTap={{ scale: 0.8 }}
                             >
                                 ▶ &nbsp;Watch Trailer
                             </motion.button>
@@ -307,8 +306,7 @@ const MovieDetails = () => {
                                 mass: 1,
                                 delay: 0, 
                                 }}
-                                whileHover={{ scale: 1.02 }}
-                                whileTap={{ scale: 0.95 }}
+                                whileTap={{ scale: 0.8 }}
                             >
                                 <span><LuDownload /></span>&nbsp; Download
                             </motion.a>

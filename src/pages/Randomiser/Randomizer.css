@@ -411,7 +411,6 @@
 
 .randomizer .trailer-button:hover {
     background-color: #b81d24;
-    transform: translateY(-2px);
 }
 
 .randomizer .download-button {
@@ -426,7 +425,6 @@
 
 .randomizer .download-button:hover {
     background-color: #b81d24;
-    transform: translateY(0px);
 }
 
 .randomizer .trailer-modal-overlay {

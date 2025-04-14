@@ -271,9 +271,8 @@
     font-size: 1vw;
 }
 
-.trailer-button:hover {
+.trailer-button:hover, .download-button:hover {
     background-color: #b81d24;
-    transform: translateY(-2px);
 }
 
 .download-button {
@@ -288,7 +287,6 @@
 
 .download-button:hover {
     background-color: #b81d24;
-    transform: translateY(0px);
 }
 
 .trailer-modal-overlay {

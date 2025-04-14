@@ -267,6 +267,8 @@
 
 .search-history-item {
     font-size: 0.85vw !important;
+    cursor: pointer;
+    margin: 0.25vw 0;
 }
 
 .result-meta {
