@@ -278,7 +278,8 @@
 
 .download-button {
     font-family: "Biotif", sans-serif;
-    padding: 0.43vw 1vw;
+    padding: 0.47vw 1vw;
+    background-color: rgba(255, 255, 255, 0.15);
     transform: translate(0, 0.22vw) !important;
     display: inline-flex;
     justify-content: center;
