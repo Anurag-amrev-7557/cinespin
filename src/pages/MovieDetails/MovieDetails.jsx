@@ -6,6 +6,7 @@ import { FaStar, FaCalendar, FaClock, FaLanguage } from "react-icons/fa";
 import { getFromCache, setToCache } from "../../utils/cache";
 import { motion, AnimatePresence } from "framer-motion";
 import movieDownloadLinks from "../../utils/movieDownloadLinks"; // adjust path as needed
+import streamDownloadLinks from "../../utils/streamLinks"; // adjust path as needed
 import "./MovieDetails.css";
 
 const TMDB_API_KEY = import.meta.env.VITE_TMDB_API_KEY;
@@ -231,10 +232,13 @@ const MovieDetails = () => {
     });
 
     const downloadLink = movie?.title
-    ? movieDownloadLinks[Object.keys(movieDownloadLinks).find(key =>
-        key.toLowerCase().trim() === movie.title.toLowerCase().trim()
-      )] || null
-    : null;
+      ? movieDownloadLinks[Object.keys(movieDownloadLinks).find(key =>
+          key.toLowerCase().trim() === movie.title.toLowerCase().trim()
+        )] || null
+      : null;
+    const streamLink = movie?.title ? streamDownloadLinks[movie.title] || null : null;
+
+
 
     return (
         <motion.div 
@@ -308,6 +312,25 @@ const MovieDetails = () => {
                     <motion.div className="movie-overview" variants={fadeUpSpring}>
                         <h2>Overview</h2>
                         <p>{truncateOverview(movie.overview)}</p>
+                        {streamLink && (
+                            <motion.a
+                                href={streamLink}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="trailer-button download-button"
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{
+                                type: "spring",
+                                stiffness: 300,
+                                damping: 24,
+                                mass: 1,
+                                delay: 0, 
+                                }}
+                                whileTap={{ scale: 0.8 }}
+                            >
+                                ▶ &nbsp;Watch
+                            </motion.a>
+                        )}
                         {movie.videos?.results?.length > 0 && (
                             <motion.button
                                 onClick={openTrailer}
