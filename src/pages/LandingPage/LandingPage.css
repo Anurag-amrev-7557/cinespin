@@ -222,9 +222,8 @@
     flex-direction: column;
     align-items: center;
     background: rgb(255, 255, 255, 0.2);
-    border-radius: 10px;
     padding: 0.316vw;
-    border-radius: 1.5rem;
+    border-radius: 0.625vw;
     z-index: 10000;
     animation: pulse 1.5s infinite;
 }
@@ -233,7 +232,7 @@
     width: 100%;
     height: 18vw;
     background: rgba(255, 255, 255, 0.15);
-    border-radius: 1.3rem;
+    border-radius: 1.25vw;
 }
 
 .skeleton-title {
@@ -241,7 +240,7 @@
     height: 1.083vw;
     background: rgba(255, 255, 255, 0.15);
     margin: 0.625vw 0;
-    border-radius: 0.5rem;
+    border-radius: 0.417vw;
 }
 
 .skeleton-details {
@@ -249,7 +248,7 @@
     height: 1.083vw;
     margin-top: 0.833vw;
     background: rgba(255, 255, 255, 0.15);
-    border-radius: 0.5rem;
+    border-radius: 0.417vw;
 }
 
 .skeleton-big-card-container {
@@ -264,9 +263,8 @@
     flex-direction: column;
     align-items: center;
     background: rgb(255, 255, 255, 0.2);
-    border-radius: 10px;
     padding: 10px;
-    border-radius: 1.3rem;
+    border-radius: 0.625vw;
     animation: pulse 1.5s infinite;
     z-index: 500000;
 }
