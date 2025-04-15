@@ -4,31 +4,28 @@ import { AuthProvider } from './context/AuthContext.jsx';
 import ReactDOM from 'react-dom/client';
 import { HelmetProvider } from 'react-helmet-async';
 import ProtectedRoute from './components/Common/ProtectedRoute.jsx';
-import React, { Suspense, lazy, startTransition } from 'react';
+import React, { Suspense, lazy } from 'react';
 import ErrorBoundary from './components/Common/ErrorBoundary.jsx';
 import Navbar from './components/Navbar/Navbar.jsx';
 import SearchBar from './components/SearchBar/SearchBar.jsx';
-import Spinner from './components/Common/Spinner.jsx'; // create if doesn't exist
 
-// Move lazy imports to top-level for optimization
-const lazyImport = (path) => lazy(() => import(`${path}`));
+// 🔹 Lazy-loaded pages for code-splitting
+const LandingPage   = lazy(() => import('./pages/LandingPage/LandingPage.jsx'));
+const Randomizer    = lazy(() => import('./pages/Randomiser/Randomizer.jsx'));
+const Movies        = lazy(() => import('./pages/Movies/Movies.jsx'));
+const MovieDetails  = lazy(() => import('./pages/MovieDetails/MovieDetails.jsx'));
+const SeriesDetails = lazy(() => import('./pages/SeriesDetails/SeriesDetails.jsx'));
+const CastDetails   = lazy(() => import('./pages/CastDetails/CastDetails.jsx'));
+const Series        = lazy(() => import('./pages/Series/Series.jsx'));
+const Sports        = lazy(() => import('./pages/Sports/sports.jsx'));
+const Login         = lazy(() => import('./pages/Auth/Login/Login.jsx'));
+const Register      = lazy(() => import('./pages/Auth/Register/Register.jsx'));
+const Profile       = lazy(() => import('./pages/Profile/Profile.jsx'));
+const PasswordChange       = lazy(() => import('./pages/Auth/PasswordChange/PasswordChange.jsx'));
+const ForgotPassword       = lazy(() => import('./pages/Auth/ForgotPassword/ForgotPassword.jsx'));
+const UpdateProfile       = lazy(() => import('./pages/Auth/UpdateProfile/UpdateProfile.jsx'));
 
-const LandingPage   = lazyImport('./pages/LandingPage/LandingPage.jsx');
-const Randomizer    = lazyImport('./pages/Randomiser/Randomizer.jsx');
-const Movies        = lazyImport('./pages/Movies/Movies.jsx');
-const MovieDetails  = lazyImport('./pages/MovieDetails/MovieDetails.jsx');
-const SeriesDetails = lazyImport('./pages/SeriesDetails/SeriesDetails.jsx');
-const CastDetails   = lazyImport('./pages/CastDetails/CastDetails.jsx');
-const Series        = lazyImport('./pages/Series/Series.jsx');
-const Sports        = lazyImport('./pages/Sports/sports.jsx');
-const Login         = lazyImport('./pages/Auth/Login/Login.jsx');
-const Register      = lazyImport('./pages/Auth/Register/Register.jsx');
-const Profile       = lazyImport('./pages/Profile/Profile.jsx');
-const PasswordChange = lazyImport('./pages/Auth/PasswordChange/PasswordChange.jsx');
-const ForgotPassword = lazyImport('./pages/Auth/ForgotPassword/ForgotPassword.jsx');
-const UpdateProfile  = lazyImport('./pages/Auth/UpdateProfile/UpdateProfile.jsx');
-const NotFound       = lazyImport('./components/Common/NotFound.jsx');
-
+// 🧭 Central route configuration
 const routesConfig = [
   { path: '/',           element: <LandingPage /> },
   { path: '/watch',      element: <Randomizer /> },
@@ -40,10 +37,10 @@ const routesConfig = [
   { path: '/sports',     element: <Sports /> },
   { path: '/login',      element: <Login /> },
   { path: '/register',   element: <Register /> },
-  { path: '/profile',    element: <ProtectedRoute><Profile /></ProtectedRoute> },
-  { path: '/change-password', element: <ProtectedRoute><PasswordChange /></ProtectedRoute> },
-  { path: '/forgot-password', element: <ForgotPassword /> },
-  { path: '/update-profile', element: <ProtectedRoute><UpdateProfile /></ProtectedRoute> },
+  { path: '/profile',   element: <ProtectedRoute><Profile /></ProtectedRoute> },
+  { path: '/change-password',   element: <ProtectedRoute><PasswordChange /> </ProtectedRoute>},
+  { path: '/forgot-password',   element: <ForgotPassword /> },
+  { path: '/update-profile',   element: <ProtectedRoute><UpdateProfile /></ProtectedRoute> },
 ];
 
 const Layout = () => {
@@ -52,7 +49,7 @@ const Layout = () => {
       <SearchBar />
       <div className="mega-container">
         <Navbar />
-        <Suspense fallback={<Spinner />}>
+        <Suspense fallback={<div className="loader"></div>}>
           <Routes>
             {routesConfig.map(({ path, element }, idx) => (
               <Route
@@ -65,7 +62,9 @@ const Layout = () => {
                 }
               />
             ))}
-            <Route path="*" element={<ErrorBoundary><NotFound /></ErrorBoundary>} />
+
+            {/* 🔄 Optional 404 handler */}
+            {/* <Route path="*" element={<NotFound />} /> */}
           </Routes>
         </Suspense>
       </div>
@@ -84,9 +83,7 @@ const App = () => (
 );
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
+  <App />
 );
 
 export default App;
