@@ -22,12 +22,18 @@ jobs:
       run: |
         pip install -r requirements.txt
 
-    - name: Install Chrome
+    - name: Install Chrome (v114 - stable)
       run: |
-        sudo apt-get update
-        sudo apt-get install -y wget unzip
-        wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-        sudo apt install -y ./google-chrome-stable_current_amd64.deb
+        wget https://dl.google.com/linux/chrome/deb/pool/main/g/google-chrome-stable/google-chrome-stable_114.0.5735.90-1_amd64.deb
+        sudo dpkg -i google-chrome-stable_114.0.5735.90-1_amd64.deb || sudo apt-get -f install -y
+        google-chrome --version
+    
+    - name: Install ChromeDriver (v114)
+      run: |
+        wget -q "https://chromedriver.storage.googleapis.com/114.0.5735.90/chromedriver_linux64.zip"
+        unzip chromedriver_linux64.zip
+        sudo mv chromedriver /usr/local/bin/
+        chromedriver --version
 
     - name: Install Chrome dependencies
       run: |
@@ -52,43 +58,6 @@ jobs:
           libappindicator3-1 \
           fonts-liberation \
           xdg-utils
-
-    - name: Install ChromeDriver (version-matched)
-      run: |
-        # Get full version
-        CHROME_VERSION=$(google-chrome --version | sed -E 's/[^0-9]*([0-9]+\.[0-9]+\.[0-9]+).*/\1/')
-        echo "Detected full Chrome version: $CHROME_VERSION"
-    
-        # Get just the major version (e.g. "135")
-        CHROME_MAJOR_VERSION=$(echo "$CHROME_VERSION" | cut -d '.' -f 1)
-        echo "Chrome major version: $CHROME_MAJOR_VERSION"
-    
-        # Fetch corresponding ChromeDriver version
-        CHROMEDRIVER_VERSION=$(curl -s "https://chromedriver.storage.googleapis.com/LATEST_RELEASE_${CHROME_MAJOR_VERSION}")
-        echo "Resolved ChromeDriver version: $CHROMEDRIVER_VERSION"
-    
-        # Download and install
-        wget -q "https://chromedriver.storage.googleapis.com/${CHROMEDRIVER_VERSION}/chromedriver_linux64.zip"
-        unzip chromedriver_linux64.zip
-        sudo mv chromedriver /usr/local/bin/
-        chromedriver --version
-
-    - name: Install missing dependencies
-      run: |
-        sudo apt-get install -y \
-          libnss3 \
-          libxss1 \
-          libappindicator1 \
-          libindicator7 \
-          libgbm-dev \
-          fonts-liberation \
-          libasound2 \
-          xdg-utils \
-          libu2f-udev \
-          libvulkan1 \
-          libdrm2 \
-          libxcomposite1 \
-          libxrandr2
 
     - name: Debug env
       run: |
