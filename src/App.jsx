@@ -4,20 +4,11 @@ import { AuthProvider } from './context/AuthContext.jsx';
 import ReactDOM from 'react-dom/client';
 import { HelmetProvider } from 'react-helmet-async';
 import ProtectedRoute from './components/Common/ProtectedRoute.jsx';
-import React, { Suspense, lazy } from 'react';
+import React, { Suspense, lazy, startTransition } from 'react';
 import ErrorBoundary from './components/Common/ErrorBoundary.jsx';
 import Navbar from './components/Navbar/Navbar.jsx';
 import SearchBar from './components/SearchBar/SearchBar.jsx';
 import Spinner from './components/Common/Spinner.jsx'; // create if doesn't exist
-
-// Create a wrapper to enhance lazy loading with error boundaries
-const LazyWrapper = (Component) => (
-  <ErrorBoundary>
-    <Suspense fallback={<Spinner />}>
-      <Component />
-    </Suspense>
-  </ErrorBoundary>
-);
 
 // Move lazy imports to top-level for optimization
 const lazyImport = (path) => lazy(() => import(`${path}`));
@@ -39,46 +30,56 @@ const UpdateProfile  = lazyImport('./pages/Auth/UpdateProfile/UpdateProfile.jsx'
 const NotFound       = lazyImport('./components/Common/NotFound.jsx');
 
 const routesConfig = [
-  { path: '/',           element: LazyWrapper(LandingPage) },
-  { path: '/watch',      element: LazyWrapper(Randomizer) },
-  { path: '/movies',     element: LazyWrapper(Movies) },
-  { path: '/movie/:id',  element: LazyWrapper(MovieDetails) },
-  { path: '/series/:id', element: LazyWrapper(SeriesDetails) },
-  { path: '/cast/:id',   element: LazyWrapper(CastDetails) },
-  { path: '/series',     element: LazyWrapper(Series) },
-  { path: '/sports',     element: LazyWrapper(Sports) },
-  { path: '/login',      element: LazyWrapper(Login) },
-  { path: '/register',   element: LazyWrapper(Register) },
-  { path: '/profile',    element: LazyWrapper(<ProtectedRoute><Profile /></ProtectedRoute>) },
-  { path: '/change-password', element: LazyWrapper(<ProtectedRoute><PasswordChange /></ProtectedRoute>) },
-  { path: '/forgot-password', element: LazyWrapper(ForgotPassword) },
-  { path: '/update-profile', element: LazyWrapper(<ProtectedRoute><UpdateProfile /></ProtectedRoute>) },
+  { path: '/',           element: <LandingPage /> },
+  { path: '/watch',      element: <Randomizer /> },
+  { path: '/movies',     element: <Movies /> },
+  { path: '/movie/:id',  element: <MovieDetails /> },
+  { path: '/series/:id', element: <SeriesDetails /> },
+  { path: '/cast/:id',   element: <CastDetails /> },
+  { path: '/series',     element: <Series /> },
+  { path: '/sports',     element: <Sports /> },
+  { path: '/login',      element: <Login /> },
+  { path: '/register',   element: <Register /> },
+  { path: '/profile',    element: <ProtectedRoute><Profile /></ProtectedRoute> },
+  { path: '/change-password', element: <ProtectedRoute><PasswordChange /></ProtectedRoute> },
+  { path: '/forgot-password', element: <ForgotPassword /> },
+  { path: '/update-profile', element: <ProtectedRoute><UpdateProfile /></ProtectedRoute> },
 ];
 
-const Layout = () => (
-  <>
-    <SearchBar />
-    <div className="mega-container">
-      <Navbar />
-      <Routes>
-        {routesConfig.map(({ path, element }, idx) => (
-          <Route key={path || idx} path={path} element={element} />
-        ))}
-        <Route path="*" element={LazyWrapper(NotFound)} />
-      </Routes>
-    </div>
-  </>
-);
+const Layout = () => {
+  return (
+    <>
+      <SearchBar />
+      <div className="mega-container">
+        <Navbar />
+        <Suspense fallback={<Spinner />}>
+          <Routes>
+            {routesConfig.map(({ path, element }, idx) => (
+              <Route
+                key={path || idx}
+                path={path}
+                element={
+                  <ErrorBoundary>
+                    {element}
+                  </ErrorBoundary>
+                }
+              />
+            ))}
+            <Route path="*" element={<ErrorBoundary><NotFound /></ErrorBoundary>} />
+          </Routes>
+        </Suspense>
+      </div>
+    </>
+  );
+};
 
 const App = () => (
   <HelmetProvider>
-    <ErrorBoundary>
-      <Router basename={import.meta.env.BASE_URL || '/'}>
-        <AuthProvider>
-          <Layout />
-        </AuthProvider>
-      </Router>
-    </ErrorBoundary>
+    <Router>
+      <AuthProvider>
+        <Layout />
+      </AuthProvider>
+    </Router>
   </HelmetProvider>
 );
 
