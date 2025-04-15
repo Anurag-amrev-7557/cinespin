@@ -38,7 +38,7 @@ if os.path.exists(js_path):
 def process_article(article_link, driver, actions):
     try:
         driver.execute_script("window.open(arguments[0], '_blank');", article_link)
-        time.sleep(0.2)
+        time.sleep(2)
         new_tabs = driver.window_handles
         driver.switch_to.window(new_tabs[-1])
         print("Switched to new article tab.")
@@ -72,7 +72,7 @@ def process_article(article_link, driver, actions):
                 wait = WebDriverWait(driver, 3)
                 download_button = wait.until(EC.element_to_be_clickable((By.CLASS_NAME, "btn")))
                 driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", download_button)
-                time.sleep(1)
+                time.sleep(3)
                 download_button.click()
                 print("Clicked on download button inside iframe.")
             except Exception as e:
@@ -92,7 +92,7 @@ def process_article(article_link, driver, actions):
                 btn = container.find_element(By.CSS_SELECTOR, ".btn")
                 print("Found a download button.")
                 driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", btn)
-                time.sleep(0.2)
+                time.sleep(2)
                 driver.execute_script("arguments[0].click();", btn)
                 print("Clicked on download button.")
                 clicked = True
@@ -156,7 +156,7 @@ def process_article(article_link, driver, actions):
                         if btn_to_click:
                             WebDriverWait(driver, 3).until(EC.element_to_be_clickable(btn_to_click))
                             driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", btn_to_click)
-                            time.sleep(1)
+                            time.sleep(3)
                             driver.execute_script("arguments[0].click();", btn_to_click)
                             print('Clicked on "🚀 G-Drive [No-Login]" button using JavaScript')
                         else:
@@ -174,7 +174,7 @@ def process_article(article_link, driver, actions):
                             if btn_to_click:
                                 WebDriverWait(driver, 3).until(EC.element_to_be_clickable(btn_to_click))
                                 driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", btn_to_click)
-                                time.sleep(0.5)
+                                time.sleep(2)
                                 driver.execute_script("arguments[0].click();", btn_to_click)
                                 print('Clicked on "🚀 GDFlix" button using JavaScript')
                             else:
@@ -237,13 +237,12 @@ def process_article(article_link, driver, actions):
 def process_article_with_retry(link):
     try:
         options = webdriver.ChromeOptions()
-        options.add_argument("--headless=chrome")
-        options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36")
-        options.add_experimental_option("excludeSwitches", ["enable-automation"])
-        options.add_experimental_option('useAutomationExtension', False)
-        options.add_argument("--disable-blink-features=AutomationControlled")
-        prefs = {"profile.managed_default_content_settings.images": 2}
-        options.add_experimental_option("prefs", prefs)
+        options.add_argument("--headless=new")
+        options.add_argument("--disable-gpu")
+        options.add_argument("--window-size=1920,1080")
+        options.add_argument("--no-sandbox")
+        options.add_argument("--disable-dev-shm-usage")
+        options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36")
 
         service = Service(ChromeDriverManager().install())
         driver = webdriver.Chrome(service=service, options=options)
@@ -274,7 +273,7 @@ while True:
 
         url = f"https://movies4u.rentals/page/{page}/" if page > 1 else "https://movies4u.rentals/"
         driver.get(url)
-        time.sleep(0.2)
+        time.sleep(2)
 
         driver.execute_script("""
             const overlays = document.querySelectorAll('[class*="overlay"], [id*="overlay"], .popup, .modal');
