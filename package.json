@@ -35,7 +35,8 @@
     "slick-carousel": "^1.8.1",
     "swiper": "^11.2.6",
     "vite-imagetools": "^7.0.5",
-    "vite-plugin-compression": "^0.5.1"
+    "vite-plugin-compression": "^0.5.1",
+    "webdriver-manager": "^12.1.9"
   },
   "devDependencies": {
     "@eslint/js": "^9.21.0",
