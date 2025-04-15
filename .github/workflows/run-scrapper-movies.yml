@@ -22,12 +22,13 @@ jobs:
       run: |
         pip install -r requirements.txt
 
-    - name: Install Chrome and xvfb
+    - name: Install Chrome
       run: |
         sudo apt-get update
-        sudo apt-get install -y wget unzip xvfb
+        sudo apt-get install -y wget unzip
         wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
         sudo apt install -y ./google-chrome-stable_current_amd64.deb
+        sudo apt-get install -y libnss3 libxss1 libasound2  # <- Add this line here
 
     - name: Run Python scraper with xvfb
       run: |
