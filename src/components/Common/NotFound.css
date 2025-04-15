@@ -1,7 +1,7 @@
-/* @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@800&family=Roboto:wght@100;300&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@800&family=Roboto:wght@100;300&display=swap');
 
 :root {
-  --button: hsl(44, 0%, 70%);
+  --button: rgba(255, 255, 255);
   --button-color: hsl(0, 0%, 4%);
   --shadow: hsl(0, 0%, 0%);
   --bg: hsl(53, 0%, 45%);
@@ -47,15 +47,16 @@ body {
   perspective: 1200px;
 }
 
-a {
+button {
   text-transform: uppercase;
   text-decoration: none;
   background: var(--button);
   color: var(--button-color);
-  padding: 1rem 4rem;
+  padding: 1vw 4vw;
   border-radius: 4rem;
-  font-size: 0.875rem;
+  font-size: 0.875vw;
   letter-spacing: 0.05rem;
+  cursor: pointer;
 }
 
 p {
@@ -67,7 +68,7 @@ h1 {
   font-size: clamp(5rem, 40vmin, 20rem);
   font-family: 'Open Sans', sans-serif;
   margin: 0;
-  margin-bottom: 1rem;
+  margin-bottom: 1vw;
   letter-spacing: 1rem;
   text-align: center;
   transform: translate3d(0, 0, 0vmin);
@@ -117,12 +118,13 @@ h1::after {
 }
 
 .info {
+  color: rgba(255,255,255, 0.8);
   text-align: center;
   line-height: 1.5;
 }
 
 .info > p {
-  margin-bottom: 3rem;
+  margin-bottom: 3vw;
 }
 }
 
@@ -138,4 +140,4 @@ h1::after {
     --swing-y: -100;
     --swing-x: 100;
   }
-} */
+}

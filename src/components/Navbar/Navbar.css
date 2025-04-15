@@ -583,7 +583,7 @@
   .profile-dropdown li {
     padding: 0.55vw 0.8vw;
     font-size: 0.8vw;
-    color: var(--text-primary, #222);
+    color: var(--text-primary);
     display: flex;
     padding-right: 2.5vw;
     align-items: center;
@@ -594,8 +594,8 @@
   }
   
   .profile-dropdown li:hover {
-    background-color: var(--hover-bg, rgba(0, 0, 0, 0.05));
-    color: var(--accent-color, #fff);
+    background-color: var(--hover-bg);
+    color: var(--accent-color);
   }
   
   /* Optional icon support */

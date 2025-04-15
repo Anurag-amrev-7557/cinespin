@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@firebase/storage": "^0.13.7",
+    "@studio-freight/lenis": "^1.0.42",
     "animate": "^1.0.0",
     "animate.css": "^4.1.1",
     "aos": "^2.3.4",
@@ -33,6 +34,7 @@
     "react-router-dom": "^7.4.1",
     "react-slick": "^0.30.3",
     "slick-carousel": "^1.8.1",
+    "styled-components": "^6.1.17",
     "swiper": "^11.2.6",
     "vite-imagetools": "^7.0.5",
     "vite-plugin-compression": "^0.5.1",

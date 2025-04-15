@@ -1,22 +1,27 @@
-import React, { useState, useEffect, useCallback, useRef } from "react";
+import React, {
+    useState,
+    useEffect,
+    useCallback,
+    useRef,
+    useLayoutEffect,
+    useMemo,
+} from "react";
 import { Helmet } from "react-helmet-async";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { LuDownload } from "react-icons/lu";
 import { FaStar, FaCalendar, FaClock, FaLanguage } from "react-icons/fa";
-import { getFromCache, setToCache } from "../../utils/cache";
 import { motion, AnimatePresence } from "framer-motion";
-import movieDownloadLinks from "../../utils/movieDownloadLinks"; // adjust path as needed
-import streamDownloadLinks from "../../utils/streamLinks"; // adjust path as needed
+import { getFromCache, setToCache } from "../../utils/cache";
+import movieDownloadLinks from "../../utils/movieDownloadLinks";
+import streamDownloadLinks from "../../utils/streamLinks";
 import "./MovieDetails.css";
 
 const TMDB_API_KEY = import.meta.env.VITE_TMDB_API_KEY;
 const TMDB_BASE_URL = "https://api.themoviedb.org/3";
 const IMAGE_BASE_URL = "https://image.tmdb.org/t/p";
 
-const truncateOverview = (text) => {
-    if (!text) return '';
-    return text.length > 200 ? text.substring(0, 150) + '...' : text;
-};
+const truncateOverview = (text, max = 200) =>
+    text && text.length > max ? text.slice(0, max) + "..." : text || "";
 
 const SkeletonCard = () => (
     <div className="skeleton-card">
@@ -27,53 +32,47 @@ const SkeletonCard = () => (
 
 const MovieDetails = () => {
     const { id } = useParams();
+    const navigate = useNavigate();
+    const location = useLocation();
+    const searchParams = useMemo(() => new URLSearchParams(location.search), [location.search]);
+    const currentPage = searchParams.get("page") || 1;
+    const trailerRef = useRef(null);
+    const trailerButtonRef = useRef(null);
+
     const [movie, setMovie] = useState(null);
+    const [logoUrl, setLogoUrl] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [showTrailer, setShowTrailer] = useState(false);
-    const trailerRef = useRef();
-    const navigate = useNavigate();
-    const [logoUrl, setLogoUrl] = useState(null);
-    const trailerButtonRef = useRef(null);
     const [trailerPosition, setTrailerPosition] = useState({ x: 0, y: 0 });
 
+    const cacheKey = useMemo(() => `movie-details-${id}`, [id]);
+
     const openTrailer = () => {
-        if (trailerButtonRef.current) {
-            const rect = trailerButtonRef.current.getBoundingClientRect();
+        const rect = trailerButtonRef.current?.getBoundingClientRect();
+        if (rect) {
             setTrailerPosition({ x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 });
         }
         setShowTrailer(true);
     };
 
-    const closeTrailer = useCallback(() => {
-        setShowTrailer(false);
-    }, []);
+    const closeTrailer = useCallback(() => setShowTrailer(false), []);
 
     useEffect(() => {
-        const handleKeyDown = (e) => {
-            if (e.key === "Escape") {
-                closeTrailer();
-            }
-        };
-
+        const handler = (e) => e.key === "Escape" && closeTrailer();
         if (showTrailer) {
-            document.addEventListener("keydown", handleKeyDown);
-        } else {
-            document.removeEventListener("keydown", handleKeyDown);
+            document.addEventListener("keydown", handler);
         }
-
-        return () => {
-            document.removeEventListener("keydown", handleKeyDown);
-        };
+        return () => document.removeEventListener("keydown", handler);
     }, [showTrailer, closeTrailer]);
-    
-    useEffect(() => {
-        document.body.style.backgroundImage = "none";
-        document.body.style.backgroundColor = "black";
 
+    useEffect(() => {
+        const timeout = setTimeout(() => {
+            document.body.style.background = "black";
+        }, 1000);
         return () => {
-            document.body.style.backgroundImage = "";
-            document.body.style.backgroundColor = "";
+            clearTimeout(timeout);
+            document.body.style.background = "";
         };
     }, []);
 
@@ -82,27 +81,21 @@ const MovieDetails = () => {
     }, []);
 
     useEffect(() => {
-        const cacheKey = `movie-details-${id}`;
-    
         const fetchMovieDetails = async () => {
             const cached = getFromCache(cacheKey);
             if (cached) {
                 setTimeout(() => {
-                  setMovie(cached);
-                  setLoading(false);
-                }, 200); // or 100ms if you want a visible loading flicker
+                    setMovie(cached);
+                    setLoading(false);
+                }, 200);
                 return;
-              }
-    
+            }
+
             try {
                 const response = await fetch(
                     `${TMDB_BASE_URL}/movie/${id}?api_key=${TMDB_API_KEY}&append_to_response=credits,videos,similar`
                 );
-    
-                if (!response.ok) {
-                    throw new Error("Failed to fetch movie details");
-                }
-    
+                if (!response.ok) throw new Error("Failed to fetch movie details");
                 const data = await response.json();
                 setMovie(data);
                 setToCache(cacheKey, data);
@@ -112,207 +105,116 @@ const MovieDetails = () => {
                 setLoading(false);
             }
         };
-    
+
         fetchMovieDetails();
-    }, [id]);
+    }, [cacheKey]);
 
-    const fetchLogo = async (movieId) => {
-        const apiKey = TMDB_API_KEY;
-        try {
-            const response = await fetch(`https://api.themoviedb.org/3/movie/${movieId}/images?api_key=${apiKey}&include_image_language=en,null`);
-            const data = await response.json();
-    
-            // Attempt to find a logo with a .webp extension
-            const webpLogo = data.logos.find(logo => logo.file_path.endsWith('.webp'));
-            if (webpLogo) {
-                setLogoUrl(`https://image.tmdb.org/t/p/original${webpLogo.file_path}`);
-                return;
-            }
-    
-            // If no .webp logo is found, fall back to the first available logo
-            const fallbackLogo = data.logos[0]?.file_path;
-            if (fallbackLogo) {
-                setLogoUrl(`https://image.tmdb.org/t/p/original${fallbackLogo}`);
-            } else {
-                console.log('No logo available.');
-            }
-        } catch (error) {
-            console.error('Error fetching logo:', error);
-        }
-    };
-    
     useEffect(() => {
-        fetchLogo(id); // Fetch the logo when the component mounts
+        const fetchLogo = async () => {
+            try {
+                const response = await fetch(
+                    `${TMDB_BASE_URL}/movie/${id}/images?api_key=${TMDB_API_KEY}&include_image_language=en,null`
+                );
+                const data = await response.json();
+                const logo = data.logos.find(l => l.file_path.endsWith('.webp')) || data.logos[0];
+                if (logo) setLogoUrl(`${IMAGE_BASE_URL}/original${logo.file_path}`);
+            } catch (e) {
+                console.error("Error fetching logo:", e);
+            }
+        };
+
+        fetchLogo();
     }, [id]);
 
-    const bounceAnimation = {
-        initial: { opacity: 0, y: 20 },
-        animate: {
-            opacity: 1,
-            y: 0,
-            transition: { 
-                type: "spring", 
-                stiffness: 300, 
-                damping: 25,
-                mass: 1 
-            },
+    const downloadLink = useMemo(() => {
+        const key = Object.keys(movieDownloadLinks).find(k =>
+            k.toLowerCase().trim() === movie?.title?.toLowerCase().trim()
+        );
+        return key ? movieDownloadLinks[key] : null;
+    }, [movie]);
+
+    const streamLink = useMemo(() => movie?.title && streamDownloadLinks[movie.title], [movie]);
+
+    const animations = {
+        container: {
+            hidden: {},
+            visible: { transition: { staggerChildren: 0.1, delayChildren: 0.3 } },
         },
-        exit: { opacity: 0, y: -20 },
+        fadeUp: {
+            hidden: { opacity: 0, y: 30 },
+            visible: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 300, damping: 24 } },
+            exit: { opacity: 0, y: -20, transition: { duration: 0.3 } },
+        },
+        overlay: {
+            hidden: { opacity: 0 },
+            visible: { opacity: 1, transition: { duration: 0.4 } },
+            exit: { opacity: 0, transition: { duration: 0.3 } },
+        },
+        modal: (x, y) => ({
+            hidden: { scale: 0.7, opacity: 0, x, y },
+            visible: {
+                scale: 1,
+                opacity: 1,
+                x: 0,
+                y: 0,
+                transition: { type: "spring", stiffness: 400, damping: 25 },
+            },
+            exit: {
+                scale: 0.7,
+                opacity: 0,
+                transition: { duration: 0.3, ease: "easeInOut" },
+            },
+        }),
     };
 
-    if (loading) {
-        return (
-            <div className="movie-details-loading">
-                <div aria-live="assertive" role="alert" className="loader"></div>
-            </div>
-        );
+    if (loading || !movie) {
+        return <div className="movie-details-loading"><div className="loader" aria-live="assertive" role="alert" /></div>;
     }
 
     if (error) {
-        return (
-            <div className="movie-details-error">
-                <p>Error: {error}</p>
-            </div>
-        );
+        return <div className="movie-details-error"><p>Error: {error}</p></div>;
     }
-
-    if (!movie) {
-        return (
-            <div className="movie-details-loading">
-                <div aria-live="assertive" role="alert" class="loader"></div>
-            </div>
-        );
-    }
-
-    const containerVariants = {
-        hidden: {},
-        visible: {
-            transition: {
-                staggerChildren: 0.1,
-                delayChildren: 0.3,
-            },
-        },
-    };
-    
-    const fadeUpSpring = {
-        hidden: { opacity: 0, y: 30 },
-        visible: {
-            opacity: 1,
-            y: 0,
-            transition: {
-                type: "spring",
-                stiffness: 300,
-                damping: 24,
-                mass: 1,
-            },
-        },
-        exit: {
-            opacity: 0,
-            y: -20,
-            transition: { duration: 0.3 }
-        }
-    };
-    
-    const modalOverlayVariants = {
-        hidden: { opacity: 0 },
-        visible: {
-            opacity: 1,
-            transition: { duration: 0.4 }
-        },
-        exit: { opacity: 0, transition: { duration: 0.3 } }
-    };
-    
-    const modalContentVariants = (x, y) => ({
-        hidden: { scale: 0.7, opacity: 0, x, y },
-        visible: {
-            scale: 1,
-            opacity: 1,
-            x: 0,
-            y: 0,
-            transition: {
-                type: "spring",
-                stiffness: 400,
-                damping: 25,
-            }
-        },
-        exit: {
-            scale: 0.7,
-            opacity: 0,
-            transition: {
-                duration: 0.3,
-                ease: "easeInOut"
-            }
-        }
-    });
-
-    const downloadLink = movie?.title
-      ? movieDownloadLinks[Object.keys(movieDownloadLinks).find(key =>
-          key.toLowerCase().trim() === movie.title.toLowerCase().trim()
-        )] || null
-      : null;
-    const streamLink = movie?.title ? streamDownloadLinks[movie.title] || null : null;
-
-
 
     return (
-        <motion.div 
-            className="movie-details-container"
-            initial="hidden"
-            animate="visible"
-            exit="exit"
-            variants={containerVariants}
-        >
-            {movie && (
-              <Helmet>
+        <motion.div className="movie-details-container" variants={animations.container} initial="hidden" animate="visible" exit="exit">
+            <Helmet>
                 <title>{movie.title} - Movie Details</title>
                 <meta name="description" content={truncateOverview(movie.overview)} />
-              </Helmet>
-            )}
-            <motion.div 
-                className="movie-details-overlay" 
-                style={{
-                    backgroundImage: `url(${IMAGE_BASE_URL}/original${movie.backdrop_path})`,
-                    backgroundSize: "cover",
-                    backgroundPosition: "center"
-                }}
+            </Helmet>
+
+            <motion.div
+                className="movie-details-overlay"
+                style={{ backgroundImage: `url(${IMAGE_BASE_URL}/original${movie.backdrop_path})` }}
                 decoding="async"
-                variants={fadeUpSpring}
+                variants={animations.fadeUp}
             >
-                <div className="backdrop-overlay"></div>
+                <div className="backdrop-overlay" />
             </motion.div>
-            
-            <AnimatePresence>
-            <motion.div className="movie-content" variants={fadeUpSpring}>
-                <motion.div className="movie-info" variants={fadeUpSpring}>
-                <motion.h1 variants={fadeUpSpring}>
-                    {logoUrl ? (
-                        <img src={logoUrl} alt="Movie Logo" className="movie-title" />
-                    ) : (
-                        movie.title // Display the movie title if logoUrl is not available
-                    )}
-                </motion.h1>
+
+            <motion.div className="movie-content" variants={animations.fadeUp}>
+                <motion.div className="movie-info" variants={animations.fadeUp}>
+                    <motion.h1 variants={animations.fadeUp}>
+                        {logoUrl ? <img src={logoUrl} alt="Movie Logo" className="movie-title" /> : movie.title}
+                    </motion.h1>
+
                     <div className="movie-meta">
-                        <motion.span variants={fadeUpSpring}><FaStar /> {movie.vote_average.toFixed(1)}</motion.span>
-                        <motion.span variants={fadeUpSpring}><FaCalendar /> {movie.release_date?.split("-")[0]}</motion.span>
-                        {movie.runtime && (
-                            <motion.span variants={fadeUpSpring}>
-                                <FaClock /> {Math.floor(movie.runtime / 60)}h {movie.runtime % 60}m
-                            </motion.span>
-                        )}
-                        <motion.span variants={fadeUpSpring}><FaLanguage /> {movie.original_language.toUpperCase()}</motion.span>
+                        <motion.span variants={animations.fadeUp}><FaStar /> {movie.vote_average.toFixed(1)}</motion.span>
+                        <motion.span variants={animations.fadeUp}><FaCalendar /> {movie.release_date?.split("-")[0]}</motion.span>
+                        {movie.runtime && <motion.span variants={animations.fadeUp}><FaClock /> {Math.floor(movie.runtime / 60)}h {movie.runtime % 60}m</motion.span>}
+                        <motion.span variants={animations.fadeUp}><FaLanguage /> {movie.original_language.toUpperCase()}</motion.span>
                     </div>
 
-                    <motion.div className="movie-genres" variants={fadeUpSpring}>
+                    <motion.div className="movie-genres" variants={animations.fadeUp}>
                         {movie.genres.map(genre => (
                             <motion.div
                                 key={genre.id}
                                 className="genre-tag"
-                                onClick={() => navigate(`/movies?genre=${genre.id}&page=1`)}
                                 role="button"
                                 tabIndex={0}
+                                onClick={() => navigate(`/movies?genre=${genre.id}&page=${currentPage}`)}
                                 onKeyDown={(e) => {
                                     if (e.key === 'Enter') {
-                                        navigate(`/movies?genre=${genre.id}&page=1`);
+                                        navigate(`/movies?genre=${genre.id}&page=${currentPage}`);
                                     }
                                 }}
                                 whileHover={{ scale: 1.05 }}
@@ -323,181 +225,82 @@ const MovieDetails = () => {
                         ))}
                     </motion.div>
 
-                    <motion.div className="movie-overview" variants={fadeUpSpring}>
+                    <motion.div className="movie-overview" variants={animations.fadeUp}>
                         <h2>Overview</h2>
                         <p>{truncateOverview(movie.overview)}</p>
+
                         {streamLink && (
-                            <motion.a
-                                href={streamLink}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="trailer-button download-button"
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{
-                                type: "spring",
-                                stiffness: 300,
-                                damping: 24,
-                                mass: 1,
-                                delay: 0, 
-                                }}
-                                whileTap={{ scale: 0.8 }}
-                            >
+                            <motion.a href={streamLink} target="_blank" rel="noopener noreferrer" className="trailer-button" animate={{ opacity: 1, y: 0 }} whileTap={{ scale: 0.8 }}>
                                 ▶ &nbsp;Watch
                             </motion.a>
                         )}
+
                         {movie.videos?.results?.length > 0 && (
-                            <motion.button
-                                onClick={openTrailer}
-                                ref={trailerButtonRef}
-                                className="trailer-button"
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{
-                                    type: "spring",
-                                    stiffness: 300,
-                                    damping: 24,
-                                    mass: 1,
-                                    delay: 0, 
-                                }}
-                                whileTap={{ scale: 0.8 }}
-                            >
+                            <motion.button onClick={openTrailer} ref={trailerButtonRef} className="trailer-button" animate={{ opacity: 1, y: 0 }} whileTap={{ scale: 0.8 }}>
                                 ▶ &nbsp;Watch Trailer
                             </motion.button>
                         )}
+
                         {downloadLink && (
-                            <motion.a
-                                href={downloadLink}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="trailer-button download-button"
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{
-                                type: "spring",
-                                stiffness: 300,
-                                damping: 24,
-                                mass: 1,
-                                delay: 0, 
-                                }}
-                                whileTap={{ scale: 0.8 }}
-                            >
-                                <span><LuDownload /></span>&nbsp; Download
+                            <motion.a href={downloadLink} target="_blank" rel="noopener noreferrer" className="trailer-button download-button" animate={{ opacity: 1, y: 0 }} whileTap={{ scale: 0.8 }}>
+                                <LuDownload />&nbsp; Download
                             </motion.a>
-                            )}
+                        )}
                     </motion.div>
 
-                    <AnimatePresence>
-                    {movie.similar?.results && movie.similar.results.length > 0 && (
-                        <motion.div className="similar-movies" variants={fadeUpSpring}>
+                    {movie.similar?.results?.length > 0 && (
+                        <motion.div className="similar-movies" variants={animations.fadeUp}>
                             <h2>Similar Movies</h2>
                             <div className="similar-list">
                                 {movie.similar.results
-                                    .map(similar => {
-                                        const sharedGenres = similar.genre_ids.filter(id =>
-                                            movie.genres.map(g => g.id).includes(id)
-                                        ).length;
-
-                                        const releaseYear = parseInt(similar.release_date?.split("-")[0]) || 0;
-                                        const currentYear = parseInt(movie.release_date?.split("-")[0]) || 0;
-                                        const yearProximity = 1 / (1 + Math.abs(currentYear - releaseYear));
-
-                                        const mainCastIds = movie.credits?.cast?.slice(0, 5).map(c => c.id) || [];
-                                        const similarCastIds = similar.credits?.cast?.slice(0, 5).map(c => c.id) || [];
-                                        const sharedCast = mainCastIds.filter(id => similarCastIds.includes(id)).length;
-
+                                    .map(sim => {
+                                        const sharedGenres = sim.genre_ids.filter(id => movie.genres.map(g => g.id).includes(id)).length;
+                                        const yearDiff = Math.abs((parseInt(sim.release_date?.split("-")[0]) || 0) - (parseInt(movie.release_date?.split("-")[0]) || 0));
+                                        const yearScore = 1 / (1 + yearDiff);
+                                        const mainCast = movie.credits?.cast?.slice(0, 5).map(c => c.id) || [];
+                                        const simCast = sim.credits?.cast?.slice(0, 5).map(c => c.id) || [];
+                                        const sharedCast = mainCast.filter(id => simCast.includes(id)).length;
                                         const movieDirector = movie.credits?.crew?.find(c => c.job === "Director")?.id;
-                                        const similarDirector = similar.credits?.crew?.find(c => c.job === "Director")?.id;
-                                        const sameDirector = movieDirector && similarDirector && movieDirector === similarDirector ? 1 : 0;
-
-                                        const voteScore = (similar.vote_average || 0) / 10;
-                                        const popularityScore = (similar.popularity || 0) / 1000;
-
-                                        const relevanceScore =
-                                            sharedGenres * 2 +
-                                            yearProximity * 2 +
-                                            sharedCast * 1.5 +
-                                            sameDirector * 3 +
-                                            voteScore * 1.5 +
-                                            popularityScore;
-
+                                        const simDirector = sim.credits?.crew?.find(c => c.job === "Director")?.id;
+                                        const directorScore = movieDirector && simDirector && movieDirector === simDirector ? 1 : 0;
+                                        const voteScore = (sim.vote_average || 0) / 10;
+                                        const popularityScore = (sim.popularity || 0) / 1000;
                                         return {
-                                            ...similar,
-                                            relevanceScore
+                                            ...sim,
+                                            relevanceScore: sharedGenres * 2 + yearScore * 2 + sharedCast * 1.5 + directorScore * 3 + voteScore * 1.5 + popularityScore
                                         };
                                     })
                                     .sort((a, b) => b.relevanceScore - a.relevanceScore)
-                                    .map(similar => (
-                                        <motion.a key={similar.id} className="similar-movie" onClick={() => navigate(`/movie/${similar.id}`)} variants={fadeUpSpring}
-                                        whileHover={{ scale: 1.03 }}
-                                        whileTap={{ scale: 0.97 }}>
-                                            <motion.img 
-                                                src={similar.poster_path 
-                                                    ? `${IMAGE_BASE_URL}/w500${similar.poster_path}` 
-                                                    : "/default.png"
-                                                }
-                                                alt={similar.title}
-                                                loading="lazy"
-                                                decoding="async"
-                                                variants={fadeUpSpring}
-                                            >
-                                            </motion.img>
-                                            <span>{similar.title}</span>
+                                    .map(sim => (
+                                        <motion.a key={sim.id} className="similar-movie" onClick={() => navigate(`/movie/${sim.id}`)} variants={animations.fadeUp} whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
+                                            <motion.img src={sim.poster_path ? `${IMAGE_BASE_URL}/w500${sim.poster_path}` : "/default.png"} alt={sim.title} loading="lazy" decoding="async" variants={animations.fadeUp} />
+                                            <span>{sim.title}</span>
                                         </motion.a>
                                     ))}
                             </div>
                         </motion.div>
                     )}
-                    </AnimatePresence>
                 </motion.div>
-                
-                {movie.credits?.cast && movie.credits.cast.length > 0 && (
-                    <motion.div className="movie-cast" variants={fadeUpSpring}>
+
+                {movie.credits?.cast?.length > 0 && (
+                    <motion.div className="movie-cast" variants={animations.fadeUp}>
                         <h2>Cast</h2>
                         <div className="cast-list">
-                            {movie.credits.cast.map(cast => (
-                                <motion.a key={cast.id} className="cast-member" onClick={() => navigate(`/cast/${cast.id}`)} variants={fadeUpSpring}>
-                                    <picture>
-                                    <img 
-                                        src={cast.profile_path 
-                                            ? `${IMAGE_BASE_URL}/w500${cast.profile_path}`
-                                            : "/default.png"
-                                        }
-                                        alt={cast.name}
-                                        loading="lazy"
-                                        decoding="async"
-                                    />
-                                    </picture>
-                                    <span>{cast.name}</span>
+                            {movie.credits.cast.map(c => (
+                                <motion.a key={c.id} className="cast-member" onClick={() => navigate(`/cast/${c.id}`)} variants={animations.fadeUp}>
+                                    <img src={c.profile_path ? `${IMAGE_BASE_URL}/w500${c.profile_path}` : "/default.png"} alt={c.name} loading="lazy" decoding="async" />
+                                    <span>{c.name}</span>
                                 </motion.a>
                             ))}
                         </div>
                     </motion.div>
                 )}
             </motion.div>
-            </AnimatePresence>
 
             <AnimatePresence>
                 {showTrailer && (
-                    <motion.div
-                        className="trailer-modal-overlay"
-                        onClick={closeTrailer}
-                        variants={modalOverlayVariants}
-                        initial="hidden"
-                        animate="visible"
-                        exit="exit"
-                        role="dialog"
-                        aria-modal="true"
-                    >
-                        <motion.div
-                            className="trailer-modal"
-                            onClick={(e) => e.stopPropagation()}
-                            variants={modalContentVariants(
-                                trailerPosition.x - window.innerWidth / 2,
-                                trailerPosition.y - window.innerHeight / 2
-                            )}
-                            initial="hidden"
-                            animate="visible"
-                            exit="exit"
-                            ref={trailerRef}
-                        >
+                    <motion.div className="trailer-modal-overlay" onClick={closeTrailer} variants={animations.overlay} initial="hidden" animate="visible" exit="exit" role="dialog" aria-modal="true">
+                        <motion.div className="trailer-modal" onClick={(e) => e.stopPropagation()} variants={animations.modal(trailerPosition.x - window.innerWidth / 2, trailerPosition.y - window.innerHeight / 2)} initial="hidden" animate="visible" exit="exit" ref={trailerRef}>
                             <iframe
                                 width="100%"
                                 height="100%"
@@ -514,5 +317,5 @@ const MovieDetails = () => {
         </motion.div>
     );
 };
- 
+
 export default MovieDetails;
