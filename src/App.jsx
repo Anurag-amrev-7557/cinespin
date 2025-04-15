@@ -4,8 +4,11 @@ import { AuthProvider } from './context/AuthContext.jsx';
 import ReactDOM from 'react-dom/client';
 import { HelmetProvider } from 'react-helmet-async';
 import ProtectedRoute from './components/Common/ProtectedRoute.jsx';
-import React, { Suspense, lazy, useEffect } from 'react';
+import React, { Suspense, lazy } from 'react';
 import ErrorBoundary from './components/Common/ErrorBoundary.jsx';
+import Navbar from './components/Navbar/Navbar.jsx';
+import SearchBar from './components/SearchBar/SearchBar.jsx';
+import Spinner from './components/Common/Spinner.jsx'; // create if doesn't exist
 
 // Create a wrapper to enhance lazy loading with error boundaries
 const LazyWrapper = (Component) => (
@@ -15,10 +18,6 @@ const LazyWrapper = (Component) => (
     </Suspense>
   </ErrorBoundary>
 );
-
-// Lazy load common layout components
-const LazySearchBar = LazyWrapper(lazy(() => import('./components/SearchBar/SearchBar.jsx')));
-const LazyNavbar = LazyWrapper(lazy(() => import('./components/Navbar/Navbar.jsx')));
 
 // Move lazy imports to top-level for optimization
 const lazyImport = (path) => lazy(() => import(`${path}`));
@@ -56,28 +55,20 @@ const routesConfig = [
   { path: '/update-profile', element: LazyWrapper(<ProtectedRoute><UpdateProfile /></ProtectedRoute>) },
 ];
 
-const Layout = () => {
-  useEffect(() => {
-    import('./pages/Movies/Movies.jsx');
-    import('./pages/Series/Series.jsx');
-    import('./pages/Randomiser/Randomizer.jsx');
-  }, []);
-
-  return (
-    <>
-      {LazySearchBar}
-      <div className="mega-container">
-        {LazyNavbar}
-        <Routes>
-          {routesConfig.map(({ path, element }, idx) => (
-            <Route key={path || idx} path={path} element={element} />
-          ))}
-          <Route path="*" element={LazyWrapper(NotFound)} />
-        </Routes>
-      </div>
-    </>
-  );
-};
+const Layout = () => (
+  <>
+    <SearchBar />
+    <div className="mega-container">
+      <Navbar />
+      <Routes>
+        {routesConfig.map(({ path, element }, idx) => (
+          <Route key={path || idx} path={path} element={element} />
+        ))}
+        <Route path="*" element={LazyWrapper(NotFound)} />
+      </Routes>
+    </div>
+  </>
+);
 
 const App = () => (
   <HelmetProvider>
