@@ -10740,6 +10740,14 @@ const movieDownloadLinks = {
   "Extraction 2 – Netflix Original": "https://new17.gdtot.dad/file/2613269082",
   "Paranormal Activity: Next of Kin": "https://new17.gdtot.dad/file/1503794313",
   "Kandahar": "https://new17.gdtot.dad/file/2706933295",
+  "Oru Kuprasidha Payyan": "https://new17.gdtot.dad/file/3101429484",
+  "Mayaanadhi": "https://new17.gdtot.dad/file/2974636868",
+  "The International": "https://new17.gdtot.dad/file/3348343358",
+  "Kingston": "https://new17.gdtot.dad/file/2161237322",
+  "Chabak – Night of Murder and Romance": "https://new17.gdtot.dad/file/11113726807",
+  "Jaat": "https://new17.gdtot.dad/file/3142059253",
+  "Tornado Warning": "https://new17.gdtot.dad/file/1956119731",
+  "Mahadev Ka Gorakhpur": "https://new17.gdtot.dad/file/2582804863",
 };
 
 export default movieDownloadLinks;
