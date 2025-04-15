@@ -28,7 +28,40 @@ jobs:
         sudo apt-get install -y wget unzip
         wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
         sudo apt install -y ./google-chrome-stable_current_amd64.deb
-        sudo apt-get install -y libnss3 libxss1 libasound2  # <- Add this line here
+        sudo apt-get install -y libnss3 libxss1 libasound2 libappindicator1 libgbm-dev fonts-liberation libu2f-udev xdg-utils
+
+    - name: Install ChromeDriver
+      run: |
+        CHROME_VERSION=$(google-chrome --version | grep -oP "\d+\.\d+\.\d+")
+        CHROMEDRIVER_VERSION=$(curl -s "https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$CHROME_VERSION")
+        wget -q "https://chromedriver.storage.googleapis.com/${CHROMEDRIVER_VERSION}/chromedriver_linux64.zip"
+        unzip chromedriver_linux64.zip
+        sudo mv chromedriver /usr/local/bin/
+        chromedriver --version
+
+    - name: Install missing dependencies
+      run: |
+        sudo apt-get install -y \
+          libnss3 \
+          libxss1 \
+          libappindicator1 \
+          libindicator7 \
+          libgbm-dev \
+          fonts-liberation \
+          libasound2 \
+          xdg-utils \
+          libu2f-udev \
+          libvulkan1 \
+          libdrm2 \
+          libxcomposite1 \
+          libxrandr2
+
+    - name: Debug env
+      run: |
+        google-chrome --version
+        chromedriver --version
+        which google-chrome
+        which chromedriver
 
     - name: Run Python scraper with xvfb
       run: |
