@@ -53,12 +53,21 @@ jobs:
           fonts-liberation \
           xdg-utils
 
-    - name: Install ChromeDriver
+    - name: Install ChromeDriver (version-matched)
       run: |
+        # Get full version
         CHROME_VERSION=$(google-chrome --version | sed -E 's/[^0-9]*([0-9]+\.[0-9]+\.[0-9]+).*/\1/')
-        echo "Detected Chrome version: $CHROME_VERSION"
-        CHROMEDRIVER_VERSION=$(curl -s "https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$CHROME_VERSION")
-        echo "Using ChromeDriver version: $CHROMEDRIVER_VERSION"
+        echo "Detected full Chrome version: $CHROME_VERSION"
+    
+        # Get just the major version (e.g. "135")
+        CHROME_MAJOR_VERSION=$(echo "$CHROME_VERSION" | cut -d '.' -f 1)
+        echo "Chrome major version: $CHROME_MAJOR_VERSION"
+    
+        # Fetch corresponding ChromeDriver version
+        CHROMEDRIVER_VERSION=$(curl -s "https://chromedriver.storage.googleapis.com/LATEST_RELEASE_${CHROME_MAJOR_VERSION}")
+        echo "Resolved ChromeDriver version: $CHROMEDRIVER_VERSION"
+    
+        # Download and install
         wget -q "https://chromedriver.storage.googleapis.com/${CHROMEDRIVER_VERSION}/chromedriver_linux64.zip"
         unzip chromedriver_linux64.zip
         sudo mv chromedriver /usr/local/bin/
