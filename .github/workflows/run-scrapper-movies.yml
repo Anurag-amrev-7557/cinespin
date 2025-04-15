@@ -22,15 +22,16 @@ jobs:
       run: |
         pip install -r requirements.txt
 
-    - name: Install Chrome
+    - name: Install Chrome and xvfb
       run: |
         sudo apt-get update
-        sudo apt-get install -y wget unzip
+        sudo apt-get install -y wget unzip xvfb
         wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
         sudo apt install -y ./google-chrome-stable_current_amd64.deb
 
-    - name: Run Python scraper
-      run: python3 mkvcinemas_scrapper.py
+    - name: Run Python scraper with xvfb
+      run: |
+        xvfb-run --auto-servernum --server-args='-screen 0 1920x1080x24' python3 mkvcinemas_scrapper.py
 
     - name: Commit and push changes
       run: |
