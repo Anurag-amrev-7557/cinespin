@@ -72,7 +72,7 @@ def process_article(article_link, driver, actions):
                 wait = WebDriverWait(driver, 3)
                 download_button = wait.until(EC.element_to_be_clickable((By.CLASS_NAME, "btn")))
                 driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", download_button)
-                time.sleep(0.2)
+                time.sleep(1)
                 download_button.click()
                 print("Clicked on download button inside iframe.")
             except Exception as e:
@@ -231,7 +231,7 @@ def process_article(article_link, driver, actions):
 def process_article_with_retry(link):
     try:
         options = webdriver.ChromeOptions()
-        options.add_argument("--headless=new")
+        options.add_argument("--headless")
         options.add_argument("--start-maximized")
         options.add_experimental_option("excludeSwitches", ["enable-automation"])
         options.add_experimental_option('useAutomationExtension', False)
