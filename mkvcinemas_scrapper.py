@@ -120,6 +120,9 @@ def process_article(article_link, driver, actions):
         driver.switch_to.window(new_download_tab)
 
         # Look for h4 elements and find the one that says "1080p" and not "HEVC"
+        WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, ".download-links-div h4"))
+        )
         h4s = driver.find_elements(By.CSS_SELECTOR, ".download-links-div h4")
         if not h4s:
             print("No h4 elements found in .download-links-div")
@@ -231,8 +234,8 @@ def process_article(article_link, driver, actions):
 def process_article_with_retry(link):
     try:
         options = webdriver.ChromeOptions()
-        options.add_argument("--headless")
-        options.add_argument("--start-maximized")
+        options.add_argument("--headless=chrome")
+        options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36")
         options.add_experimental_option("excludeSwitches", ["enable-automation"])
         options.add_experimental_option('useAutomationExtension', False)
         options.add_argument("--disable-blink-features=AutomationControlled")
