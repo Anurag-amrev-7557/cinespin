@@ -66,6 +66,7 @@ const LandingPage = () => {
     const [popularMovies, setPopularMovies] = useState([]);
     const [selectedGenreId, setSelectedGenreId] = useState(localStorage.getItem("selectedGenre") || genres[0].id); // Default to first genre
     const swipersRef = useRef({});
+    const [isMobile, setIsMobile] = useState(false);
     const observerRef = useRef(null);
     const focusRef = useRef(null);
 
@@ -293,6 +294,17 @@ const LandingPage = () => {
         return ` 〡 ${hrs}h ${mins}m`;
     };
 
+    useEffect(() => {
+    const handleResize = () => {
+        setIsMobile(window.innerWidth < 768); // Customize breakpoint
+    };
+
+    handleResize(); // Initial check
+    window.addEventListener('resize', handleResize);
+
+    return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
     return (
         <>
         <Helmet>
@@ -316,6 +328,15 @@ const LandingPage = () => {
                             autoplay={{ delay: 5000, disableOnInteraction: false }}
                             lazyPreloadPrevNext={true}
                             modules={[Navigation, Autoplay]}
+                            breakpoints={{
+                                393: {
+                                  slidesPerView: 3,
+                                }, 
+                                0: {
+                                    slidesPerView: 1,
+                                    spaceBetween: 10,
+                                }
+                              }}
                             className="popular-movies-swiper"
                         >
                             <AnimatePresence>
@@ -421,73 +442,160 @@ const LandingPage = () => {
                             swipersRef.current[genre.id] = swiper;
                             updateButtonVisibility(genre.id); // Ensure button visibility updates on load
                         }}
+                        touchRatio={1}
+                        simulateTouch={true}
+                        breakpoints={{
+                            393: {
+                              slidesPerView: 7,
+                            }, 
+                            0: {
+                                slidesPerView: 2,
+                                spaceBetween: 10,
+                            }
+                          }}
                         onSlideChange={() => updateButtonVisibility(genre.id)} // Update visibility when slides change
                         onReachEnd={() => handleReachEnd(genre.id)} // Automatically load next page when reaching the end
                     >
-                        {Array.isArray(moviesByGenre[genre.id])
+
+                        {isMobile ? (
+                        <div className="movie-card-scroll-container">
+                            {Array.isArray(moviesByGenre[genre.id])
                             ? moviesByGenre[genre.id].map((movie, index) => {
                                 const uniqueKey = `${genre.id}-${movie.id || movie.title || "untitled"}-${index}`;
-
                                 return (
-                                    <SwiperSlide key={uniqueKey}>
-                                    <motion.a
-                                        className="movie-card"
-                                        onClick={() => navigate(`/movie/${movie.id}`)}
-                                        initial={{ opacity: 0, y: 30, scale: 0.95 }}
-                                        animate={{ opacity: 1, y: 0, scale: 1 }}
-                                        exit={{ opacity: 0, y: 30, scale: 0.95 }}
-                                        whileHover={{ scale: 1, y: -5 }}
-                                        transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
-                                        {...bounceAnimation}
-                                    >
-                                        <motion.div className="movie-card-image" {...bounceAnimation}>
-                                        {movie.poster_path ? (
-                                            <picture>
-                                            <source
-                                                srcSet={`https://image.tmdb.org/t/p/w500${movie.poster_path}.webp`}
-                                                type="image/webp"
-                                            />
-                                            <img
-                                                src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+                                    <div className="movie-card-wrapper" key={uniqueKey}>
+                                        <motion.a
+                                            className="movie-card"
+                                            onClick={() => navigate(`/movie/${movie.id}`)}
+                                            initial={{ opacity: 0, y: 30, scale: 0.95 }}
+                                            animate={{ opacity: 1, y: 0, scale: 1 }}
+                                            exit={{ opacity: 0, y: 30, scale: 0.95 }}
+                                            whileHover={{ scale: 1, y: -5 }}
+                                            transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
+                                            {...bounceAnimation}
+                                        >
+                                            <motion.div className="movie-card-image" {...bounceAnimation}>
+                                            {movie.poster_path ? (
+                                                <picture>
+                                                <source
+                                                    srcSet={`https://image.tmdb.org/t/p/w500${movie.poster_path}.webp`}
+                                                    type="image/webp"
+                                                />
+                                                <img
+                                                    src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+                                                    className="movie-card-img"
+                                                    alt={movie.title}
+                                                    onError={(e) => {
+                                                    e.target.src = fallbackImage;
+                                                    }}
+                                                    width="250"
+                                                    height="375"
+                                                    style={{ objectFit: "cover" }}
+                                                    loading="lazy"
+                                                    decoding="async"
+                                                />
+                                                </picture>
+                                            ) : (
+                                                <img
+                                                src={fallbackImage}
                                                 className="movie-card-img"
-                                                alt={movie.title}
-                                                onError={(e) => {
-                                                e.target.src = fallbackImage;
-                                                }}
+                                                alt="Default movie poster"
                                                 width="250"
                                                 height="375"
                                                 style={{ objectFit: "cover" }}
-                                                loading="lazy"
-                                                decoding="async"
-                                            />
-                                            </picture>
-                                        ) : (
-                                            <img
-                                            src={fallbackImage}
-                                            className="movie-card-img"
-                                            alt="Default movie poster"
-                                            width="250"
-                                            height="375"
-                                            style={{ objectFit: "cover" }}
-                                            />
-                                        )}
-                                        </motion.div>
-                                        <span className="movie-title">                                                
-                                            {(() => {
-                                                    const words = (movie.title || movie.name)?.split(" ");
-                                                    return words.length > 4
-                                                        ? `${words.slice(0, 3).join(" ")}...`
-                                                        : words.join(" ");
-                                            })()}</span>
-                                        <motion.div className="movie-details" {...bounceAnimation}>
-                                        <span>
-                                            <FaStar className="movie-star" /> {movie.vote_average.toFixed(1)}
-                                        </span>
-                                        <span className="gap">&nbsp;〡&nbsp;</span>
-                                        <span>{movie.release_date?.split("-")[0]}</span>
-                                        <span className="movie-runtime">{formatRuntime(movie.runtime)}</span>
-                                        </motion.div>
-                                    </motion.a>
+                                                />
+                                            )}
+                                            </motion.div>
+                                            <span className="movie-title">                                                
+                                                {(() => {
+                                                        const words = (movie.title || movie.name)?.split(" ");
+                                                        return words.length > 4
+                                                            ? `${words.slice(0, 3).join(" ")}...`
+                                                            : words.join(" ");
+                                                })()}</span>
+                                            <motion.div className="movie-details" {...bounceAnimation}>
+                                            <span>
+                                                <FaStar className="movie-star" /> {movie.vote_average.toFixed(1)}
+                                            </span>
+                                            <span className="gap">&nbsp;〡&nbsp;</span>
+                                            <span>{movie.release_date?.split("-")[0]}</span>
+                                            <span className="movie-runtime">{formatRuntime(movie.runtime)}</span>
+                                            </motion.div>
+                                        </motion.a>
+                                    </div>
+                                );
+                                })
+                            : [...Array(7)].map((_, index) => (
+                                <div className="movie-card-wrapper" key={index}>
+                                    <SkeletonCard />
+                                </div>
+                                ))}
+                        </div>
+                        ) : (
+                            <>
+                            {Array.isArray(moviesByGenre[genre.id])
+                            ? moviesByGenre[genre.id].map((movie, index) => {
+                                const uniqueKey = `${genre.id}-${movie.id || movie.title || "untitled"}-${index}`;
+                                return (
+                                    <SwiperSlide key={uniqueKey}>
+                                        <motion.a
+                                            className="movie-card"
+                                            onClick={() => navigate(`/movie/${movie.id}`)}
+                                            initial={{ opacity: 0, y: 30, scale: 0.95 }}
+                                            animate={{ opacity: 1, y: 0, scale: 1 }}
+                                            exit={{ opacity: 0, y: 30, scale: 0.95 }}
+                                            whileHover={{ scale: 1, y: -5 }}
+                                            transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
+                                            {...bounceAnimation}
+                                        >
+                                            <motion.div className="movie-card-image" {...bounceAnimation}>
+                                            {movie.poster_path ? (
+                                                <picture>
+                                                <source
+                                                    srcSet={`https://image.tmdb.org/t/p/w500${movie.poster_path}.webp`}
+                                                    type="image/webp"
+                                                />
+                                                <img
+                                                    src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+                                                    className="movie-card-img"
+                                                    alt={movie.title}
+                                                    onError={(e) => {
+                                                    e.target.src = fallbackImage;
+                                                    }}
+                                                    width="250"
+                                                    height="375"
+                                                    style={{ objectFit: "cover" }}
+                                                    loading="lazy"
+                                                    decoding="async"
+                                                />
+                                                </picture>
+                                            ) : (
+                                                <img
+                                                src={fallbackImage}
+                                                className="movie-card-img"
+                                                alt="Default movie poster"
+                                                width="250"
+                                                height="375"
+                                                style={{ objectFit: "cover" }}
+                                                />
+                                            )}
+                                            </motion.div>
+                                            <span className="movie-title">                                                
+                                                {(() => {
+                                                        const words = (movie.title || movie.name)?.split(" ");
+                                                        return words.length > 4
+                                                            ? `${words.slice(0, 3).join(" ")}...`
+                                                            : words.join(" ");
+                                                })()}</span>
+                                            <motion.div className="movie-details" {...bounceAnimation}>
+                                            <span>
+                                                <FaStar className="movie-star" /> {movie.vote_average.toFixed(1)}
+                                            </span>
+                                            <span className="gap">&nbsp;〡&nbsp;</span>
+                                            <span>{movie.release_date?.split("-")[0]}</span>
+                                            <span className="movie-runtime">{formatRuntime(movie.runtime)}</span>
+                                            </motion.div>
+                                        </motion.a>
                                     </SwiperSlide>
                                 );
                                 })
@@ -495,7 +603,9 @@ const LandingPage = () => {
                                 <SwiperSlide key={index}>
                                     <SkeletonCard />
                                 </SwiperSlide>
-                                ))}
+                            ))}
+                        </>
+                        )}
                     </Swiper>
                 </div>
             ))}

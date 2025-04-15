@@ -370,6 +370,26 @@
     opacity: 0.9;
 }
 
+.movie-card-scroll-container {
+    display: flex;
+    overflow-x: auto;
+    gap: 0vw;
+    padding: 1rem 0;
+    padding-left: 0 !important;
+    margin-left: -7.5vw !important;
+    scroll-snap-type: x mandatory;
+
+    .movie-card-image {
+        height: 65vw !important;
+        width: 42vw !important;
+    }
+  }
+  
+  .movie-card-wrapper {
+    flex: 0 0 auto;
+    scroll-snap-align: start;
+  }
+
 @media (max-width: 1366px) {
     .landing-item-poster {
         height: 18vw;
@@ -379,17 +399,17 @@
         gap: 0.6vw !important;
     }
 
-    .movie-title {
+    .landing-container .movie-title {
         font-size: 1.1vw !important;
         margin-left: 0;
     }
 
-    .movie-details {
+    .landing-container .movie-details {
         font-size: 0.9vw !important;
         margin-left: 0;
     }
 
-    .swiper-navigation-container {
+    .landing-container .swiper-navigation-container {
         width: 5.4vw !important;
         margin-right: 0 !important;
     }
@@ -398,11 +418,110 @@
         border-radius: 1.3rem !important;
     }
 
-    .genre {
+    .landing-container .genre {
         font-size: 0.95vw !important;
     }
 
-    .item-container-heading {
+    .landing-container .item-container-heading {
         font-size: 1.35vw !important;
+    }
+}
+
+@media (max-width: 393px) {
+    .landing-container .landing-item-poster {
+        height: 55vw;
+    }
+
+    .landing-container .movie-title-overlay {
+        font-size: 6vw;
+        padding: 4vw;
+    }
+
+    .landing-container .movie-extra-details {
+        font-size: 3vw;
+    }
+
+    .landing-container .genre-container {
+        gap: 2vw !important;
+        margin-left: -2vw;
+    }
+
+    .landing-container .movie-title {
+        font-size: 1.1vw !important;
+        margin-left: 0;
+        display: none;
+    }
+
+    .landing-container .movie-details {
+        font-size: 0.9vw !important;
+        margin-left: 0;
+        display: none !important;
+    }
+
+    .landing-container .swiper-navigation-container {
+        width: 5.4vw !important;
+        margin-right: 0 !important;
+        display: none !important;
+    }
+
+    .landing-container .movie-card-img, .landing-container .movie-card-image {
+        border-radius: 1.3rem !important;
+    }
+
+    .landing-container .genre {
+        padding: 3.5vw 15.5vw !important;
+        font-size: 3.5vw !important;
+        border-radius: 3vw !important;
+    }
+
+    .landing-container .genre-icon {
+        font-size: 4vw;
+    }
+
+    .landing-container .item-container-heading {
+        font-size: 5vw !important;
+        margin-top: 3vw !important;
+    }
+
+    .landing-container .movie-card {
+        position: relative;
+        color: #fff;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 0.3vw;
+        width: 45vw;
+        cursor: pointer;
+        background-size: cover !important;
+        text-decoration: none;
+    }
+    
+    .landing-container .movie-card-image {
+        display: flex;
+        justify-content: center;
+        background-size: cover !important;
+        align-items: center;
+        width: 100%;
+        height: 70vw;
+        overflow: hidden;
+        border-radius: 1.3rem;
+    }
+
+    .landing-container .swiper {
+        touch-action: pan-y !important;
+        -webkit-overflow-scrolling: touch !important;
+        overscroll-behavior-x: contain;
+        scroll-snap-type: x mandatory;
+        scroll-behavior: smooth;
+    }
+    
+    .landing-container .movie-card-img {
+        object-fit: cover;
+        transition: transform 0.3s ease-out, filter 0.3s ease-out;
+        will-change: transform, filter;
+        image-rendering: high-quality;
+        backface-visibility: hidden;
+        transform-style: preserve-3d;
+        background-size: cover !important;
     }
 }

@@ -7,6 +7,7 @@ import { LuSwords } from "react-icons/lu";
 import { GiDrippingKnife } from "react-icons/gi";
 import { FaHatWizard } from "react-icons/fa6";
 import { GiSpartanHelmet } from "react-icons/gi";
+import { FaChevronLeft, FaChevronRight } from "react-icons/fa6";
 import { FaHeart } from "react-icons/fa";
 import { RiBearSmileFill, RiGhostFill, RiSpaceShipFill } from "react-icons/ri";
 import { FaMasksTheater } from "react-icons/fa6";
@@ -402,7 +403,12 @@ const Movies = () => {
             </motion.div>
 
             <div className="big-sorting-container">
-            <div className="sorting-container">
+                <div className="selected-genre-mobile">
+                    <span className="selected-genre-title">
+                        {window.innerWidth <= 450 && genres.find(g => g.id === selectedGenre)?.name}
+                    </span>
+                </div>
+                <div className="sorting-container">
                     <div className="filter" onClick={() => setShowFilter(prev => !prev)} aria-label="Toggle filter options">
                         <RiFilter2Line />
                     </div>
@@ -511,7 +517,7 @@ const Movies = () => {
                             onClick={() => fetchMovies(selectedGenre, currentPage - 1)}
                             disabled={currentPage === 1}
                         >
-                            Prev
+                            <FaChevronLeft />
                         </button>
 
                         {[...Array(Math.min(5, totalPages - pageRangeStart + 1))].map((_, index) => {
@@ -533,7 +539,7 @@ const Movies = () => {
                             onClick={() => fetchMovies(selectedGenre, currentPage + 1)}
                             disabled={currentPage >= totalPages}
                         >
-                            Next
+                            <FaChevronRight />
                         </button>
                     </div>
                 )}
