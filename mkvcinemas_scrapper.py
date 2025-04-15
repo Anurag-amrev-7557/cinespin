@@ -11,7 +11,7 @@ from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.chrome.service import Service
-from webdriver_manager.chrome import ChromeDriverManager
+import chromedriver_autoinstaller
 
 movie_links_cache = {}
 js_path = "/src/utils/movieDownloadLinks.js"
@@ -244,7 +244,8 @@ def process_article_with_retry(link):
         options.add_argument("--disable-dev-shm-usage")
         options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36")
 
-        service = Service("/usr/local/bin/chromedriver")
+        chromedriver_autoinstaller.install()
+        service = Service()  # It will now auto-use the installed path
         driver = webdriver.Chrome(service=service, options=options)
         driver.execute_script("Object.defineProperty(navigator, 'webdriver', {get: () => undefined})")
 
