@@ -10748,6 +10748,7 @@ const movieDownloadLinks = {
   "Jaat": "https://new17.gdtot.dad/file/3142059253",
   "Tornado Warning": "https://new17.gdtot.dad/file/1956119731",
   "Mahadev Ka Gorakhpur": "https://new17.gdtot.dad/file/2582804863",
+  "Companion": "https://new17.gdtot.dad/file/1985097068",
 };
 
 export default movieDownloadLinks;
