@@ -30,7 +30,7 @@ jobs:
         sudo apt install -y ./google-chrome-stable_current_amd64.deb
 
     - name: Run Python scraper
-      run: python mkvcinemas_scrapper.py
+      run: python3 mkvcinemas_scrapper.py
 
     - name: Commit and push changes
       run: |
