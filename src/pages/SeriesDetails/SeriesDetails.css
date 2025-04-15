@@ -332,7 +332,7 @@
   } */
 
   /* From Uiverse.io by Ashon-G */ 
-.loader {
+  .series-content .loader {
     --hue: 210;
     --size: 40px;
     --border: 4px;
@@ -340,7 +340,7 @@
     --blur: var(--border);
   }
   
-  .loader {
+  .series-content .loader {
     width: var(--border);
     aspect-ratio: 1;
     background: white;
@@ -353,7 +353,7 @@
     left: 50%;
   }
   
-  .loader::before {
+  .series-content .loader::before {
     content: "";
     position: absolute;
     inset: calc(var(--border) * -0.5);
@@ -363,7 +363,7 @@
     z-index: -1;
   }
   
-  .loader::after {
+  .series-content .loader::after {
     content: "";
     width: var(--size);
     aspect-ratio: 1;

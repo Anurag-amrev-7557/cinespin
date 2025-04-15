@@ -268,7 +268,7 @@ picture {
     align-items: center;
     height: 100vh;
   }
-.loader {
+  .movies-container .loader {
     --hue: 210;
     --size: 2.4vw;
     --border: 4px;
@@ -276,7 +276,7 @@ picture {
     --blur: var(--border);
   }
   
-  .loader {
+  .movies-container .loader {
     width: var(--border);
     aspect-ratio: 1;
     background: white;
@@ -289,7 +289,7 @@ picture {
     left: 50%;
   }
   
-  .loader::before {
+  .movies-container .loader::before {
     content: "";
     position: absolute;
     inset: calc(var(--border) * -0.5);
@@ -299,7 +299,7 @@ picture {
     z-index: -1;
   }
   
-  .loader::after {
+  .movies-container .loader::after {
     content: "";
     width: var(--size);
     aspect-ratio: 1;

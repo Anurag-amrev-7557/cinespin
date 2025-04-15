@@ -6,37 +6,19 @@ import { HelmetProvider } from 'react-helmet-async';
 import ProtectedRoute from './components/Common/ProtectedRoute.jsx';
 import React, { Suspense, lazy, useEffect } from 'react';
 import ErrorBoundary from './components/Common/ErrorBoundary.jsx';
-import Navbar from './components/Navbar/Navbar.jsx';
-import SearchBar from './components/SearchBar/SearchBar.jsx';
-import Spinner from './components/Common/Spinner.jsx'; // create if doesn't exist
 
-// Prefetch routes when browser is idle
-const prefetchRoutes = () => {
-  const preload = () => {
-    import('./pages/Movies/Movies.jsx');
-    import('./pages/Series/Series.jsx');
-    import('./pages/Randomiser/Randomizer.jsx');
-    import('./pages/Profile/Profile.jsx');
-  };
+// Create a wrapper to enhance lazy loading with error boundaries
+const LazyWrapper = (Component) => (
+  <ErrorBoundary>
+    <Suspense fallback={<Spinner />}>
+      <Component />
+    </Suspense>
+  </ErrorBoundary>
+);
 
-  if ('requestIdleCallback' in window) {
-    requestIdleCallback(preload);
-  } else {
-    setTimeout(preload, 2000); // fallback for unsupported browsers
-  }
-};
-
-// Memoize LazyWrapper to avoid repeated wrapping
-const LazyWrapper = (Component) => {
-  const MemoComponent = React.memo(Component);
-  return (
-    <ErrorBoundary>
-      <Suspense fallback={<Spinner />}>
-        <MemoComponent />
-      </Suspense>
-    </ErrorBoundary>
-  );
-};
+// Lazy load common layout components
+const LazySearchBar = LazyWrapper(lazy(() => import('./components/SearchBar/SearchBar.jsx')));
+const LazyNavbar = LazyWrapper(lazy(() => import('./components/Navbar/Navbar.jsx')));
 
 // Move lazy imports to top-level for optimization
 const lazyImport = (path) => lazy(() => import(`${path}`));
@@ -76,14 +58,16 @@ const routesConfig = [
 
 const Layout = () => {
   useEffect(() => {
-    prefetchRoutes();
+    import('./pages/Movies/Movies.jsx');
+    import('./pages/Series/Series.jsx');
+    import('./pages/Randomiser/Randomizer.jsx');
   }, []);
 
   return (
     <>
-      <SearchBar />
+      {LazySearchBar}
       <div className="mega-container">
-        <Navbar />
+        {LazyNavbar}
         <Routes>
           {routesConfig.map(({ path, element }, idx) => (
             <Route key={path || idx} path={path} element={element} />
