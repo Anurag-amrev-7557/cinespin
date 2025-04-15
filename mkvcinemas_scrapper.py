@@ -14,7 +14,7 @@ from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 
 movie_links_cache = {}
-js_path = "src/utils/movieDownloadLinks.js"
+js_path = "/src/utils/movieDownloadLinks.js"
 
 # Load existing file into the cache
 if os.path.exists(js_path):
@@ -120,9 +120,12 @@ def process_article(article_link, driver, actions):
         driver.switch_to.window(new_download_tab)
 
         # Look for h4 elements and find the one that says "1080p" and not "HEVC"
-        WebDriverWait(driver, 10).until(
-            EC.presence_of_element_located((By.CSS_SELECTOR, ".download-links-div h4"))
-        )
+        try:
+            WebDriverWait(driver, 5).until(
+                EC.presence_of_element_located((By.CSS_SELECTOR, ".download-links-div h4"))
+            )
+        except Exception as e:
+            print("Timed out waiting for download links to load:", e)
         h4s = driver.find_elements(By.CSS_SELECTOR, ".download-links-div h4")
         if not h4s:
             print("No h4 elements found in .download-links-div")
