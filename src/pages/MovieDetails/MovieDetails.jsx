@@ -66,6 +66,20 @@ const MovieDetails = () => {
             document.removeEventListener("keydown", handleKeyDown);
         };
     }, [showTrailer, closeTrailer]);
+    
+    useEffect(() => {
+        document.body.style.backgroundImage = "none";
+        document.body.style.backgroundColor = "black";
+
+        return () => {
+            document.body.style.backgroundImage = "";
+            document.body.style.backgroundColor = "";
+        };
+    }, []);
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
 
     useEffect(() => {
         const cacheKey = `movie-details-${id}`;

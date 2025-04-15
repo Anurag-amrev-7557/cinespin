@@ -549,12 +549,12 @@
         font-size: 0.95vw;
     }
 
-    .similar-list {
+    .randomizer .similar-list {
         height: 20vh;
         overflow-y: hidden;
     }
 
-    .similar-list img {
+    .randomizer .similar-list img {
         width: 8vw;
         height: 11vw;
     }
@@ -567,11 +567,11 @@
         font-size: 0.85rem;
     }
 
-    .trailer-button {
+    .randomizer .trailer-button {
         font-size: 0.95vw;
     }
 
-    .similar-list span {
+    .randomizer .similar-list span {
         font-size: 0.9vw;
     }
 

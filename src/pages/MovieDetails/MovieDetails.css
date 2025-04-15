@@ -46,7 +46,7 @@ body {
     gap: 1.5vw;
     margin: 0 auto;
     position: absolute;
-    bottom: 1.5vw;
+    bottom: 0;
     padding: 1.5vw;
     padding-bottom: 0;
     color: rgba(255, 255, 255, 0.9);
@@ -59,7 +59,7 @@ body {
 
 .movie-info {
     flex-grow: 1;
-    height: 5vh;
+    height: 5vw;
 }
 
 .movie-info h1 {
@@ -153,11 +153,11 @@ body {
 }
 
 .movie-cast {
-    height: 75vh;
+    height: 38vw;
 }
 
 .similar-list {
-    height: 24.8vh;
+    height: 12vw;
 }
 
 .cast-member, .similar-movie {
