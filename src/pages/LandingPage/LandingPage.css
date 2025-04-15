@@ -215,35 +215,35 @@
     transform: scale(1.015);
 }
 
-.skeleton-card {
+.landing-container .skeleton-card {
     width: 12.25vw;
-    height: 23vw;
+    height: 22.5vw;
     display: flex;
     flex-direction: column;
     align-items: center;
     background: rgb(255, 255, 255, 0.2);
     padding: 0.316vw;
-    border-radius: 1.5rem;
+    border-radius: 1.3rem;
+    transform: translate(17rem, 65.3rem);
     z-index: 10000;
     animation: pulse 1.5s infinite;
 }
 
 .landing-container .skeleton-img {
-    width: 100%;
-    height: 18vw;
+    height: 21vw;
     background: rgba(255, 255, 255, 0.15);
     border-radius: 1.5rem;
 }
 
-.skeleton-title {
+.landing-container .skeleton-title {
     width: 100%;
     height: 1.083vw;
     background: rgba(255, 255, 255, 0.15);
-    margin: 0.625vw 0;
+    margin-top: 1vw;
     border-radius: 0.5rem;
 }
 
-.skeleton-details {
+.landing-container .skeleton-details {
     width: 100%;
     height: 1.083vw;
     margin-top: 0.833vw;
