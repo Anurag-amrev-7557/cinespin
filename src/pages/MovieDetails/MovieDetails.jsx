@@ -93,12 +93,57 @@ const MovieDetails = () => {
 
             try {
                 const response = await fetch(
-                    `${TMDB_BASE_URL}/movie/${id}?api_key=${TMDB_API_KEY}&append_to_response=credits,videos,similar`
+                    `${TMDB_BASE_URL}/movie/${id}?api_key=${TMDB_API_KEY}&append_to_response=credits,videos`
                 );
                 if (!response.ok) throw new Error("Failed to fetch movie details");
                 const data = await response.json();
                 setMovie(data);
-                setToCache(cacheKey, data);
+                if (data.belongs_to_collection?.id) {
+                    try {
+                        const collectionRes = await fetch(`${TMDB_BASE_URL}/collection/${data.belongs_to_collection.id}?api_key=${TMDB_API_KEY}`);
+                        const collectionData = await collectionRes.json();
+                        const collectionWithCredits = await Promise.all(
+                            (collectionData.parts || []).filter(m => m.id !== data.id).map(async (part) => {
+                                const partRes = await fetch(`${TMDB_BASE_URL}/movie/${part.id}?api_key=${TMDB_API_KEY}&append_to_response=credits`);
+                                return await partRes.json();
+                            })
+                        );
+ 
+                        const sortedCollection = collectionWithCredits
+                            .filter(m => m.release_date)
+                            .sort((a, b) => {
+                                const yearA = parseInt(a.release_date?.split("-")[0]) || 0;
+                                const yearB = parseInt(b.release_date?.split("-")[0]) || 0;
+                                if (yearA === yearB) {
+                                    return (b.vote_average || 0) - (a.vote_average || 0);
+                                }
+                                return yearB - yearA;
+                            });
+ 
+                        data.similar = { results: sortedCollection };
+                        setMovie({ ...data });
+                        setToCache(cacheKey, { ...data });
+                        return;
+                    } catch (e) {
+                        console.error("Failed to fetch collection parts:", e);
+                    }
+                }
+                try {
+                    const similarRes = await fetch(`${TMDB_BASE_URL}/movie/${id}/similar?api_key=${TMDB_API_KEY}`);
+                    const similarData = await similarRes.json();
+                    const similarWithCredits = await Promise.all(
+                        (similarData.results || []).slice(0, 10).map(async (sim) => {
+                            const detailsRes = await fetch(`${TMDB_BASE_URL}/movie/${sim.id}?api_key=${TMDB_API_KEY}&append_to_response=credits`);
+                            const detailsData = await detailsRes.json();
+                            return detailsData;
+                        })
+                    );
+                    data.similar = { results: similarWithCredits };
+                    setMovie({ ...data });
+                    setToCache(cacheKey, { ...data });
+                } catch (err) {
+                    console.error("Error fetching similar movies with details:", err);
+                }
             } catch (err) {
                 setError(err.message);
             } finally {
@@ -254,23 +299,46 @@ const MovieDetails = () => {
                             <div className="similar-list">
                                 {movie.similar.results
                                     .map(sim => {
-                                        const sharedGenres = sim.genre_ids.filter(id => movie.genres.map(g => g.id).includes(id)).length;
+                                        const movieCountry = movie.production_countries?.[0]?.iso_3166_1;
+                                        const simCountries = sim.production_countries?.map(c => c.iso_3166_1) || [];
+
+                                        // ❌ Skip if movie's country isn't in similar movie's countries
+                                        if (movieCountry && !simCountries.includes(movieCountry)) return null;
+
+                                        const sharedGenres = (sim.genre_ids || []).filter(id => (movie.genres || []).map(g => g.id).includes(id)).length;
                                         const yearDiff = Math.abs((parseInt(sim.release_date?.split("-")[0]) || 0) - (parseInt(movie.release_date?.split("-")[0]) || 0));
                                         const yearScore = 1 / (1 + yearDiff);
+
                                         const mainCast = movie.credits?.cast?.slice(0, 5).map(c => c.id) || [];
                                         const simCast = sim.credits?.cast?.slice(0, 5).map(c => c.id) || [];
                                         const sharedCast = mainCast.filter(id => simCast.includes(id)).length;
+
                                         const movieDirector = movie.credits?.crew?.find(c => c.job === "Director")?.id;
                                         const simDirector = sim.credits?.crew?.find(c => c.job === "Director")?.id;
                                         const directorScore = movieDirector && simDirector && movieDirector === simDirector ? 1 : 0;
+
+                                        const titleScore = movie.title && sim.title && sim.title.toLowerCase().includes(movie.title.toLowerCase()) ? 1 : 0;
                                         const voteScore = (sim.vote_average || 0) / 10;
                                         const popularityScore = (sim.popularity || 0) / 1000;
+
+                                        const primaryRelevance = titleScore * 5 + sharedCast * 3 + directorScore * 2;
+                                        const secondaryRelevance = sharedGenres * 1.5 + yearScore + voteScore + popularityScore;
+
                                         return {
                                             ...sim,
-                                            relevanceScore: sharedGenres * 2 + yearScore * 2 + sharedCast * 1.5 + directorScore * 3 + voteScore * 1.5 + popularityScore
+                                            relevanceScore: primaryRelevance + secondaryRelevance,
+                                            primaryRelevance,
+                                            secondaryRelevance
                                         };
                                     })
-                                    .sort((a, b) => b.relevanceScore - a.relevanceScore)
+                                    .filter(Boolean) // ✅ remove nulls
+                                    .sort((a, b) => {
+                                        // Sort first by primary relevance, then secondary
+                                        if (b.primaryRelevance === a.primaryRelevance) {
+                                            return b.secondaryRelevance - a.secondaryRelevance;
+                                        }
+                                        return b.primaryRelevance - a.primaryRelevance;
+                                    })
                                     .map(sim => (
                                         <motion.a key={sim.id} className="similar-movie" onClick={() => navigate(`/movie/${sim.id}`)} variants={animations.fadeUp} whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
                                             <motion.img src={sim.poster_path ? `${IMAGE_BASE_URL}/w500${sim.poster_path}` : "/default.png"} alt={sim.title} loading="lazy" decoding="async" variants={animations.fadeUp} />
