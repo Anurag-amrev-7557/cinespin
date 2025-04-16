@@ -5,7 +5,7 @@
     margin-top: 5rem;
 }
 
-.sportss-container .genre-container {
+.sports-container .genre-container {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
@@ -22,11 +22,11 @@
     -ms-overflow-style: none; 
 }
 
-.sportss-container .genre-container::-webkit-scrollbar {
+.sports-container .genre-container::-webkit-scrollbar {
     display: none; 
 }
 
-.sportss-container .genre {
+.sports-container .genre {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -44,28 +44,28 @@
 }
 
 /* Responsive Typography & Icon Size */
-.sportss-container .genre-icon {
+.sports-container .genre-icon {
     display: flex;
     align-items: center;
     font-size: clamp(1.2rem, 1.3vw, 1.8rem);
 }
 
 /* Hover Effects */
-.sportss-container .genre:hover {
+.sports-container .genre:hover {
     background-color: rgba(255, 255, 255, 0.1);
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     border: 1px solid rgba(255, 255, 255, 0.1);
     color: rgba(255, 255, 255, 1);
 }
 
-.sportss-container .genre.active {
+.sports-container .genre.active {
     background-color: rgba(255,255,255, 0.2);
     box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 15px;
     border: 1px solid rgba(255,255,255, 0.1);
     color: rgba(255, 255, 255);
 }
 
-.sportss-container .sports-grid {
+.sports-container .sports-grid {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
@@ -81,7 +81,6 @@
     justify-content: center;
     gap: 0.1vw;
     width: 11vw;
-    max-width: 13vw;
     text-decoration: none;
     margin-bottom: 1.5vw;
     cursor: pointer;
@@ -192,7 +191,7 @@ picture {
     font-weight: bold;
   }
 
-  .sportss-container  .sorting-container {
+  .sports-container  .sorting-container {
     display: flex;
     justify-content: end;
     align-items: center;
@@ -208,11 +207,11 @@ picture {
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
 }
 
-.sportss-container .loading {
+.sports-container .loading {
     color: rgba(255, 255, 255, 0.9);
 }
 
-.sportss-container .filter, .sportss-container .sort {
+.sports-container .filter, .sports-container .sort {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -223,22 +222,22 @@ picture {
     color: #fff;
 }
 
-.sportss-container .filter:hover, .sportss-container .sort:hover {
+.sports-container .filter:hover, .sportss-container .sort:hover {
     background-color: #282828;
 }
 
-.sportss-container .filter {
+.sports-container .filter {
     border-right: 1px solid rgba(255,255,255, 0.1);
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
 }
 
-.sportss-container .sort {
+.sports-container .sort {
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
 }
 
-.sportss-container .popup-menu {
+.sports-container .popup-menu {
     z-index: 200000;
     background-color: rgba(0,0,0);
     position: absolute;
@@ -250,7 +249,7 @@ picture {
     border-radius: 1rem;
 }
 
-.sportss-container .popup-menu p {
+.sports-container .popup-menu p {
     cursor: pointer;
     font-size: 0.77vw;
 }
@@ -261,14 +260,14 @@ picture {
     margin: 0.3vw 0;
 }
 
-.sportss-container .sports-details-loading {
+.sports-container .sports-details-loading {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
   }
 
-  .sportss-container .loading-spinner {
+  .sports-container .loading-spinner {
     width: 2.604vw;
     height: 2.604vw;
     border: 2px solid #f3f3f3;
@@ -278,7 +277,7 @@ picture {
     margin-bottom: 1rem;
 }
 
-.sportss-container .loader {
+.sports-container .loader {
     --hue: 210;
     --size: 2.4vw;
     --border: 4px;
@@ -286,7 +285,7 @@ picture {
     --blur: var(--border);
   }
   
-  .sportss-container .loader {
+  .sports-container .loader {
     width: var(--border);
     aspect-ratio: 1;
     background: white;
@@ -299,7 +298,7 @@ picture {
     left: 50%;
   }
   
-  .sportss-container  .loader::before {
+  .sports-container  .loader::before {
     content: "";
     position: absolute;
     inset: calc(var(--border) * -0.5);
@@ -309,7 +308,7 @@ picture {
     z-index: -1;
   }
   
-  .sportss-container .loader::after {
+  .sports-container .loader::after {
     content: "";
     width: var(--size);
     aspect-ratio: 1;
@@ -336,20 +335,20 @@ picture {
   }
 
   @media (max-width: 1366px) {
-    .sportss-container .genre-container {
+    .sports-container .genre-container {
         gap: 1vw;
     }
 
-    .genre {
+    .sports-container .genre {
         font-size: 0.9vw;
         width: 9.5vw;
     }
 
-    .sorting-container {
+    .sports-container .sorting-container {
         transform: scale(0.95);
     }
 
-    .popup-menu p{
+    .sports-container .popup-menu p{
         font-size: 1vw !important;
     }
 
@@ -358,13 +357,89 @@ picture {
         right: 6vw;
     }
 
-    .sports-title {
+    .sports-container .sports-title {
         font-size: 1.1vw !important;
         margin-left: 0;
     }
 
-    .sports-details {
+    .sports-container .sports-details {
         font-size: 0.9vw !important;
         margin-left: 0;
     }
   }
+
+
+  @media (max-width: 450px) {
+    .sports-container .landing-item-poster {
+        height: 55vw;
+    }
+
+    .landing-container .sports-title-overlay {
+        font-size: 6vw;
+        padding: 4vw;
+    }
+
+    .sports-container .sports-extra-details {
+        font-size: 3vw;
+    }
+
+    .sports-container .genre-container {
+        gap: 2vw !important;
+        margin-left: -2vw;
+    }
+
+    .sports-container .sports-title {
+        font-size: 5vw !important;
+        margin-left: 3vw;
+        width: 100%;
+    }
+
+    .sports-container .sports-details {
+        font-size: 0.9vw !important;
+        margin-left: 0;
+        display: none !important;
+    }
+
+    .sports-container .swiper-navigation-container {
+        width: 5.4vw !important;
+        margin-right: 0 !important;
+        display: none !important;
+    }
+
+    .sports-container .sports-card-img, .sports-container .sports-card-image {
+        border-radius: 1.3rem !important;
+        width: 42vw;
+    }
+
+    .sports-container .genre {
+        padding: 3.5vw 15.5vw !important;
+        font-size: 3.5vw !important;
+        border-radius: 3vw !important;
+    }
+
+    .sports-container .genre-icon {
+        font-size: 4vw;
+    }
+
+    .sports-container .item-container-heading {
+        font-size: 5vw !important;
+        margin-top: 3vw !important;
+    }
+
+    .sports-container .sports-poster {
+        width: 40vw !important;
+    }
+
+    .sports-container .sports-card {
+        position: relative;
+        color: #fff;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 0.3vw;
+        width: 45vw !important;
+        cursor: pointer;
+        background-size: cover !important;
+        text-decoration: none;
+    }
+}
