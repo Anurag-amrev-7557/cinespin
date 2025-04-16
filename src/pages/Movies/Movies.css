@@ -370,7 +370,11 @@ picture {
     }
   }
 
+<<<<<<< HEAD
   @media (max-width: 393px) {
+=======
+  @media (max-width: 450px) {
+>>>>>>> 257869f (changes)
     .movies-container .genre-container {
         display: flex;
         flex-wrap: nowrap !important;

@@ -329,7 +329,11 @@ const LandingPage = () => {
                             lazyPreloadPrevNext={true}
                             modules={[Navigation, Autoplay]}
                             breakpoints={{
+<<<<<<< HEAD
                                 401: {
+=======
+                                451: {
+>>>>>>> 257869f (changes)
                                   slidesPerView: 3,
                                 }, 
                                 0: {
