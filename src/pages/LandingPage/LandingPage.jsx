@@ -127,12 +127,14 @@ const LandingPage = () => {
     };
 
     const fetchMovies = useCallback(async (genreId, page) => {
+        setLoading(true); // Start loading
         const regionParam = getRegionParam();
         const cacheKey = `genre-${genreId}-page-${page}-${selectedRegion}`;
         const cached = getFromCache(cacheKey);
     
         if (cached && Array.isArray(cached.results)) {
             setMoviesByGenre(prev => ({ ...prev, [genreId]: cached.results }));
+            setLoading(false); // Stop loading if using cache
             return;
         }
     
@@ -148,36 +150,40 @@ const LandingPage = () => {
                     runtime: details?.runtime || null,
                 };
             }));
-            
+    
             setMoviesByGenre(prevMovies => ({
                 ...prevMovies,
                 [genreId]: page === 1
                     ? movies
                     : [...(prevMovies[genreId] || []), ...movies]
             }));
-            
+    
             setToCache(cacheKey, { results: movies });
-            setLoading(false);
         } catch (error) {
             console.error("Error fetching movies:", error);
+        } finally {
+            setLoading(false); // Always stop loading
         }
     }, [selectedRegion]);
 
     const fetchMovieDetails = async (movieId) => {
+        setLoading(true); // Start loading
         try {
             const response = await fetch(
                 `https://api.themoviedb.org/3/movie/${movieId}?api_key=${TMDB_API_KEY}`
             );
             if (!response.ok) throw new Error("Failed to fetch movie details");
-            setLoading(false);
             return await response.json();
         } catch (error) {
             console.error("Error fetching movie details:", error);
             return null;
+        } finally {
+            setLoading(false); // Always stop loading
         }
     };
 
     const fetchPopularMovie = async () => {
+        setLoading(true); // Start loading
         try {
             const regionParam = getRegionParam();
             const response = await fetch(
@@ -185,7 +191,7 @@ const LandingPage = () => {
             );
             if (!response.ok) throw new Error("Failed to fetch popular movies");
             const data = await response.json();
-
+    
             // Fetch runtimes in parallel
             const moviesWithRuntime = await Promise.all(
                 data.results.map(async (movie) => {
@@ -197,9 +203,10 @@ const LandingPage = () => {
                 })
             );
             setPopularMovies(moviesWithRuntime);
-            setLoading(false);
         } catch (error) {
             console.error("Error fetching popular movies:", error.message);
+        } finally {
+            setLoading(false); // Always stop loading
         }
     };
 

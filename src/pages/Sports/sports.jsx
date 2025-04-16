@@ -143,7 +143,6 @@ const Movies = () => {
                         animate="visible"
                         exit="hidden"
                     >
-                        
                             <motion.div
                                 layout
                                 className="sports-card"

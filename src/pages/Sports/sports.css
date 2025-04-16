@@ -334,6 +334,22 @@ picture {
     }
   }
 
+  .plyr__control {
+    display: none !important;
+  }
+
+  .iframe-popup {
+    position: relative;
+  }
+
+  .frame-overlay {
+    position: absolute;
+    z-index: 20000;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.7);
+  }
+
   @media (max-width: 1366px) {
     .sports-container .genre-container {
         gap: 1vw;
