@@ -219,8 +219,14 @@ const LandingPage = () => {
     }, [selectedRegion]);
 
     const handleGenreClick = (genreId) => {
+        // Store selected genre in localStorage
         localStorage.setItem("selectedGenre", genreId);
-        navigate(`/movies?genre=${genreId}&page=1`, { state: { genreId } });
+        localStorage.setItem("genre", genreId);
+    
+        // Use navigate with the correct URL and state
+        navigate(`/movies?genre=${genreId}&page=1`, {
+            state: { genreId }, // You can access `genreId` in the next component using `location.state.genreId`
+        });
     };
 
     useEffect(() => {

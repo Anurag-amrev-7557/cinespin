@@ -150,6 +150,7 @@ const Movies = () => {
     const handleGenreClick = (genreId) => {
         if (genreId !== selectedGenre) {
             localStorage.setItem("genre", genreId);
+            localStorage.setItem("selectedGenre", genreId);
             localStorage.setItem("currentPage", currentPage);
             setSelectedGenre(genreId);
             navigate(`/movies?genre=${genreId}&page=${currentPage}`);
