@@ -378,14 +378,6 @@
     padding-left: 0 !important;
     margin-left: -7.5vw !important;
     scroll-snap-type: x mandatory;
-<<<<<<< HEAD
-
-    .movie-card-image {
-        height: 65vw !important;
-        width: 42vw !important;
-    }
-=======
->>>>>>> 257869f (changes)
   }
   
   .movie-card-wrapper {
@@ -430,11 +422,7 @@
     }
 }
 
-<<<<<<< HEAD
-@media (max-width: 393px) {
-=======
 @media (max-width: 450px) {
->>>>>>> 257869f (changes)
     .landing-container .landing-item-poster {
         height: 55vw;
     }
@@ -473,10 +461,7 @@
 
     .landing-container .movie-card-img, .landing-container .movie-card-image {
         border-radius: 1.3rem !important;
-<<<<<<< HEAD
-=======
         width: 42vw;
->>>>>>> 257869f (changes)
     }
 
     .landing-container .genre {
