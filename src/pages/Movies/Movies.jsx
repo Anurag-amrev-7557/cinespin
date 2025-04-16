@@ -62,9 +62,9 @@ const Movies = () => {
     const [isLoadingGenres, setIsLoadingGenres] = useState(true);
     const [selectedRegion, setSelectedRegion] = useState(() => localStorage.getItem("region") || "Global");
     const [isLoading, setIsLoading] = useState(true);
-    const [currentPage, setCurrentPage] = useState(1);
+    const [currentPage, setCurrentPage] = useState(localStorage.getItem("currentPage"));
     const [pageNumber, setPageNumber] = useState(parseInt(localStorage.getItem("currentPage")) || 1); // Get from localStorage or default to 1
-    const [pageRangeStart, setPageRangeStart] = useState(1);
+    const [pageRangeStart, setPageRangeStart] = useState(3);
     const [showFilter, setShowFilter] = useState(false);
     const [showSort, setShowSort] = useState(false);
     const [sortOption, setSortOption] = useState("year");
@@ -140,10 +140,9 @@ const Movies = () => {
         const pageFromUrl = parseInt(searchParams.get("page"), 10);
     
         const validGenre = genreFromUrl || genres[0].id;
-        const validPage = pageFromUrl || 1;
+        const validPage = pageFromUrl || parseInt(localStorage.getItem("currentPage"), 10) || 1;
     
         setSelectedGenre(validGenre);
-        setCurrentPage(validPage);
         fetchMovies(validGenre, validPage);
     }, [location.search]);
 
@@ -178,50 +177,30 @@ const Movies = () => {
         const cacheKey = `genre-${safeGenreId}-page-${safePage}-region-${selectedRegion}`;
     
         try {
-            // Attempt to retrieve from cache
             const cachedData = getFromCache(cacheKey);
             if (cachedData && Array.isArray(cachedData.results)) {
                 setMovies(cachedData.results);
                 const total = parseInt((cachedData || data).total_pages, 10);
                 setTotalPages(!isNaN(total) && total > 0 ? total : 1);
-            
-                if (safePage > total) {
-                    setCurrentPage(1);
-                } else {
-                    setCurrentPage(safePage);
-                }
-            
                 setPageRangeStart(Math.floor((safePage - 1) / 5) * 5 + 1);
                 return;
             }
     
-            // Construct URL
-            const regionParam =
-                selectedRegion === "India"
-                    ? "&region=IN&with_original_language=hi"
-                    : "";
-            const genreParam =
-                safeGenreId && safeGenreId !== 0
-                    ? `&with_genres=${safeGenreId}`
-                    : "";
-    
+            const regionParam = selectedRegion === "India" ? "&region=IN&with_original_language=hi" : "";
+            const genreParam = safeGenreId && safeGenreId !== 0 ? `&with_genres=${safeGenreId}` : "";
             const url = `https://api.themoviedb.org/3/discover/movie?api_key=${TMDB_API_KEY}${genreParam}&page=${safePage}${regionParam}`;
     
             const response = await fetch(url);
-    
-            // Check for non-OK response
             if (!response.ok) {
                 const errorMessage = `TMDB API error: ${response.status} ${response.statusText}`;
                 throw new Error(errorMessage);
             }
     
             const data = await response.json();
-    
-            // Validate data structure
             if (!Array.isArray(data.results)) {
                 throw new Error("Invalid data structure from TMDB API.");
             }
-
+    
             const movies = await Promise.all((data.results || []).map(async (movie) => {
                 const details = await fetchMovieDetails(movie.id);
                 return {
@@ -232,17 +211,13 @@ const Movies = () => {
     
             setMovies(movies);
             setTotalPages(Number.isInteger(data.total_pages) ? data.total_pages : 1);
-            setCurrentPage(safePage);
-            localStorage.setItem("currentPage", safePage);
             setPageRangeStart(Math.floor((safePage - 1) / 5) * 5 + 1);
             navigate(`/movies?genre=${safeGenreId}&page=${safePage}`, { replace: true });
-            setToCache(cacheKey, data); // ✅ Save valid data to cache
+            setToCache(cacheKey, data); // Save valid data to cache
         } catch (error) {
             console.error("Error fetching movies:", error);
-            // Optional: display fallback UI or show user-facing error state
             setMovies([]);
             setTotalPages(1);
-            setCurrentPage(1);
             setPageRangeStart(1);
         } finally {
             setIsLoading(false);
@@ -258,9 +233,9 @@ const Movies = () => {
             const updatedRegion = localStorage.getItem("region") || "Global";
             if (updatedRegion !== selectedRegion) {
                 setSelectedRegion(updatedRegion);
-                setCurrentPage(1);
-                localStorage.setItem("currentPage", 1);
-                fetchMovies(selectedGenre, 1);
+                const storedPage = parseInt(localStorage.getItem("currentPage"), 10);
+                const pageToSet = !isNaN(storedPage) && storedPage > 0 ? storedPage : 1;
+                fetchMovies(selectedGenre, pageToSet);
             }
         };
     
@@ -278,8 +253,6 @@ const Movies = () => {
             if (event.key === "region") {
                 const updatedRegion = event.newValue || "Global";
                 setSelectedRegion(updatedRegion);
-                setCurrentPage(1);
-                localStorage.setItem("currentPage", 1);
                 fetchMovies(selectedGenre, 1);
             }
         };
@@ -289,6 +262,10 @@ const Movies = () => {
             window.removeEventListener("storage", handleStorageChange);
         };
     }, [selectedGenre, fetchMovies]);
+
+    // useEffect(() => {
+    //     localStorage.setItem("currentPage", currentPage);
+    // }, [currentPage]);
 
     useEffect(() => {
         if (movies.length > 0) {
@@ -355,11 +332,40 @@ const Movies = () => {
         setIsLoadingGenres(false);
     }, []);
 
+    useEffect(() => {
+        const storedPage = parseInt(localStorage.getItem("currentPage"), 10) || 1;
+        setCurrentPage(storedPage); // Ensure state reflects localStorage value
+    }, []);
+    
+    useEffect(() => {
+        localStorage.setItem("currentPage", currentPage); // Save currentPage to localStorage
+    }, [currentPage]);
+
     const formatRuntime = (minutes) => {
         if (!minutes || isNaN(minutes)) return "";
         const hrs = Math.floor(minutes / 60);
         const mins = minutes % 60;
         return `${hrs}h ${mins}m`;
+    };
+
+    useEffect(() => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const page = parseInt(urlParams.get("page"), 10) || 1;
+        setCurrentPage(page);
+    }, [location.search]); // This listens for changes in the URL query
+    
+    useEffect(() => {
+        // Fetch movies when currentPage changes
+        fetchMovies(selectedGenre, currentPage);
+    }, [currentPage, selectedGenre]); // Fetch movies whenever currentPage or selectedGenre changes
+    
+    const handlePageChange = (page) => {
+        setCurrentPage(page);
+        // Update the URL with the new page number
+        const urlParams = new URLSearchParams(window.location.search);
+        urlParams.set("page", page);
+        window.history.replaceState(null, "", "?" + urlParams.toString());
+        fetchMovies(selectedGenre, page); // Fetch new page of movies when the page changes
     };
 
     return (
@@ -513,36 +519,37 @@ const Movies = () => {
                 </AnimatePresence>
                 )}
                 {(totalPages > 1 || movies.length > 0) && (
-                    <div className="pagination-controls">
-                        <button
-                            onClick={() => fetchMovies(selectedGenre, currentPage - 1)}
-                            disabled={currentPage === 1}
-                        >
-                            <FaChevronLeft />
-                        </button>
 
-                        {[...Array(Math.min(5, totalPages - pageRangeStart + 1))].map((_, index) => {
-                            const page = pageRangeStart + index;
-                            return (
-                                <motion.button
-                                    key={page}
-                                    whileHover={{ scale: 1.05 }}
-                                    whileTap={{ scale: 0.95 }}
-                                    onClick={() => fetchMovies(selectedGenre, page)}
-                                    className={currentPage === page ? "active-page" : ""}
-                                >
-                                    {page}
-                                </motion.button>
-                            );
-                        })}
+<div className="pagination-controls">
+      <button
+        onClick={() => handlePageChange(currentPage - 1)}
+        disabled={currentPage === 1}
+      >
+        <FaChevronLeft />
+      </button>
 
-                        <button
-                            onClick={() => fetchMovies(selectedGenre, currentPage + 1)}
-                            disabled={currentPage >= totalPages}
-                        >
-                            <FaChevronRight />
-                        </button>
-                    </div>
+      {[...Array(Math.min(5, totalPages - pageRangeStart + 1))].map((_, index) => {
+        const page = pageRangeStart + index;
+        return (
+          <motion.button
+            key={page}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={() => handlePageChange(page)}
+            className={currentPage === page ? "active-page" : ""}
+          >
+            {page}
+          </motion.button>
+        );
+      })}
+
+      <button
+        onClick={() => handlePageChange(currentPage + 1)}
+        disabled={currentPage >= totalPages}
+      >
+        <FaChevronRight />
+      </button>
+    </div>
                 )}
             </div>
         </div>

@@ -9,7 +9,7 @@ import React, {
 import { Helmet } from "react-helmet-async";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { LuDownload } from "react-icons/lu";
-import { FaStar, FaCalendar, FaClock, FaLanguage } from "react-icons/fa";
+import { FaStar, FaCalendar, FaClock, FaLanguage, FaArrowLeft } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
 import { getFromCache, setToCache } from "../../utils/cache";
 import movieDownloadLinks from "../../utils/movieDownloadLinks";
