@@ -488,8 +488,6 @@ const LandingPage = () => {
                                                     onError={(e) => {
                                                     e.target.src = fallbackImage;
                                                     }}
-                                                    width="250"
-                                                    height="375"
                                                     style={{ objectFit: "cover" }}
                                                     loading="lazy"
                                                     decoding="async"
@@ -500,8 +498,6 @@ const LandingPage = () => {
                                                 src={fallbackImage}
                                                 className="movie-card-img"
                                                 alt="Default movie poster"
-                                                width="250"
-                                                height="375"
                                                 style={{ objectFit: "cover" }}
                                                 />
                                             )}
