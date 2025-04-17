@@ -17,11 +17,6 @@ export default defineConfig(({ mode }) => {
     optimizeDeps: {
       include: ['react-slick'],
     },
-    define: {
-      'process.env': Object.fromEntries(
-        Object.entries(env).map(([key, val]) => [key, JSON.stringify(val)])
-      ),
-    },
     build: {
       outDir: 'dist',
     },
