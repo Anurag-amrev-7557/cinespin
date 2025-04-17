@@ -329,7 +329,7 @@ const LandingPage = () => {
                             lazyPreloadPrevNext={true}
                             modules={[Navigation, Autoplay]}
                             breakpoints={{
-                                393: {
+                                451: {
                                   slidesPerView: 3,
                                 }, 
                                 0: {
@@ -488,8 +488,8 @@ const LandingPage = () => {
                                                     onError={(e) => {
                                                     e.target.src = fallbackImage;
                                                     }}
-                                                    width="250"
-                                                    height="375"
+                                                    width="150"
+                                                    height="275"
                                                     style={{ objectFit: "cover" }}
                                                     loading="lazy"
                                                     decoding="async"
