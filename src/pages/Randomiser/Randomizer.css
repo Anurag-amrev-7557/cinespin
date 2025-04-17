@@ -470,7 +470,7 @@
   } 
 
   .randomizer  .movie-poster {
-    width: 22vw !important;
+    width: 22vw;
     margin-bottom: 2rem;
     border-radius: 1.5rem;
     height: 33vw;
@@ -516,6 +516,11 @@
     background: white;
     filter: blur(var(--blur));
     z-index: -1;
+  }
+
+  .download-container {
+    display: flex;
+    align-items: center;
   }
   
   .randomizer .loader::after {
@@ -593,4 +598,142 @@
         justify-content: center;
         align-items: center;
     }
+}
+
+@media (max-width: 450px) {
+
+    .genre-title-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        .genre-title {
+            font-size: 5vw;
+
+            p {
+                display: none;
+            }
+        }
+    }
+    .randomizer .genre-container {
+        margin-top: 1vw;
+        gap: 3vw;
+    }
+
+    .randomizer .genre {
+        font-size: 3.3vw;
+        padding: 3vw 13vw;
+        margin-bottom: 2vw;
+    }
+
+    .randomizer-button {
+        padding: 3.5vw 3vw;
+        font-size: 3.5vw;
+    }
+
+    .randomizer .movie-content {
+        display: flex;
+        position: relative;
+        flex-direction: column;
+        overflow: hidden;
+        margin-top: 20vw;
+    }
+
+    .randomizer .similar-list {
+        height: auto;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+    }
+
+    .randomizer .movie-info {
+        height: auto;
+    }
+
+    .randomizer .movie-info h1 {
+        line-height: unset;
+        font-size: 7.5vw;
+    }
+
+    .randomizer .movie-meta {
+        font-size: 3.5vw;
+        gap: 5vw;
+        margin-top: 4vw;
+    }
+
+    .randomizer .movie-genres {
+        gap: 3vw;
+        margin-top: 6vw;
+        overflow-x: auto;
+    }
+
+    .randomizer .genre-tag {
+        font-size: 3.5vw;
+        padding: 1vw 3vw;
+    }
+
+    .randomizer .movie-overview h2, .randomizer .similar-movies h2 {
+        font-size: 4.5vw;
+        margin-top: 4vw;
+    }
+
+    .randomizer .similar-movies h2 {
+        margin-top: 2vw;
+    }
+
+    .randomizer .movie-overview p {
+        font-size: 3.8vw;
+    }
+
+    .randomizer .trailer-button {
+        font-size: 4vw;
+        padding: 2vw 4vw;
+    }
+
+    .randomizer .download-button {
+        padding: 1.55vw 4vw;
+    }
+
+    .randomizer .similar-movie img{
+        width: 35vw;
+        height: 53vw;
+    }
+
+    .randomizer .similar-list {
+        gap: 3vw;
+    }
+
+    .randomizer .similar-movies span{
+        display: none;
+    }
+
+    .randomizer .movie-title {
+        width: 45vw;
+    }
+
+    .download-container {
+        gap: 2vw;
+    }
+
+    .randomizer .movie-poster {
+        width: 40vw; 
+        height: auto;
+        margin-bottom: 2vw;
+    }
+
+    .randomizer .random-image {
+        width: 40vw;
+        height: auto;
+    }
+
+    .download-container {
+        gap: 2vw;
+    }
+
+    .download-button svg {
+        font-size: 4vw;
+    }
+
+    .randomizer .loader {
+        bottom: 20vw;
+    }
+    
 }

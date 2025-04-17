@@ -369,7 +369,7 @@ const Randomizer = () => {
         <div className="genre-title-container">
           <div className="genre-title">
             Genres
-            <p>﹙Choose one genre﹚</p>
+            <p>&nbsp;&nbsp;Choose one genre</p>
           </div>
         </div>
         <motion.div className="genre-container" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} {...bounceAnimation}>
@@ -455,7 +455,8 @@ const Randomizer = () => {
               <motion.div className="movie-overview" {...bounceAnimation}>
                 <h2>Overview</h2>
                 <p>{truncateOverview(content.overview)}</p>
-                {content.videos?.results?.length > 0 && (
+                <div className="download-container">
+                                    {content.videos?.results?.length > 0 && (
                   <button
                     onClick={openTrailer}
                     ref={trailerButtonRef}
@@ -484,6 +485,7 @@ const Randomizer = () => {
                         <span><LuDownload /></span>&nbsp; Download
                     </motion.a>
                   )}
+                </div>
               </motion.div>
 
               {content.similar?.results && content.similar.results.length > 0 && (

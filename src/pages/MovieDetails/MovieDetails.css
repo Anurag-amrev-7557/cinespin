@@ -481,6 +481,7 @@ body {
         gap: 3vw;
         margin-top: 6vw;
         overflow-x: auto;
+        width: 100vw;
     }
 
     .genre-tag {
