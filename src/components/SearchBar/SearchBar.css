@@ -435,4 +435,8 @@
         width: 29vw;
         top: 9%;
     }
+}  @media (max-width: 450px) {
+    .navbar-search {
+        display: none;
+    }
 }

@@ -488,7 +488,7 @@ const LandingPage = () => {
                                                     onError={(e) => {
                                                     e.target.src = fallbackImage;
                                                     }}
-                                                    width="150"
+                                                    width="100"
                                                     height="275"
                                                     style={{ objectFit: "cover" }}
                                                     loading="lazy"

@@ -19,6 +19,7 @@ const Navbar = () => {
   const location = useLocation();
   const navbarRef = useRef();
   const popupRef = useRef();
+  const searchBarRef = useRef();
   const [isVisible, setIsVisible] = useState(false);
   const [activeItem, setActiveItem] = useState("Movies");
   const [selectedRegion, setSelectedRegion] = useState(() => localStorage.getItem("region") || "Global");
@@ -28,6 +29,8 @@ const Navbar = () => {
   );
   const { user, logout, auth, loading } = useAuth();
   const [showDropdown, setShowDropdown] = useState(false);
+  const [showSearchBar, setShowSearchBar] = useState(false);
+  const [searchInput, setSearchInput] = useState("");
 
   const handleRegionChange = (region) => {
     setSelectedRegion(region);
@@ -45,6 +48,9 @@ const Navbar = () => {
   const handleClickOutside = (event) => {
     if (popupRef.current && !popupRef.current.contains(event.target)) {
       setIsPopupOpen(false);
+    }
+    if (searchBarRef.current && !searchBarRef.current.contains(event.target)) {
+      setShowSearchBar(false);
     }
   };
 
@@ -101,6 +107,15 @@ const Navbar = () => {
 
   return (
     <nav className={`navbar ${isVisible ? "fade-in" : "fade-out"}`} ref={navbarRef}>
+
+      <div className="menu-button">
+        <button className="menu-icon-button">
+          <svg xmlns="http://www.w3.org/2000/svg" height="22" width="22" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M3 6h18v2H3V6zm0 5h18v2H3v-2zm0 5h18v2H3v-2z" />
+          </svg>
+        </button>
+      </div>
+      <div className="gap"></div>
       <div
         className="navbar-logo"
         onClick={() => {
@@ -217,14 +232,58 @@ const Navbar = () => {
               whileTap={{ scale: 0.65, transition: { duration: 0.1 } }}
             >
             <span>Sign In</span>
-            <svg width="15px" height="10px" viewBox="0 0 13 10">
-              <path d="M1,5 L11,5"></path>
-              <polyline points="8 1 12 5 8 9"></polyline>
-            </svg>
+              <svg width="15px" height="10px" viewBox="0 0 13 10">
+                <path d="M1,5 L11,5"></path>
+                <polyline points="8 1 12 5 8 9"></polyline>
+              </svg>
             </motion.button>
           )}
         </div>
+        <div className="mobile-icons">
+          <button className="search-icon-button" onClick={() => setShowSearchBar(prev => !prev)}>
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-search-icon lucide-search" aria-hidden="true">
+                <circle cx="11" cy="11" r="8"/>
+                <path d="m21 21-4.3-4.3"/>
+            </svg>
+          </button>
+          <button className="hamburger-icon-button">
+            <svg xmlns="http://www.w3.org/2000/svg" height="20" width="20" viewBox="0 0 20 20" fill="currentColor">
+              <path d="M2.5 15h15v-1.5h-15V15Zm0-4.25h15v-1.5h-15v1.5Zm0-4.25h15V5h-15v1.5Z" />
+            </svg>
+          </button>
+        </div>
       </div>
+        <AnimatePresence>
+          {showSearchBar && (
+            <motion.div
+              className="navbar-searchbar"
+              ref={searchBarRef}
+              initial={{ opacity: 0, y: -20, scaleY: 0.95 }}
+              animate={{ opacity: 1, y: 0, scaleY: 1 }}
+              exit={{ opacity: 0, y: -20, scaleY: 0.95, transition: { duration: 0.35, ease: [0.25, 0.1, 0.25, 1] } }}
+              transition={{ duration: 0.25, ease: [0.25, 0.1, 0.25, 1] }}
+              style={{ position: "absolute", top: 56, left: 0, right: 0, zIndex: 1000, transformOrigin: "top" }}
+            >
+            {searchInput ? (
+              <span onClick={() => setSearchInput("")} className="clear-search-button" aria-label="Clear search">
+                Clear
+              </span>
+            ) : (
+              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-search-icon lucide-search" aria-hidden="true">
+                <circle cx="11" cy="11" r="8"/>
+                <path d="m21 21-4.3-4.3"/>
+              </svg>
+            )}
+            <input
+              type="text"
+              placeholder="Search"
+              className="navbar-search-input"
+              value={searchInput}
+              onChange={(e) => setSearchInput(e.target.value)}
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
     </nav>
   );
 };

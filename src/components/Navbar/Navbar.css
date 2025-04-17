@@ -2,6 +2,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  width: 100%;
+  position: relative;
   padding: 1.4vw 1.5vw;
 }
 
@@ -699,6 +701,102 @@
   transform: scale(0.95);
 }
 
+.mobile-icons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2vw;
+}
+
+.search-icon-button {
+  border: none;
+  background-color: transparent;
+  outline: none;
+  color: #fff;
+}
+
+.menu-button {
+  display: flex;
+  align-items: center;
+}
+
+.menu-icon-button {
+  background: none;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  padding: 5px;
+}
+
+.mobile-icons {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.search-icon-button,
+.hamburger-icon-button {
+  background: none;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  padding: 5px;
+}
+
+.navbar-searchbar {
+  width: 100%;
+  position: absolute;
+  bottom: -25vw;
+  left: 0;
+  padding: 5vw;
+  background-color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 1rem;
+  z-index: 99999;
+}
+
+.navbar-search-input {
+  width: 100%;
+  font-weight: 600;
+  padding: 3vw;
+  font-size: 16px; /* Prevent mobile zoom */
+  border-radius: 0.5rem;
+  border: 1px solid #ccc;
+  outline: none;
+}
+
+.navbar-search-input:focus {
+  outline: 2px solid #fff;
+  box-shadow: none;
+}
+
+.navbar-search-input::placeholder {
+  font-weight: 600;
+  font-size: 4vw;
+}
+
+.navbar-searchbar svg, .navbar-searchbar span {
+  position: absolute;
+  right: 8vw;
+}
+
+.dark-mode .navbar-searchbar {
+  background-color: #1C242B;
+}
+
+.dark-mode .navbar-search-input {
+  background-color: #343b45;
+  color: #fff;
+  border: 1px
+}
+
+@media (min-width: 451px) {
+  .mobile-icons {
+    display: none;
+  }
+}
 
 @media (max-width: 1366px) {
   .profile-picture {
@@ -737,5 +835,20 @@
 
   .region-span {
     font-size: 0.9vw;
+  }
+}
+
+@media (max-width: 450px) {
+  .navbar-logo a{
+    gap: 2vw;
+    font-size: 5vw;
+  }
+
+  .navbar-logo img {
+    width: 4.5vw;
+  }
+
+  .theme-switch, .signin-button, .region-span, .popup{
+    display: none;
   }
 }
