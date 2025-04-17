@@ -446,7 +446,7 @@ body {
         position: relative;
         flex-direction: column;
         overflow: hidden;
-        margin-top: 55vw;
+        margin-top: 50vw;
     }
 
     .cast-list {
@@ -474,12 +474,12 @@ body {
     .movie-meta {
         font-size: 3.5vw;
         gap: 5vw;
-        margin-top: 3vw;
+        margin-top: 4vw;
     }
 
     .movie-genres {
         gap: 3vw;
-        margin-top: 3vw;
+        margin-top: 6vw;
         overflow-x: auto;
     }
 
@@ -490,7 +490,11 @@ body {
 
     .movie-overview h2, .similar-movies h2, .movie-cast h2 {
         font-size: 4.5vw;
-        margin-top: 3vw;
+        margin-top: 4vw;
+    }
+
+    .similar-movies h2 {
+        margin-top: 2vw;
     }
 
     .movie-overview p {
