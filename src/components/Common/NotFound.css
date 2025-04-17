@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@800&family=Roboto:wght@100;300&display=swap');
 
 :root {
-  --button: rgba(255, 255, 255);
+  --button: rgba(255, 255, 255, 0.6);
   --button-color: hsl(0, 0%, 4%);
   --shadow: hsl(0, 0%, 0%);
   --bg: hsl(53, 0%, 45%);
@@ -38,7 +38,7 @@
     
 body {
   display: flex;
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Biotif', sans-serif;
   flex-direction: column;
   align-items: center;
   justify-content: center;
@@ -52,10 +52,11 @@ button {
   text-decoration: none;
   background: var(--button);
   color: var(--button-color);
-  padding: 1vw 4vw;
+  padding: 0.8vw 2vw;
   border-radius: 4rem;
-  font-size: 0.875vw;
+  font-size: 1vw;
   letter-spacing: 0.05rem;
+  border: none;
   cursor: pointer;
 }
 
@@ -139,5 +140,22 @@ h1::after {
   100% {
     --swing-y: -100;
     --swing-x: 100;
+  }
+}
+
+@media (max-width: 450px) {
+  .not-found h1 {
+    font-size: 30vw;
+    margin-top: 50vw;
+  }
+
+  .not-found .info {
+    font-size: 3vw;
+  }
+
+  .not-found button {
+    font-size: 3.7vw;
+    border: none;
+    padding: 1.5vw 5vw;
   }
 }
