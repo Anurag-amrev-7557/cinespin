@@ -885,10 +885,10 @@
   width: 8.7vw;
   height: 8.7vw;
   border-radius: 50%;
-  /* background-image: url("/download.svg"); */
   background-size: cover;
   background-position: center;
   border: none;
+  transform: all 0.2s ease-out;
 }
 
 .hamburger-icon-button.active {

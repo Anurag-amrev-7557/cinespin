@@ -279,7 +279,8 @@ const MovieDetails = () => {
                                 ▶ &nbsp;Watch
                             </motion.a>
                         )}
-
+                        
+                        <div className="download-container">
                         {movie.videos?.results?.length > 0 && (
                             <motion.button onClick={openTrailer} ref={trailerButtonRef} className="trailer-button" animate={{ opacity: 1, y: 0 }} whileTap={{ scale: 0.8 }}>
                                 ▶ &nbsp;Watch Trailer
@@ -291,6 +292,7 @@ const MovieDetails = () => {
                                 <LuDownload />&nbsp; Download
                             </motion.a>
                         )}
+                        </div>
                     </motion.div>
 
                     {movie.similar?.results?.length > 0 && (

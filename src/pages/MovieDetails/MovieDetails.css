@@ -270,6 +270,11 @@ body {
     background-color: #b81d24;
 }
 
+.download-container {
+    display: flex;
+    align-items: center;
+}
+
 .movie-details-container .download-button{
     font-family: "Biotif", sans-serif;
     padding: 0.47vw 1vw;
@@ -432,5 +437,99 @@ body {
     .cast-member img, .similar-movie img {
         width: 7vw;
         height: 11vw;
+    }
+}
+
+@media (max-width: 450px) {
+    .movie-content {
+        display: flex;
+        position: relative;
+        flex-direction: column;
+        overflow: hidden;
+        margin-top: 55vw;
+    }
+
+    .cast-list {
+        height: auto;
+        flex-wrap: nowrap;
+        overflow-x: scroll;
+        width: 100vw;
+    }
+
+    .movie-cast, .similar-list {
+        height: auto;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+    }
+
+    .movie-info {
+        height: auto;
+    }
+
+    .movie-info h1 {
+        line-height: unset;
+        font-size: 7.5vw;
+    }
+
+    .movie-meta {
+        font-size: 3.5vw;
+        gap: 5vw;
+        margin-top: 3vw;
+    }
+
+    .movie-genres {
+        gap: 3vw;
+        margin-top: 3vw;
+        overflow-x: auto;
+    }
+
+    .genre-tag {
+        font-size: 3.5vw;
+        padding: 1vw 3vw;
+    }
+
+    .movie-overview h2, .similar-movies h2, .movie-cast h2 {
+        font-size: 4.5vw;
+        margin-top: 3vw;
+    }
+
+    .movie-overview p {
+        font-size: 3.8vw;
+    }
+
+    .movie-details-container .trailer-button {
+        font-size: 4vw;
+        padding: 2vw 4vw;
+    }
+
+    .movie-details-container .download-button {
+        padding: 1.55vw 4vw;
+    }
+
+    .similar-movie img, .cast-member img {
+        width: 35vw;
+        height: 53vw;
+    }
+
+    .similar-list, .cast-list {
+        gap: 3vw;
+    }
+
+    .similar-movies span{
+        display: none;
+    }
+
+    .movie-cast span  {
+        font-size: 4vw;
+        width: 100% !important;
+        max-width: 35vw;
+    }
+
+    .movie-details-container .movie-title {
+        width: 45vw;
+    }
+
+    .download-container {
+        gap: 2vw;
     }
 }

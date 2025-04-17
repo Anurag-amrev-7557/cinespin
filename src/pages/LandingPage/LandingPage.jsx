@@ -18,6 +18,7 @@ import "swiper/css/navigation";
 import _ from "lodash"; // Import lodash for shuffling
 import { Pagination, Navigation, Autoplay } from "swiper/modules"; 
 import { useNavigate, useLocation } from "react-router-dom";
+import Skeleton from "react-loading-skeleton";
 
 const SkeletonCard = React.memo(() => (
     <div className="skeleton-card">
@@ -66,7 +67,8 @@ const LandingPage = () => {
     const [popularMovies, setPopularMovies] = useState([]);
     const [selectedGenreId, setSelectedGenreId] = useState(localStorage.getItem("selectedGenre") || genres[0].id); // Default to first genre
     const swipersRef = useRef({});
-    const [isMobile, setIsMobile] = useState(false);
+    const [isMobile, setIsMobile] = useState(window.innerWidth <= 450);
+    const [isTablet, setIsTablet] = useState(window.innerWidth < 768);
     const observerRef = useRef(null);
     const focusRef = useRef(null);
 
@@ -294,16 +296,17 @@ const LandingPage = () => {
         return ` 〡 ${hrs}h ${mins}m`;
     };
 
+
     useEffect(() => {
-    const handleResize = () => {
-        setIsMobile(window.innerWidth < 768); // Customize breakpoint
-    };
-
-    handleResize(); // Initial check
-    window.addEventListener('resize', handleResize);
-
-    return () => window.removeEventListener('resize', handleResize);
-    }, []);
+        const handleResize = () => {
+          setIsMobile(window.innerWidth <= 450);
+          setIsTablet(window.innerWidth < 768);
+        };
+      
+        handleResize(); // Initial check
+        window.addEventListener("resize", handleResize);
+        return () => window.removeEventListener("resize", handleResize);
+      }, []);
 
     return (
         <>
@@ -314,12 +317,18 @@ const LandingPage = () => {
         <div className="landing-container">
                 <motion.div className="landing-item-container" {...bounceAnimation}>
                     {popularMovies.length === 0 ? (
-                        <div className="skeleton-big-card-container">
-                            <SkeletonBigCard {...bounceAnimation}/>
-                            <SkeletonBigCard {...bounceAnimation}/>
-                            <SkeletonBigCard {...bounceAnimation}/>
-                        </div>
-                    ) : (
+                            <div className="skeleton-big-card-container">
+                            {isMobile ? (
+                                <SkeletonBigCard {...bounceAnimation} />
+                            ) : (
+                                <>
+                                <SkeletonBigCard {...bounceAnimation} />
+                                <SkeletonBigCard {...bounceAnimation} />
+                                <SkeletonBigCard {...bounceAnimation} />
+                                </>
+                            )}
+                            </div>
+                        ) : (
                         <Swiper
                             slidesPerView={3}
                             spaceBetween={20}
