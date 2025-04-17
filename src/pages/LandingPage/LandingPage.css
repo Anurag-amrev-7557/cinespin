@@ -404,11 +404,6 @@
         margin-left: 0;
     }
 
-    .landing-container .swiper-navigation-container {
-        width: 5.4vw !important;
-        margin-right: 0 !important;
-    }
-
     .movie-card-img, .movie-card-image {
         border-radius: 1.3rem !important;
     }
@@ -450,12 +445,6 @@
     .landing-container .movie-details {
         font-size: 0.9vw !important;
         margin-left: 0;
-        display: none !important;
-    }
-
-    .landing-container .swiper-navigation-container {
-        width: 5.4vw !important;
-        margin-right: 0 !important;
         display: none !important;
     }
 
@@ -531,5 +520,13 @@
 
     .landing-container .skeleton-big-img {
         border-radius: 0.7rem;
+    }
+
+    .landing-container .swiper-navigation-container {
+        display: flex;
+        font-size: 4vw;
+        justify-content: end;
+        width: 21vw;
+        display: none;
     }
 }

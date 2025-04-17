@@ -273,12 +273,12 @@ const MovieDetails = () => {
                     <motion.div className="movie-overview" variants={animations.fadeUp}>
                         <h2>Overview</h2>
                         <p>{truncateOverview(movie.overview)}</p>
-
+{/* 
                         {streamLink && (
                             <motion.a href={streamLink} target="_blank" rel="noopener noreferrer" className="trailer-button" animate={{ opacity: 1, y: 0 }} whileTap={{ scale: 0.8 }}>
                                 ▶ &nbsp;Watch
                             </motion.a>
-                        )}
+                        )} */}
                         
                         <div className="download-container">
                         {movie.videos?.results?.length > 0 && (
