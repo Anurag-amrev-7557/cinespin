@@ -243,9 +243,9 @@ body {
 }
 
 .movie-details-container .trailer-button {
-    display: inline;
+    display: flex;
     margin-top: 1rem;
-    padding: 0.6vw 1vw;
+    padding: 0.44vw 1vw;
     font-size: 0.83vw;
     align-items: center;
     justify-content: center;
@@ -266,7 +266,7 @@ body {
     font-size: 1vw;
 }
 
-.movie-details-container .trailer-button:hover, .download-button:hover {
+.movie-details-container .trailer-button:hover {
     background-color: #b81d24;
 }
 
@@ -506,10 +506,6 @@ body {
     .movie-details-container .trailer-button {
         font-size: 4vw;
         padding: 2vw 4vw;
-    }
-
-    .movie-details-container .download-button {
-        padding: 1.55vw 4vw;
     }
 
     .similar-movie img, .cast-member img {

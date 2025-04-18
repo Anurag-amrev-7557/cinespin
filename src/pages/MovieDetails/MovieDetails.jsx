@@ -11,6 +11,8 @@ import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { LuDownload } from "react-icons/lu";
 import { FaStar, FaCalendar, FaClock, FaLanguage, FaArrowLeft } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
+import { FiDownload } from "react-icons/fi";
+import { IoPlay } from "react-icons/io5";
 import { getFromCache, setToCache } from "../../utils/cache";
 import movieDownloadLinks from "../../utils/movieDownloadLinks";
 import streamDownloadLinks from "../../utils/streamLinks";
@@ -281,17 +283,17 @@ const MovieDetails = () => {
                         )} */}
                         
                         <div className="download-container">
-                        {movie.videos?.results?.length > 0 && (
-                            <motion.button onClick={openTrailer} ref={trailerButtonRef} className="trailer-button" animate={{ opacity: 1, y: 0 }} whileTap={{ scale: 0.8 }}>
-                                ▶ &nbsp;Watch Trailer
-                            </motion.button>
-                        )}
+                            {movie.videos?.results?.length > 0 && (
+                                <motion.a onClick={openTrailer} ref={trailerButtonRef} className="trailer-button" animate={{ opacity: 1, y: 0 }} whileTap={{ scale: 0.8 }}>
+                                    <span><IoPlay /></span> &nbsp;Watch Trailer
+                                </motion.a>
+                            )}
 
-                        {downloadLink && (
-                            <motion.a href={downloadLink} target="_blank" rel="noopener noreferrer" className="trailer-button download-button" animate={{ opacity: 1, y: 0 }} whileTap={{ scale: 0.8 }}>
-                                <LuDownload />&nbsp; Download
-                            </motion.a>
-                        )}
+                            {downloadLink && (
+                                <motion.a href={downloadLink} target="_blank" rel="noopener noreferrer" className="trailer-button" animate={{ opacity: 1, y: 0 }} whileTap={{ scale: 0.8 }}>
+                                    <span><FiDownload /></span>&nbsp; Download
+                                </motion.a>
+                            )}
                         </div>
                     </motion.div>
 
