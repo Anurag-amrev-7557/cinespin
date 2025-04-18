@@ -1,5 +1,6 @@
 import re
 import time
+import tempfile
 import json
 import os
 import threading
@@ -233,6 +234,9 @@ def process_article_with_retry(link):
         options = webdriver.ChromeOptions()
         options.add_argument("--headless=new")
         options.add_argument("--start-maximized")
+        options.add_argument("--no-sandbox")
+        options.add_argument("--disable-dev-shm-usage")
+        options.add_argument(f"--user-data-dir={tempfile.mkdtemp()}")
         options.add_experimental_option("excludeSwitches", ["enable-automation"])
         options.add_experimental_option('useAutomationExtension', False)
         options.add_argument("--disable-blink-features=AutomationControlled")
@@ -258,6 +262,9 @@ while True:
         options = webdriver.ChromeOptions()
         options.add_argument("--headless=new")
         options.add_argument("--start-maximized")
+        options.add_argument("--no-sandbox")
+        options.add_argument("--disable-dev-shm-usage")
+        options.add_argument(f"--user-data-dir={tempfile.mkdtemp()}")
         options.add_experimental_option("excludeSwitches", ["enable-automation"])
         options.add_experimental_option('useAutomationExtension', False)
         options.add_argument("--disable-blink-features=AutomationControlled")
