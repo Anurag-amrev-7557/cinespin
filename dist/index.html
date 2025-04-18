@@ -1,29 +1,99 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/png" href="/logo.png" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5" />
+    <meta name="description" content="CineSpin - Discover top movies, series, and originals. Get personalized recommendations on what to watch next!" />
+    <meta name="theme-color" content="#0d0d0d" />
+    <meta name="color-scheme" content="dark light" />
+    <meta name="author" content="CineSpin Team" />
+    <meta name="robots" content="index, follow" />
 
-    <!-- Preconnect to TMDb API and image servers -->
+    <!-- Open Graph & Twitter -->
+    <meta property="og:title" content="CineSpin - Stream the Best, Forget the Rest" />
+    <meta property="og:description" content="Top picks in movies, series, and originals. Personalized just for you." />
+    <meta property="og:image" content="/preview.jpg" />
+    <meta property="og:url" content="https://cinespin.app" />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="CineSpin - Stream the Best, Forget the Rest" />
+    <meta name="twitter:description" content="Top picks in movies, series, and originals. Personalized just for you." />
+    <meta name="twitter:image" content="/preview.jpg" />
+    <meta name="twitter:url" content="https://cinespin.app" />
+
+    <!-- Icons & Manifest -->
+    <link rel="icon" href="/logo.webp" sizes="32x32" />
+    <link rel="apple-touch-icon" href="/logo.webp" />
+    <link rel="manifest" href="/assets/manifest-DKrEMRvl.json" />
+
+    <!-- Fonts and Preloads -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
     <link rel="preconnect" href="https://api.themoviedb.org" />
     <link rel="preconnect" href="https://image.tmdb.org" />
-    <link rel="preconnect" href="https://cdnjs.cloudflare.com" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
-
-    <!-- DNS Prefetch for faster domain resolution -->
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
     <link rel="dns-prefetch" href="https://api.themoviedb.org" />
     <link rel="dns-prefetch" href="https://image.tmdb.org" />
-    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com" />
-    <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" /></noscript>
 
-    <meta name="description" content="CineSpin - Discover top movies, series, and originals. Get personalized recommendations on what to watch next!">
-    <title>CineSpin - Spin the Reel, Find Your Feel!</title>
-    <script type="module" crossorigin src="/assets/index-Cfv4M4VP.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index-BSzCtOFO.css">
+    <title>CineSpin - Stream the Best, Forget the Rest</title>
+    <script type="module" crossorigin src="/assets/index-BGHZlZhX.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-DRP8KIZJ.css">
   </head>
   <body>
-    <div id="root"></div>
+    <noscript id="noscript-warning">
+      <section aria-label="JavaScript required notice">
+        <strong>CineSpin requires JavaScript to function properly. Please enable it in your browser settings.</strong>
+      </section>
+    </noscript>
+
+    <main id="root" role="main" aria-label="CineSpin Main Application"></main>
+
+    <!-- App Script -->
+
+    <!-- Cloudinary -->
+    <script src="https://widget.cloudinary.com/v2.0/global/all.js" async loading="lazy"></script>
+
+    <!-- Service Worker -->
+    <script>
+      window.addEventListener('load', () => {
+        if ('serviceWorker' in navigator) {
+          fetch('/service-worker.js', { method: 'HEAD' }).then(res => {
+            if (res.ok && res.headers.get('content-type')?.includes('javascript')) {
+              navigator.serviceWorker.register('/service-worker.js')
+                .then(reg => console.log('✅ Service Worker registered:', reg.scope))
+                .catch(err => console.error('❌ Service Worker registration failed:', err));
+            } else {
+              console.warn('⚠️ Invalid or missing service worker script.');
+            }
+          });
+        }
+      });
+    </script>
+
+    <!-- Web Vitals -->
+    <script src="https://cdn.jsdelivr.net/npm/web-vitals@3.1.0/dist/web-vitals.iife.js"></script>
+    <script>
+      if (window.webVitals) {
+        webVitals.getCLS(console.log);
+        webVitals.getFID(console.log);
+        webVitals.getLCP(console.log);
+      } else {
+        console.error("Web Vitals library not loaded.");
+      }
+    </script>
+
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-XXXXXXX-X"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { dataLayer.push(arguments); }
+      gtag('js', new Date());
+      gtag('config', 'UA-XXXXXXX-X');
+    </script>
   </body>
 </html>
