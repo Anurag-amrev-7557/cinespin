@@ -26,32 +26,31 @@ const ForgotPassword = lazy(() => import('./pages/Auth/ForgotPassword/ForgotPass
 const UpdateProfile = lazy(() => import('./pages/Auth/UpdateProfile/UpdateProfile.jsx'));
 const NotFound = lazy(() => import('./components/Common/NotFound.jsx'));
 
-// 🧭 Central route configuration with optimized path management
-const routesConfig = [
-  { path: '/', element: <LandingPage /> },
-  { path: '/watch', element: <Randomizer /> },
-  { path: '/movies', element: <Movies /> },
-  { path: '/movie/:id', element: <MovieDetails /> },
-  { path: '/series/:id', element: <SeriesDetails /> },
-  { path: '/cast/:id', element: <CastDetails /> },
-  { path: '/series', element: <Series /> },
-  { path: '/sports', element: <Sports /> },
-  { path: '/login', element: <Login /> },
-  { path: '/register', element: <Register /> },
-  { path: '/profile', element: <ProtectedRoute><Profile /></ProtectedRoute> },
-  { path: '/change-password', element: <ProtectedRoute><PasswordChange /></ProtectedRoute> },
-  { path: '/forgot-password', element: <ForgotPassword /> },
-  { path: '/update-profile', element: <ProtectedRoute><UpdateProfile /></ProtectedRoute> },
-];
 
-// Function for handling Suspense and Fallback
-const renderRouteWithFallback = (element) => (
-  <Suspense fallback={<div className="loader"></div>}>
-    <ErrorBoundary>{element}</ErrorBoundary>
-  </Suspense>
-);
+const Layout = React.memo(() => {
+  const routesConfig = useMemo(() => [
+    { path: '/', element: <LandingPage /> },
+    { path: '/watch', element: <Randomizer /> },
+    { path: '/movies', element: <Movies /> },
+    { path: '/movie/:id', element: <MovieDetails /> },
+    { path: '/series/:id', element: <SeriesDetails /> },
+    { path: '/cast/:id', element: <CastDetails /> },
+    { path: '/series', element: <Series /> },
+    { path: '/sports', element: <Sports /> },
+    { path: '/login', element: <Login /> },
+    { path: '/register', element: <Register /> },
+    { path: '/profile', element: <ProtectedRoute><Profile /></ProtectedRoute> },
+    { path: '/change-password', element: <ProtectedRoute><PasswordChange /></ProtectedRoute> },
+    { path: '/forgot-password', element: <ForgotPassword /> },
+    { path: '/update-profile', element: <ProtectedRoute><UpdateProfile /></ProtectedRoute> },
+  ], []);
 
-const Layout = () => {
+  const renderRouteWithFallback = (element) => (
+    <Suspense fallback={<div className="loader"></div>}>
+      <ErrorBoundary>{element}</ErrorBoundary>
+    </Suspense>
+  );
+
   return (
     <>
       <SearchBar />
@@ -70,7 +69,7 @@ const Layout = () => {
       </div>
     </>
   );
-};
+});
 
 const App = () => {
   return (

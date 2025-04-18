@@ -60,6 +60,37 @@ module.exports = {
             rangeRequests: true,
           },
         },
+        {
+          urlPattern: ({ request }) => request.destination === 'document',
+          handler: 'NetworkFirst',
+          options: {
+            cacheName: 'html-cache',
+            expiration: {
+              maxEntries: 50,
+              maxAgeSeconds: 60 * 60 * 24 * 7, // 7 days
+            },
+            cacheableResponse: {
+              statuses: [0, 200],
+            },
+          },
+        },
+        {
+          urlPattern: ({ request }) => request.destination === 'image',
+          handler: 'CacheFirst',
+          options: {
+            cacheName: 'offline-images',
+            expiration: {
+              maxEntries: 50,
+              maxAgeSeconds: 60 * 60 * 24 * 60, // 60 days
+            },
+            cacheableResponse: {
+              statuses: [0, 200],
+            },
+            fetchOptions: {
+              mode: 'no-cors',
+            },
+          },
+        },
       ],
     }),
   ],
