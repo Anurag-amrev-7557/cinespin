@@ -10751,7 +10751,7 @@ const movieDownloadLinks = {
   "Companion": "https://new17.gdtot.dad/file/1985097068",
   "Logout": "https://new17.gdtot.dad/file/2193512354",
   "iHostage": "https://new17.gdtot.dad/file/2293343404",
-  "Kesari Chapter 2": "https://new17.gdtot.dad/file/2262857187",
+  "Kesari Chapter 2: The Untold Story of Jallianwala Bagh": "https://new17.gdtot.dad/file/2262857187",
   "Sikandar": "https://new17.gdtot.dad/file/3017216759",
   "Jaat": "https://new17.gdtot.dad/file/3142059253",
   "L2: Empuraan": "https://new17.gdtot.dad/file/4464567709",
