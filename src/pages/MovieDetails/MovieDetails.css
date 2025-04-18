@@ -504,8 +504,12 @@ body {
     }
 
     .movie-details-container .trailer-button {
+        font-size: 3.3vw;
+        padding: 1.3vw 4vw;
+    }
+
+    .movie-details-container .trailer-button span {
         font-size: 4vw;
-        padding: 2vw 4vw;
     }
 
     .similar-movie img, .cast-member img {

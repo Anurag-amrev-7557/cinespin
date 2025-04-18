@@ -51,11 +51,18 @@ const MovieDetails = () => {
     const cacheKey = useMemo(() => `movie-details-${id}`, [id]);
 
     const openTrailer = () => {
-        const rect = trailerButtonRef.current?.getBoundingClientRect();
-        if (rect) {
-            setTrailerPosition({ x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 });
+        if (window.innerWidth <= 450) {
+            const key = movie?.videos?.results?.[0]?.key;
+            if (key) {
+                window.open(`https://www.youtube.com/watch?v=${key}`, "_blank");
+            }
+        } else {
+            const rect = trailerButtonRef.current?.getBoundingClientRect();
+            if (rect) {
+                setTrailerPosition({ x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 });
+            }
+            setShowTrailer(true);
         }
-        setShowTrailer(true);
     };
 
     const closeTrailer = useCallback(() => setShowTrailer(false), []);
