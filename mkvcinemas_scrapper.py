@@ -15,7 +15,7 @@ from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.service import Service
 
 movie_links_cache = {}
-js_path = "/src/utils/movieDownloadLinks.js"
+js_path = os.path.join(os.path.dirname(__file__), "src", "utils", "movieDownloadLinks.js")
 
 # Load existing file into the cache
 if os.path.exists(js_path):
