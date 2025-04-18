@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5" />
     <meta name="description" content="CineSpin - Discover top movies, series, and originals. Get personalized recommendations on what to watch next!" />
     <meta name="theme-color" content="#0d0d0d" />
+    <meta name="color-scheme" content="dark light" />
     <meta name="author" content="CineSpin Team" />
     <meta name="robots" content="index, follow" />
 
@@ -21,9 +22,10 @@
     <meta name="twitter:image" content="/preview.jpg" />
     <meta name="twitter:url" content="https://cinespin.app" />
 
-    <!-- Icons -->
+    <!-- Icons & Manifest -->
     <link rel="icon" href="/logo.webp" sizes="32x32" />
     <link rel="apple-touch-icon" href="/logo.webp" />
+    <link rel="manifest" href="/manifest.json" />
 
     <!-- Fonts and Preloads -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -35,12 +37,13 @@
     <link rel="dns-prefetch" href="https://api.themoviedb.org" />
     <link rel="dns-prefetch" href="https://image.tmdb.org" />
     <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" /></noscript>
 
     <title>CineSpin - Stream the Best, Forget the Rest</title>
   </head>
   <body>
-    <noscript>
+    <noscript id="noscript-warning">
       <section aria-label="JavaScript required notice">
         <strong>CineSpin requires JavaScript to function properly. Please enable it in your browser settings.</strong>
       </section>
@@ -52,7 +55,7 @@
     <script type="module" src="/src/main.jsx" defer></script>
 
     <!-- Cloudinary -->
-    <script src="https://widget.cloudinary.com/v2.0/global/all.js" async></script>
+    <script src="https://widget.cloudinary.com/v2.0/global/all.js" async loading="lazy"></script>
 
     <!-- Service Worker -->
     <script>
@@ -74,9 +77,13 @@
     <!-- Web Vitals -->
     <script src="https://cdn.jsdelivr.net/npm/web-vitals@3.1.0/dist/web-vitals.iife.js"></script>
     <script>
-      webVitals.getCLS(console.log);
-      webVitals.getFID(console.log);
-      webVitals.getLCP(console.log);
+      if (window.webVitals) {
+        webVitals.getCLS(console.log);
+        webVitals.getFID(console.log);
+        webVitals.getLCP(console.log);
+      } else {
+        console.error("Web Vitals library not loaded.");
+      }
     </script>
 
     <!-- Google Analytics -->
