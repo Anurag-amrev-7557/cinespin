@@ -21,7 +21,7 @@ const Profile = () => {
       setUserDetails({
         name: user.displayName || "User",
         email: user.email || "Not available",
-        photoURL: user.photoURL || "/profile.webp", // Add a default profile image
+        photoURL: user.photoURL || "/download.svg", // Add a default profile image
         watchHistory: user.watchHistory || [], // Assuming watch history is saved in the user's profile
       });
     }
@@ -76,7 +76,7 @@ const Profile = () => {
             <motion.div
               className="profile-image"
               style={{
-                backgroundImage: `url(${userDetails.photoURL || '/profile.webp'})`,
+                backgroundImage: `url(${userDetails.photoURL || '/download.svg'})`,
               }}
               {...bounceAnimation}
             ></motion.div>

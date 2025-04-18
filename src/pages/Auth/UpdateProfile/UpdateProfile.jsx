@@ -173,7 +173,7 @@ const UpdateProfile = () => {
               {...bounceAnimation}
             >
                 <motion.img
-                  src={photoURL || "/profile.webp"}
+                  src={photoURL || "/download.svg"}
                   alt="Profile Preview"
                   style={{
                     width: "100%",
@@ -183,7 +183,7 @@ const UpdateProfile = () => {
                   }}
                   onError={(e) => {
                     e.target.onerror = null;
-                    e.target.src = "/profile.webp";
+                    e.target.src = "/download.svg";
                   }}
                   {...bounceAnimation}
                 />
