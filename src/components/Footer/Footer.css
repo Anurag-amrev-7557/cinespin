@@ -1,78 +1,102 @@
-/* Footer Styling */
 .footer {
-  color: #fff;
-  text-align: center;
-  padding: 20px 0;
-  font-size: 14px;
-  position: relative;
-  bottom: 0;
-  width: 100%;
-}
-
-/* Footer Content */
-.footer-content {
   display: flex;
   flex-direction: column;
+}
+
+.upper-footer {
+  display: flex;
+  justify-content: space-between;
+  padding: 1vw 2vw;
+  border: none;
+  border-radius: 1rem;
+  background: linear-gradient(90deg,rgba(27, 34, 42, 0.2) 0%, rgba(21, 29, 44, 0.3));
+}
+
+.upper-heading {
+  font-size: 2vw;
+  display: flex;
+  color: rgba(255,255,255, 0.7);
   align-items: center;
-  gap: 10px;
 }
 
-.footer-content a {
-  color: white;
-  text-decoration: none;
-}
-
-/* Footer Links */
-.footer-links {
+.form-group {
   display: flex;
-  gap: 15px;
-  margin: 10px 0;
-}
+  flex-direction: column;
+  gap: 0.4vw !important;
 
-.footer-links a {
-  color: white;
-  text-decoration: none;
-  font-weight: 500;
-  transition: color 0.3s ease-in-out;
-}
-
-.footer-links a:hover {
-  color: #e67e22;
-}
-
-/* Social Media Icons */
-.footer-social {
-  display: flex;
-  gap: 15px;
-  margin-top: 10px;
-}
-
-.footer-social a {
-  color: #fff;
-  font-size: 18px;
-  transition: transform 0.3s ease-in-out, color 0.3s;
-}
-
-.footer-social a:hover {
-  transform: translateY(-3px);
-  color: #3498db;
-}
-
-/* Footer Text */
-.footer-text {
-  font-size: 12px;
-  opacity: 0.7;
-  margin-top: 10px;
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-  .footer-links {
-      flex-direction: column;
-      gap: 8px;
+  label {
+    font-size: 1vw;
   }
 
-  .footer-social {
-      gap: 10px;
+  input {
+    outline: none;
+    border: none;
+    background-color: transparent;
+    padding: 0.5vw 0.9vw;
+    border-radius: 2rem;
+    font-family: "Biotif", sans-serif;
+    font-size: 16px;
+    border: 1px solid rgba(255,255,255, 0.5);
+  }
+
+  input::placeholder {
+    font-size: 14px;
+    color: rgba(255,255,255, 0.7);
+    font-family: "Biotif", sans-serif;
+  }
+}
+
+.submit-btn {
+  padding: 0;
+  margin: 0;
+  outline: none;
+  padding: 0.6vw 2vw;
+  background-color: transparent;
+  border: 1px solid rgba(255,255,255, 0.5);
+  border-radius: 2rem;
+  font-family: "Biotif", sans-serif;
+  font-size: 0.9vw;
+  cursor: pointer;
+}
+
+.footer-form {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3vw;
+}
+
+.lower-footer {
+  display: flex;
+  justify-content: space-between;
+  padding: 1vw 0;
+}
+
+.lower-div {
+  padding: 1vw;
+  border: none;
+  border-radius: 1rem;
+  width: 19.3%;
+  background: linear-gradient(90deg,rgba(27, 34, 42, 0.2) 0%, rgba(21, 29, 44, 0.3));
+
+  .footer-heading {
+    font-size: 1vw;
+    padding: 0.7vw 1vw;
+    border-bottom: 0.1px solid rgba(255, 255, 255, 0.4);
+    margin-bottom: 0.5vw;
+  }
+
+
+  ul {
+    list-style: none;
+    color: rgba(255,255,255, 0.7);
+
+    li {
+      padding: 0.3vw 1vw;
+    }
+
+    li a {
+      text-decoration: none;
+    }
   }
 }

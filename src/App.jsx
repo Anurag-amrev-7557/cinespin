@@ -1,5 +1,5 @@
 import './App.css';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext.jsx';
 import ReactDOM from 'react-dom/client';
 import { HelmetProvider } from 'react-helmet-async';
@@ -45,6 +45,7 @@ const routesConfig = [
 ];
 
 const Layout = React.memo(() => {
+  const location = useLocation();
   const renderRouteWithFallback = (element) => (
     <Suspense fallback={<div className="loader"></div>}>
       <ErrorBoundary>{element}</ErrorBoundary>
@@ -65,7 +66,7 @@ const Layout = React.memo(() => {
             />
           ))}
           <Route path="*" element={renderRouteWithFallback(<NotFound />)} />
-        </Routes>
+        </Routes> 
       </div>
     </>
   );
