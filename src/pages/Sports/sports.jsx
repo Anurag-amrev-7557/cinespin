@@ -154,7 +154,7 @@ const Movies = () => {
                                     <motion.img
                                         loading="lazy"
                                         decoding="async"
-                                        src="/ipl.jpg"
+                                        src="/ipl.webp"
                                         className="sports-poster"
                                         initial={{ opacity: 0, scale: 0.95 }}
                                         animate={{ opacity: 1, scale: 1 }}
