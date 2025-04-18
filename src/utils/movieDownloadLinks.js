@@ -7905,7 +7905,7 @@ const movieDownloadLinks = {
   "Raaz 3": "https://vcloud.lol/jbuapckfuec5jg1",
   "Force": "https://new17.gdtot.dad/file/11542978893",
   "Student of the Year": "https://new17.gdtot.dad/file/4345027554",
-  "Gangs of Wasseypur {Part 1 & 2}": "https://new17.gdtot.dad/file/44824365726",
+  "Gangs of Wasseypur - Part 1": "https://new17.gdtot.dad/file/44824365726",
   "Jannat 2": "https://new17.gdtot.dad/file/29308288076",
   "Saheb Biwi Aur Gangster": "https://new17.gdtot.dad/file/8465944601",
   "Ferrari Ki Sawaari": "https://new17.gdtot.dad/file/4130591498",
