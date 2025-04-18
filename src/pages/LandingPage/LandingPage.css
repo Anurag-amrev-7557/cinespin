@@ -266,7 +266,7 @@
     padding: 10px;
     border-radius: 1.5rem;
     animation: pulse 1.5s infinite;
-    z-index: 500000;
+    z-index: 5;
 }
 
 .skeleton-big-img {
