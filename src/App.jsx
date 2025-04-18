@@ -1,5 +1,5 @@
 import './App.css';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext.jsx';
 import ReactDOM from 'react-dom/client';
 import { HelmetProvider } from 'react-helmet-async';
@@ -26,25 +26,25 @@ const ForgotPassword = lazy(() => import('./pages/Auth/ForgotPassword/ForgotPass
 const UpdateProfile = lazy(() => import('./pages/Auth/UpdateProfile/UpdateProfile.jsx'));
 const NotFound = lazy(() => import('./components/Common/NotFound.jsx'));
 
+// 🧭 Central route configuration with optimized path management
+const routesConfig = [
+  { path: '/', element: <LandingPage /> },
+  { path: '/watch', element: <Randomizer /> },
+  { path: '/movies', element: <Movies /> },
+  { path: '/movie/:id', element: <MovieDetails /> },
+  { path: '/series/:id', element: <SeriesDetails /> },
+  { path: '/cast/:id', element: <CastDetails /> },
+  { path: '/series', element: <Series /> },
+  { path: '/sports', element: <Sports /> },
+  { path: '/login', element: <Login /> },
+  { path: '/register', element: <Register /> },
+  { path: '/profile', element: <ProtectedRoute><Profile /></ProtectedRoute> },
+  { path: '/change-password', element: <ProtectedRoute><PasswordChange /></ProtectedRoute> },
+  { path: '/forgot-password', element: <ForgotPassword /> },
+  { path: '/update-profile', element: <ProtectedRoute><UpdateProfile /></ProtectedRoute> },
+];
 
 const Layout = React.memo(() => {
-  const routesConfig = useMemo(() => [
-    { path: '/', element: <LandingPage /> },
-    { path: '/watch', element: <Randomizer /> },
-    { path: '/movies', element: <Movies /> },
-    { path: '/movie/:id', element: <MovieDetails /> },
-    { path: '/series/:id', element: <SeriesDetails /> },
-    { path: '/cast/:id', element: <CastDetails /> },
-    { path: '/series', element: <Series /> },
-    { path: '/sports', element: <Sports /> },
-    { path: '/login', element: <Login /> },
-    { path: '/register', element: <Register /> },
-    { path: '/profile', element: <ProtectedRoute><Profile /></ProtectedRoute> },
-    { path: '/change-password', element: <ProtectedRoute><PasswordChange /></ProtectedRoute> },
-    { path: '/forgot-password', element: <ForgotPassword /> },
-    { path: '/update-profile', element: <ProtectedRoute><UpdateProfile /></ProtectedRoute> },
-  ], []);
-
   const renderRouteWithFallback = (element) => (
     <Suspense fallback={<div className="loader"></div>}>
       <ErrorBoundary>{element}</ErrorBoundary>
@@ -71,23 +71,21 @@ const Layout = React.memo(() => {
   );
 });
 
+// App Component with React Router and Error Boundary
 const App = () => {
   return (
     <HelmetProvider>
       <Router>
         <AuthProvider>
-          <Layout />
+          <ErrorBoundary>
+            <Layout />
+          </ErrorBoundary>
         </AuthProvider>
       </Router>
     </HelmetProvider>
   );
 };
 
-// Create root with error boundary for the app-wide unhandled errors
-ReactDOM.createRoot(document.getElementById('root')).render(
-  <ErrorBoundary>
-    <App />
-  </ErrorBoundary>
-);
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
 
 export default App;
