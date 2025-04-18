@@ -8,6 +8,8 @@
     <meta name="theme-color" content="#0d0d0d" />
     <meta name="author" content="CineSpin Team" />
     <meta name="robots" content="index, follow" />
+
+    <!-- Open Graph & Twitter -->
     <meta property="og:title" content="CineSpin - Stream the Best, Forget the Rest" />
     <meta property="og:description" content="Top picks in movies, series, and originals. Personalized just for you." />
     <meta property="og:image" content="/preview.jpg" />
@@ -19,63 +21,69 @@
     <meta name="twitter:image" content="/preview.jpg" />
     <meta name="twitter:url" content="https://cinespin.app" />
 
-    <link rel="icon" href="/logo.webp" type="image/png" sizes="32x32" />
+    <!-- Icons -->
+    <link rel="icon" href="/logo.webp" sizes="32x32" />
     <link rel="apple-touch-icon" href="/logo.webp" />
 
-    <!-- Performance optimizations -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="preconnect" href="https://api.themoviedb.org" crossorigin />
-    <link rel="preconnect" href="https://image.tmdb.org" crossorigin />
+    <!-- Fonts and Preloads -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link rel="preconnect" href="https://api.themoviedb.org" />
+    <link rel="preconnect" href="https://image.tmdb.org" />
     <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
     <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
     <link rel="dns-prefetch" href="https://api.themoviedb.org" />
     <link rel="dns-prefetch" href="https://image.tmdb.org" />
-    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" />
-
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet" />
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
 
     <title>CineSpin - Stream the Best, Forget the Rest</title>
   </head>
   <body>
     <noscript>
-      <strong>CineSpin requires JavaScript to function properly. Please enable it in your browser settings.</strong>
+      <section aria-label="JavaScript required notice">
+        <strong>CineSpin requires JavaScript to function properly. Please enable it in your browser settings.</strong>
+      </section>
     </noscript>
-    <div id="root" role="main"></div>
 
-    <!-- Main application script -->
+    <main id="root" role="main" aria-label="CineSpin Main Application"></main>
+
+    <!-- App Script -->
     <script type="module" src="/src/main.jsx" defer></script>
 
-    <!-- Cloudinary widget script -->
-    <script src="https://widget.cloudinary.com/v2.0/global/all.js" type="text/javascript" async></script>
-    
+    <!-- Cloudinary -->
+    <script src="https://widget.cloudinary.com/v2.0/global/all.js" async></script>
+
+    <!-- Service Worker -->
     <script>
-      if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-          fetch('/service-worker.js', { method: 'HEAD' }).then(response => {
-            if (response.ok && response.headers.get('content-type')?.includes('javascript')) {
+      window.addEventListener('load', () => {
+        if ('serviceWorker' in navigator) {
+          fetch('/service-worker.js', { method: 'HEAD' }).then(res => {
+            if (res.ok && res.headers.get('content-type')?.includes('javascript')) {
               navigator.serviceWorker.register('/service-worker.js')
-                .then(registration => console.log('Service Worker registered:', registration))
-                .catch(err => console.error('Service Worker registration failed:', err));
+                .then(reg => console.log('✅ Service Worker registered:', reg.scope))
+                .catch(err => console.error('❌ Service Worker registration failed:', err));
             } else {
-              console.warn('Service Worker script not found or has incorrect MIME type');
+              console.warn('⚠️ Invalid or missing service worker script.');
             }
           });
-        });
-      }
+        }
+      });
     </script>
+
+    <!-- Web Vitals -->
     <script src="https://cdn.jsdelivr.net/npm/web-vitals@3.1.0/dist/web-vitals.iife.js"></script>
     <script>
       webVitals.getCLS(console.log);
       webVitals.getFID(console.log);
       webVitals.getLCP(console.log);
     </script>
+
+    <!-- Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-XXXXXXX-X"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
-      function gtag() {
-        dataLayer.push(arguments);
-      }
+      function gtag() { dataLayer.push(arguments); }
       gtag('js', new Date());
       gtag('config', 'UA-XXXXXXX-X');
     </script>
