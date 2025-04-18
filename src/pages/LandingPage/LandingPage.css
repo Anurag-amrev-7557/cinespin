@@ -373,6 +373,7 @@
 .movie-card-scroll-container {
     display: flex;
     overflow-x: auto;
+    scrollbar-width: none;
     gap: 0vw;
     padding: 1rem 0;
     padding-left: 0 !important;
