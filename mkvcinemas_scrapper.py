@@ -11,7 +11,7 @@ from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.chrome.service import Service
-import chromedriver_autoinstaller
+from webdriver_manager.chrome import ChromeDriverManager
 
 movie_links_cache = {}
 js_path = "/src/utils/movieDownloadLinks.js"
@@ -38,7 +38,7 @@ if os.path.exists(js_path):
 def process_article(article_link, driver, actions):
     try:
         driver.execute_script("window.open(arguments[0], '_blank');", article_link)
-        time.sleep(2)
+        time.sleep(1)
         new_tabs = driver.window_handles
         driver.switch_to.window(new_tabs[-1])
         print("Switched to new article tab.")
@@ -69,10 +69,10 @@ def process_article(article_link, driver, actions):
             driver.switch_to.frame(iframes[0])
             print("Switched into iframe.")
             try:
-                wait = WebDriverWait(driver, 3)
+                wait = WebDriverWait(driver, 5)
                 download_button = wait.until(EC.element_to_be_clickable((By.CLASS_NAME, "btn")))
                 driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", download_button)
-                time.sleep(3)
+                time.sleep(1)
                 download_button.click()
                 print("Clicked on download button inside iframe.")
             except Exception as e:
@@ -82,7 +82,7 @@ def process_article(article_link, driver, actions):
         else:
             print("No iframes found on the page.")
 
-        WebDriverWait(driver, 3).until(
+        WebDriverWait(driver, 5).until(
             EC.presence_of_element_located((By.CSS_SELECTOR, ".download-links-div .downloads-btns-div"))
         )
         download_btn_containers = driver.find_elements(By.CSS_SELECTOR, ".download-links-div .downloads-btns-div")
@@ -92,7 +92,7 @@ def process_article(article_link, driver, actions):
                 btn = container.find_element(By.CSS_SELECTOR, ".btn")
                 print("Found a download button.")
                 driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", btn)
-                time.sleep(2)
+                time.sleep(1)
                 driver.execute_script("arguments[0].click();", btn)
                 print("Clicked on download button.")
                 clicked = True
@@ -120,12 +120,6 @@ def process_article(article_link, driver, actions):
         driver.switch_to.window(new_download_tab)
 
         # Look for h4 elements and find the one that says "1080p" and not "HEVC"
-        try:
-            WebDriverWait(driver, 5).until(
-                EC.presence_of_element_located((By.CSS_SELECTOR, ".download-links-div h4"))
-            )
-        except Exception as e:
-            print("Timed out waiting for download links to load:", e)
         h4s = driver.find_elements(By.CSS_SELECTOR, ".download-links-div h4")
         if not h4s:
             print("No h4 elements found in .download-links-div")
@@ -154,9 +148,9 @@ def process_article(article_link, driver, actions):
                                 print(f"Error reading button text: {btn_err}")
 
                         if btn_to_click:
-                            WebDriverWait(driver, 3).until(EC.element_to_be_clickable(btn_to_click))
+                            WebDriverWait(driver, 5).until(EC.element_to_be_clickable(btn_to_click))
                             driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", btn_to_click)
-                            time.sleep(3)
+                            time.sleep(1)
                             driver.execute_script("arguments[0].click();", btn_to_click)
                             print('Clicked on "🚀 G-Drive [No-Login]" button using JavaScript')
                         else:
@@ -172,9 +166,9 @@ def process_article(article_link, driver, actions):
                                     print(f"Error reading button text: {btn_err}")
 
                             if btn_to_click:
-                                WebDriverWait(driver, 3).until(EC.element_to_be_clickable(btn_to_click))
+                                WebDriverWait(driver, 5).until(EC.element_to_be_clickable(btn_to_click))
                                 driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", btn_to_click)
-                                time.sleep(2)
+                                time.sleep(1)
                                 driver.execute_script("arguments[0].click();", btn_to_click)
                                 print('Clicked on "🚀 GDFlix" button using JavaScript')
                             else:
@@ -189,15 +183,15 @@ def process_article(article_link, driver, actions):
                                         print(f"Error reading button text: {btn_err}")
 
                                 if btn_to_click:
-                                    WebDriverWait(driver, 3).until(EC.element_to_be_clickable(btn_to_click))
+                                    WebDriverWait(driver, 5).until(EC.element_to_be_clickable(btn_to_click))
                                     driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", btn_to_click)
-                                    time.sleep(0.5)
+                                    time.sleep(1)
                                     driver.execute_script("arguments[0].click();", btn_to_click)
                                     print('Clicked on "Direct-[Drive-link]" button using JavaScript')
                                 else:
                                     print('No "🚀 Direct-[Drive-link]" button found either.')
 
-                        time.sleep(0.5)  # Allow time for the new tab to open
+                        time.sleep(1)  # Allow time for the new tab to open
                         all_tabs = driver.window_handles
                         new_download_tab = all_tabs[-1]
                         log_tab = all_tabs[-2]
@@ -238,14 +232,14 @@ def process_article_with_retry(link):
     try:
         options = webdriver.ChromeOptions()
         options.add_argument("--headless=new")
-        options.add_argument("--disable-gpu")
-        options.add_argument("--window-size=1920,1080")
-        options.add_argument("--no-sandbox")
-        options.add_argument("--disable-dev-shm-usage")
-        options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36")
+        options.add_argument("--start-maximized")
+        options.add_experimental_option("excludeSwitches", ["enable-automation"])
+        options.add_experimental_option('useAutomationExtension', False)
+        options.add_argument("--disable-blink-features=AutomationControlled")
+        prefs = {"profile.managed_default_content_settings.images": 2}
+        options.add_experimental_option("prefs", prefs)
 
-        chromedriver_autoinstaller.install()
-        service = Service()  # It will now auto-use the installed path
+        service = Service(ChromeDriverManager().install())
         driver = webdriver.Chrome(service=service, options=options)
         driver.execute_script("Object.defineProperty(navigator, 'webdriver', {get: () => undefined})")
 
@@ -256,8 +250,10 @@ def process_article_with_retry(link):
         print(f"Failed to process {link}: {e}")
 
 # --------- Step 1: Open the Main Site ---------
-page = 1
+page = 1  #--- hollywood 120
 while True:
+    if page > 1:
+        break
     try:
         options = webdriver.ChromeOptions()
         options.add_argument("--headless=new")
@@ -274,7 +270,7 @@ while True:
 
         url = f"https://movies4u.rentals/page/{page}/" if page > 1 else "https://movies4u.rentals/"
         driver.get(url)
-        time.sleep(2)
+        time.sleep(1)
 
         driver.execute_script("""
             const overlays = document.querySelectorAll('[class*="overlay"], [id*="overlay"], .popup, .modal');
@@ -289,7 +285,7 @@ while True:
         article_links = []
         for article in articles:
             try:
-                WebDriverWait(driver, 3).until(EC.element_to_be_clickable(article))
+                WebDriverWait(driver, 5).until(EC.element_to_be_clickable(article))
                 article_link = article.find_element(By.TAG_NAME, "a").get_attribute("href")
                 article_links.append(article_link)
             except Exception as e:
