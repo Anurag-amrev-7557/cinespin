@@ -1,4 +1,4 @@
-FROM python:3.13-alphine
+FROM python:3.13-alpine
 
 # Install dependencies
 RUN apk add --no-cache \
