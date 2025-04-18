@@ -482,7 +482,7 @@ const Movies = () => {
                                 <picture>
                                     {movie.poster_path && (
                                         <source
-                                            srcSet={`https://image.tmdb.org/t/p/w500${movie.poster_path.endsWith(".webp") ? movie.poster_path : `${movie.poster_path}`}`}
+                                            srcSet={`https://image.tmdb.org/t/p/w500${movie.poster_path.endsWith(".webp") ? movie.poster_path : `${movie.poster_path}.webp`}`}
                                             type="image/webp"
                                         />
                                     )}

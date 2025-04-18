@@ -363,7 +363,7 @@ const LandingPage = () => {
                                         <motion.div className="landing-item-poster" whileHover={{scale: 1.02, y: -3}} {...bounceAnimation}>
                                             <picture>
                                                 <source
-                                                    srcSet={`https://image.tmdb.org/t/p/w780${movie.backdrop_path || movie.poster_path}`}
+                                                    srcSet={`https://image.tmdb.org/t/p/w780${movie.backdrop_path || movie.poster_path}.webp`}
                                                     type="image/webp"
                                                 />
                                                 <img
@@ -487,7 +487,7 @@ const LandingPage = () => {
                                             {movie.poster_path ? (
                                                 <picture>
                                                 <source
-                                                    srcSet={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+                                                    srcSet={`https://image.tmdb.org/t/p/w500${movie.poster_path}.webp`}
                                                     type="image/webp"
                                                 />
                                                 <img
@@ -561,11 +561,11 @@ const LandingPage = () => {
                                             {movie.poster_path ? (
                                                 <picture>
                                                 <source
-                                                    srcSet={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+                                                    srcSet={`https://image.tmdb.org/t/p/w500${movie.poster_path}.webp`}
                                                     type="image/webp"
                                                 />
                                                 <img
-                                                    src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+                                                    src={`https://image.tmdb.org/t/p/w500${movie.poster_path}.webp`}
                                                     className="movie-card-img"
                                                     alt={movie.title}
                                                     onError={(e) => {
