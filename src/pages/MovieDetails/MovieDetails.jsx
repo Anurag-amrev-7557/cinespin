@@ -51,12 +51,17 @@ const MovieDetails = () => {
     const cacheKey = useMemo(() => `movie-details-${id}`, [id]);
 
     const openTrailer = () => {
-        if (window.innerWidth <= 450) {
-            const key = movie?.videos?.results?.[0]?.key;
-            if (key) {
-                window.open(`https://www.youtube.com/watch?v=${key}`, "_blank");
-            }
-        } else {
+    if (window.innerWidth <= 450) {
+        const key = movie?.videos?.results?.[0]?.key;
+        if (key) {
+            const youtubeAppUrl = `youtube://www.youtube.com/watch?v=${key}`;
+            const fallbackUrl = `https://www.youtube.com/watch?v=${key}`;
+            const win = window.open(youtubeAppUrl, "_blank");
+            setTimeout(() => {
+                if (win) win.location.href = fallbackUrl;
+            }, 500);
+        }
+    } else {
             const rect = trailerButtonRef.current?.getBoundingClientRect();
             if (rect) {
                 setTrailerPosition({ x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 });
