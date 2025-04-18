@@ -120,7 +120,6 @@ body {
 
 .movie-overview {
     margin-bottom: 1.5rem;
-    width: 90vw;
 }
 
 .movie-overview h2 {
@@ -537,5 +536,9 @@ body {
 
     .download-container {
         gap: 2vw;
+    }
+
+    .movie-overview {
+        width: 90vw;
     }
 }
