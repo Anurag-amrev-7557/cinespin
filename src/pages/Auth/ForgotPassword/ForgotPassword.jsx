@@ -40,7 +40,7 @@ const ForgotPassword = () => {
       <title>Reset Your Password - Cinespin</title>
       <meta name="description" content="Enter your email to receive a password reset link and regain access to your Cinespin account." />
     </Helmet>
-    <div className="login-container">
+    <div className="forgot-container">
       <div className="form-section">
         <div className="form-content">
           <h1 className="form-title">

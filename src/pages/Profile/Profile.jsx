@@ -63,7 +63,7 @@ const Profile = () => {
         </Helmet>
       )}
       <div className="form-section">
-        <motion.div className="form-content" {...bounceAnimation} style={{ margin: "10%"}}>
+        <motion.div className="form-content" {...bounceAnimation}>
           <motion.h1 className="form-title" {...bounceAnimation}>
             <motion.span className="text-highlight" {...bounceAnimation}>Profile</motion.span>{" "}
             <motion.span className="text-muted" {...bounceAnimation}>Page</motion.span>
@@ -77,18 +77,6 @@ const Profile = () => {
               className="profile-image"
               style={{
                 backgroundImage: `url(${userDetails.photoURL || '/profile.webp'})`,
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-                width: "7vw",
-                height: "7vw",
-                borderRadius: "50%",
-                overflow: "hidden",
-                border: "3px solid #ccc",
-                cursor: "pointer",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                transition: "border-color 0.3s ease",
               }}
               {...bounceAnimation}
             ></motion.div>

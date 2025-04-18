@@ -90,7 +90,7 @@ const handleSubmit = async (e) => {
         <title>Change Password - Cinespin</title>
         <meta name="description" content="Secure your Cinespin account by updating your password. Enter your current and new password to continue." />
       </Helmet>
-      <div className="login-container">
+      <div className="change-container">
         <div className="form-section">
           <motion.div className="form-content" {...bounceAnimation}>
             <motion.h1 className="form-title"  {...bounceAnimation}>

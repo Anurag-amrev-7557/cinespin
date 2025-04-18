@@ -10,17 +10,18 @@
 }
 
 .form-section {
-  width: 50vw !important;
+  width: 50vw;
   background-color: rgba(17, 24, 39, 0.6);
-  padding: 2vw !important;
+  padding: 2vw;
   color: white;
+  overflow-y: auto;
 }
 
 .register-container .form-content {
   position: absolute;
   width: 30vw;
-  margin: 7vw 8vw !important;
-  transform: scale(1.07) !important;
+  margin: 7vw 8vw;
+  transform: scale(1.07);
 }
 
 .form-title {
@@ -82,7 +83,7 @@
 
 .submit-button {
   width: 6.667vw;
-  padding: 0.6vw 0.4vw !important;
+  padding: 0.6vw 0.4vw;
   background-color: #4b5563;
   color: white;
   border: none;
@@ -180,7 +181,7 @@ display: flex;
 align-items: center;
 justify-content: center;
 transition: all 0.2s ease-out;
-  cursor: pointer !important;
+  cursor: pointer;
 }
 
 .login-links span:hover {
@@ -189,8 +190,8 @@ color: #fff;
 
 @media (max-width: 1366px) {
   .register-container .form-content {
-    transform: scale(1) !important;
-    margin: 12vw 5vw !important;
+    transform: scale(1);
+    margin: 12vw 5vw;
     width: 40%;
   }
 
@@ -227,6 +228,82 @@ color: #fff;
   }
 
   .submit-button {
-    font-size: 1.1vw !important;
+    font-size: 1.1vw;
+  }
+}
+
+@media (max-width: 450px) {
+  .register-container .form-section {
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow-y: auto;
+  }
+
+  .register-container .form-content {
+    margin: 0;
+    margin-top: 25vw;
+    width: 90vw;
+    overflow-y: scroll;
+  }
+
+  .register-container .form-title {
+    font-size: 8vw;
+  }
+
+  .register-container .form-subtitle {
+    font-size: 4vw;
+  }
+
+  .register-container .form-group {
+    gap: 6vw;
+    overflow-y: auto;
+  }
+
+  .register-container .form-control {
+    gap: 2vw;
+  }
+
+  .register-container .form-control label {
+    font-size: 4vw;
+  }
+
+  .register-container .form-control input {
+    padding: 3vw;
+    font-size: 16px;
+  }
+
+  .register-container .form-control .password-toggle {
+    right: 3vw;
+
+    svg {
+      font-size: 4.5vw;
+    }
+  }
+
+  .register-container .checkbox-group {
+    font-size: 4vw;
+  }
+
+  .register-container .submit-container {
+    .submit-button {
+      font-size: 4vw;
+      width: 30vw;
+      padding: 2.5vw;
+      font-weight: 550;
+    }
+
+    .login-links {
+      gap: 5vw;
+    }
+
+    .login-links svg {
+      font-size: 6vw;
+    }
+  }
+
+  .register-container .form-links {
+    font-size: 4vw;
   }
 }

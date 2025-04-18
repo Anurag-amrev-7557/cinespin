@@ -1,6 +1,6 @@
 .profile-photo-wrapper {
     justify-content: start !important;
-    margin-top: 1.7vw!important;
+    margin-top: 1.7vw;
     display: flex;
     justify-content: center;
     margin-bottom: 1.7vw;
@@ -12,10 +12,22 @@
     height: 5.208vw;
     border-radius: 50%;
     margin-right: 1.4vw;
+    background-size: cover;
+    background-position: center;
+    width: 7vw;
+    height: 7vw;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 3px solid #ccc;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: border-color 0.3s ease;
   }
   
   .profile-info h1 {
-    font-size: 1.3vw !important;
+    font-size: 1.3vw;
     font-weight: 500;
     margin: 0;
   }
@@ -27,7 +39,7 @@
   
   .profile-info button {
     margin-top: 1.3vw;
-    padding: 0.55vw 1.3vw !important;
+    padding: 0.55vw 1.3vw;
     background-color: #4b5563;
     color: #fff;
     border: none;
@@ -86,7 +98,7 @@
   
   .profile-settings button {
     margin-top: 1.3vw;
-    padding: 0.55vw 1.3vw !important;
+    padding: 0.55vw 1.3vw;
     background-color: #4b5563;
     color: #fff;
     border: none;
@@ -111,18 +123,19 @@
     transform: translate(-1rem, -1rem);
   }
   
-  .form-section {
-    width: 50vw !important;
+  .login-container .form-section {
+    width: 100vw;
     background-color: rgba(17, 24, 39, 0.6);
-    padding: 1.7vw;
+    padding: 1.7vw 3vw;
     color: white;
+    align-items: center;
+    display: flex;
+
   }
   
-  .form-content {
-    position: absolute;
-    width: 30vw;
-    margin: 10% !important;
-    transform: scale(1.1) !important;
+  .login-container .form-content {
+    margin: 0;
+    overflow-y: scroll;
   }
   
   .form-title {
@@ -205,10 +218,72 @@
 
 @media (max-width: 1366px) {
    .form-content {
-      margin: 15% 8% !important;
+      margin: 15% 8%;
    }
 
    .form-title {
-    font-size: 2vw !important;
+    font-size: 2vw;
    }
+}
+
+@media (max-width: 450px) {
+  .form-section {
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .login-container .form-content {
+    margin: 0;
+  }
+
+  .profile-photo-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 5vw;
+    margin-top: 10vw;
+
+    .profile-image {
+      width: 28vw;
+      height: 28vw;
+    }
+  }
+
+  .profile-info {
+    h1 {
+      font-size: 6vw;
+    }
+
+    p {
+      font-size: 4vw;
+    }
+
+    .logout-button {
+      font-size: 4vw;
+      padding: 1.5vw 5vw;
+    }
+  }
+
+  .profile-content {
+    width: 90vw;
+    h2 {
+      font-size: 5vw;
+      margin-top: 5vw;
+    }
+
+     p{
+      font-size: 4vw;
+     }
+  }
+
+  .profile-settings button {
+    font-size: 4vw;
+    padding: 1.5vw 5vw;
+    margin-top: 3vw;
+  }
+
+  .login-container .form-title {
+    font-size: 7vw;
+  }
 }
