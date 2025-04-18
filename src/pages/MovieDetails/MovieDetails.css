@@ -277,12 +277,13 @@ body {
 
 .movie-details-container .download-button{
     font-family: "Biotif", sans-serif;
-    padding: 0.47vw 1vw;
+    padding: 0.45vw 1vw;
     background-color: rgba(255, 255, 255, 0.15);
     transform: translate(0, 0.22vw) !important;
     display: inline-flex;
     justify-content: center;
     align-items: center;
+    margin: 0.3vw 0.5vw 0 0;
 }
 
 .movie-details-container .download-button:hover {
