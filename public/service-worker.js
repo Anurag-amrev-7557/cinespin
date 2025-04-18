@@ -7,6 +7,10 @@ const PRECACHE_ASSETS = [
   '/index.html',
   '/logo.webp',
   '/manifest.json',
+  '/src/pages/Auth/Login/Login.jsx',
+  '/src/pages/Auth/Login/Login.css',
+  '/src/pages/Auth/Register/Register.jsx',
+  '/src/pages/Auth/Register/Register.css',
 ];
 
 // Install event - pre-cache static assets
