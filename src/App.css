@@ -54,6 +54,7 @@ body {
     background-image: url("/background.webp");
     background-position: center;
     transition: background 0.5s ease-in-out;
+    scrollbar-width: none;
 }
 
 body.transition {
@@ -86,6 +87,7 @@ body.dark-mode {
     0 40px 60px rgba(0, 0, 0, 0.25),
     0 0 80px rgba(0, 0, 0, 0.2),
     0 0 140px rgba(0, 0, 0, 0.1);
+    scrollbar-width: none;
 }
 
 .loader {
