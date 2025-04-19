@@ -50,8 +50,6 @@ const Navbar = () => {
     localStorage.setItem("region", region);
     setIsPopupOpen(false);
     window.dispatchEvent(new Event("regionChange"));
-    // Remove the reload
-    // window.location.reload();
   };
 
     // Fetch movies/series from TMDB API based on search input
@@ -60,7 +58,6 @@ const Navbar = () => {
         setSearchResults([]);
         return;
       }
-      const apiKey = "YOUR_TMDB_API_KEY"; // Replace with your TMDB API Key
       const url = `${TMDB_BASE_URL}/search/multi?query=${query}&api_key=${TMDB_API_KEY }&language=en-US`;
   
       try {
