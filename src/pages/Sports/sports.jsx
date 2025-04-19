@@ -147,6 +147,7 @@ const Movies = () => {
                                 layout
                                 className="sports-card"
                                 onClick={() => window.location.href = "https://user4580.ifrem.net/iframe/frame.php"}
+                                // onClick={() => navigate("/ipl-dashboard")}
                                 whileHover={{ scale: 1.03, y: -3, transition: { ease: "easeOut" } }}
                                 variants={movieCardVariant}
                             >

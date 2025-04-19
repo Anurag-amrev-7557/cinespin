@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@firebase/storage": "^0.13.7",
+    "@nivo/radar": "^0.88.0",
     "@studio-freight/lenis": "^1.0.42",
     "animate": "^1.0.0",
     "animate.css": "^4.1.1",

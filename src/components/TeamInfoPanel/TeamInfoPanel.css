@@ -1,0 +1,43 @@
+.team-info-panel {
+    background: rgba(30, 30, 47, 0.7);
+    backdrop-filter: blur(8px);
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    color: #fff;
+    margin-bottom: 2rem;
+  }
+  
+  .team-header {
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+  
+  .team-header h2 {
+    font-size: 2rem;
+    font-weight: bold;
+  }
+  
+  .team-header p {
+    font-size: 1rem;
+    color: #ccc;
+  }
+  
+  .team-squad h3 {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+  }
+  
+  .team-squad ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .team-squad li {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .team-squad li span {
+    color: #f0b90b;
+  }

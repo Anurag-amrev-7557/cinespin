@@ -14,7 +14,7 @@ from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 
 movie_links_cache = {}
-js_path = "/Users/anurag/Downloads/movieDownloadLinks.js"
+js_path = "/Users/anurag/Downloads/seriesDownloadLinks .js"
 
 # Load existing file into the cache
 if os.path.exists(js_path):
@@ -102,128 +102,34 @@ def process_article(article_link, driver, actions):
         if not clicked:
             raise Exception("No downloadable .btn found in .downloads-btns-div containers.")
 
-        driver.switch_to.default_content()  # Exit iframe if entered
+        time.sleep(2)
+        all_tabs = driver.window_handles
+        new_tab = all_tabs[-1]
+        driver.switch_to.window(new_tab)
+        final_url = driver.current_url
+        print(f"Final URL after download button click: {final_url}")
+
+        if content_name not in movie_links_cache:
+            with open(js_path, "r+", encoding="utf-8") as js_file:
+                content = js_file.read()
+                insert_index = content.rfind("};")
+                if insert_index != -1:
+                    updated_content = (
+                        content[:insert_index]
+                        + f'  "{content_name}": "{final_url}",\n'
+                        + content[insert_index:]
+                    )
+                    js_file.seek(0)
+                    js_file.write(updated_content)
+                    js_file.truncate()
+            movie_links_cache[content_name] = final_url
+            print(f"Updated movieDownloadLinks.js with {content_name}")
+        driver.close()
+        driver.switch_to.window(driver.window_handles[0])
     except Exception as e:
         print(f"Failed to click download button: {e}")
         raise
 
-    # Switch to the new tab that opens
-    all_tabs = driver.window_handles
-    new_download_tab = all_tabs[-1]
-    article_tab = all_tabs[-2]
-    driver.switch_to.window(new_download_tab)
-    print("Switched to newly opened download tab.")
-    
-    try:
-        driver.switch_to.window(article_tab)
-        driver.close()  # Close the article tab
-        driver.switch_to.window(new_download_tab)
-
-        # Look for h4 elements and find the one that says "1080p" and not "HEVC"
-        h4s = driver.find_elements(By.CSS_SELECTOR, ".download-links-div h4")
-        if not h4s:
-            print("No h4 elements found in .download-links-div")
-            return
-
-        for h4 in h4s:
-            try:
-                text = h4.text.strip()
-            except Exception as e:
-                print(f"Skipping an h4 element due to error: {e}")
-                continue
-            
-            if "1080p" in text and "HEVC" not in text:
-                try:
-                    container = h4.find_element(By.XPATH, "following-sibling::div[contains(@class, 'downloads-btns-div')]")
-                    btns = container.find_elements(By.CSS_SELECTOR, ".btn")
-                    print(f"Found {len(btns)} buttons under 1080p section.")
-                    if btns:
-                        btn_to_click = None
-                        for b in btns:
-                            try:
-                                if "🚀 G-Drive [No-Login]" in b.text:
-                                    btn_to_click = b
-                                    break
-                            except Exception as btn_err:
-                                print(f"Error reading button text: {btn_err}")
-
-                        if btn_to_click:
-                            WebDriverWait(driver, 5).until(EC.element_to_be_clickable(btn_to_click))
-                            driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", btn_to_click)
-                            time.sleep(1)
-                            driver.execute_script("arguments[0].click();", btn_to_click)
-                            print('Clicked on "🚀 G-Drive [No-Login]" button using JavaScript')
-                        else:
-                            print('No button with text "🚀 G-Drive [No-Login]" found. Trying "🚀 GDFlix" button instead.')
-                            # Fallback to "🚀 GDFlix" button
-                            btn_to_click = None
-                            for b in btns:
-                                try:
-                                    if "🚀 GDFlix" in b.text:
-                                        btn_to_click = b
-                                        break
-                                except Exception as btn_err:
-                                    print(f"Error reading button text: {btn_err}")
-
-                            if btn_to_click:
-                                WebDriverWait(driver, 5).until(EC.element_to_be_clickable(btn_to_click))
-                                driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", btn_to_click)
-                                time.sleep(1)
-                                driver.execute_script("arguments[0].click();", btn_to_click)
-                                print('Clicked on "🚀 GDFlix" button using JavaScript')
-                            else:
-                                print('No "🚀 GDFlix" button found either. Trying "Direct-[Drive-link]" button.')
-                                btn_to_click = None
-                                for b in btns:
-                                    try:
-                                        if "🚀 Direct-[Drive-link]" in b.text:
-                                            btn_to_click = b
-                                            break
-                                    except Exception as btn_err:
-                                        print(f"Error reading button text: {btn_err}")
-
-                                if btn_to_click:
-                                    WebDriverWait(driver, 5).until(EC.element_to_be_clickable(btn_to_click))
-                                    driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", btn_to_click)
-                                    time.sleep(1)
-                                    driver.execute_script("arguments[0].click();", btn_to_click)
-                                    print('Clicked on "Direct-[Drive-link]" button using JavaScript')
-                                else:
-                                    print('No "🚀 Direct-[Drive-link]" button found either.')
-
-                        time.sleep(1)  # Allow time for the new tab to open
-                        all_tabs = driver.window_handles
-                        new_download_tab = all_tabs[-1]
-                        log_tab = all_tabs[-2]
-                        driver.switch_to.window(new_download_tab)
-                        print("Switched to newly opened download tab.")
-                        driver.switch_to.window(log_tab)
-                        driver.close()  # Close the log tab
-                        driver.switch_to.window(new_download_tab)
-
-                        current_url = driver.current_url
-                        print(f"Final URL: {current_url}")
-
-                        if content_name not in movie_links_cache:
-                            with open(js_path, "r+", encoding="utf-8") as js_file:
-                                content = js_file.read()
-                                insert_index = content.rfind("};")
-                                if insert_index != -1:
-                                    updated_content = (
-                                        content[:insert_index]
-                                        + f'  "{content_name}": "{current_url}",\n'
-                                        + content[insert_index:]
-                                    )
-                                    js_file.seek(0)
-                                    js_file.write(updated_content)
-                                    js_file.truncate()
-                            movie_links_cache[content_name] = current_url
-
-                        print(f"Updated movieDownloadLinks.js with {content_name}")
-                    else:
-                        print("No buttons found under 1080p section.")
-                except Exception as e:
-                    print(f"Error processing h4 with '1080p' text: {e}")
     finally:
         driver.close()  # Close the download tab
         driver.switch_to.window(driver.window_handles[0])  # Switch back to the main tab
@@ -250,14 +156,11 @@ def process_article_with_retry(link):
         print(f"Failed to process {link}: {e}")
 
 # --------- Step 1: Open the Main Site ---------
-page = 1  #--- hollywood 120
+page = 17  #--- hollywood 120
 while True:
-    if page > 1:
-        break
     try:
         options = webdriver.ChromeOptions()
         options.add_argument("--headless=new")
-        options.add_argument("--start-maximized")
         options.add_experimental_option("excludeSwitches", ["enable-automation"])
         options.add_experimental_option('useAutomationExtension', False)
         options.add_argument("--disable-blink-features=AutomationControlled")
@@ -268,7 +171,7 @@ while True:
         driver = webdriver.Chrome(service=service, options=options)
         driver.execute_script("Object.defineProperty(navigator, 'webdriver', {get: () => undefined})")
 
-        url = f"https://movies4u.rentals/page/{page}/" if page > 1 else "https://movies4u.rentals/"
+        url = f"https://movies4u.rentals/category/web-series/page/{page}/" if page > 1 else "https://movies4u.rentals/category/web-series"
         driver.get(url)
         time.sleep(1)
 

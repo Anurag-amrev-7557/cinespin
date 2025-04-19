@@ -1,0 +1,38 @@
+{
+  "name": "CineSpin",
+  "short_name": "CineSpin",
+  "description": "Discover top movies, series, and originals. Personalized recommendations just for you.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0d0d0d",
+  "theme_color": "#0d0d0d",
+  "orientation": "portrait",
+  "lang": "en",
+  "scope": "/",
+  "id": "/?source=pwa",
+  "screenshots": [
+    {
+      "src": "/screenshots/screenshot1.png",
+      "sizes": "640x480",
+      "type": "image/png"
+    },
+    {
+      "src": "/screenshots/screenshot2.png",
+      "sizes": "640x480",
+      "type": "image/png"
+    }
+  ],
+  "prefer_related_applications": true,
+  "related_applications": [
+    {
+      "platform": "play",
+      "id": "com.cinespin.android"
+    },
+    {
+      "platform": "itunes",
+      "id": "com.cinespin.ios"
+    }
+  ],
+  "dir": "ltr",
+  "icons_color": "#ffffff"
+}
