@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import LiveScoreCard from '../../../components/LIveScoreCard/LiveScoreCard';
+import LiveScoreCard from '../../../components/LiveScoreCard/LiveScoreCard';
 import MatchTimeline from '../../../components/MatchTimeline/MatchTimeline';
 import UpcomingMatches from '../../../components/UpcomingMatches/UpcomingMatches';
 import PlayerRadarStats from '../../../components/PlayerRadarStats/PlayerRadarStats';
