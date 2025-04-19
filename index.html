@@ -63,7 +63,28 @@
     <main id="root" role="main" aria-label="CineSpin Main Application"></main>
 
     <!-- App Script -->
-    <script type="module" src="/src/main.jsx" defer></script>
+    <script>
+      // Automatically load the correct JavaScript module from /assets/
+      fetch('/assets/')
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const doc = parser.parseFromString(html, 'text/html');
+          const scripts = [...doc.querySelectorAll('a')]
+            .map(a => a.getAttribute('href'))
+            .filter(href => href.endsWith('.js'));
+          if (scripts.length) {
+            const script = document.createElement('script');
+            script.type = 'module';
+            script.crossOrigin = 'anonymous';
+            script.src = `/assets/${scripts[0]}`;
+            document.head.appendChild(script);
+          } else {
+            console.error('❌ No JS module found in /assets/');
+          }
+        })
+        .catch(err => console.error('❌ Error loading dynamic module:', err));
+    </script>
 
     <!-- Cloudinary -->
     <script src="https://widget.cloudinary.com/v2.0/global/all.js" async loading="lazy"></script>
