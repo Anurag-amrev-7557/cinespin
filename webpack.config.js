@@ -1,8 +1,16 @@
+const path = require('path');
 const WorkboxPlugin = require('workbox-webpack-plugin');
 
 module.exports = {
   // Add Workbox plugin
+  output: {
+    // Use content hashes in the filenames for cache busting
+    filename: '[name].[contenthash].js',  // JavaScript files
+    chunkFilename: '[name].[contenthash].js',  // Chunk files
+    path: path.resolve(__dirname, 'dist'),
+  },
   plugins: [
+    // Generate the service worker with dynamic caching rules
     new WorkboxPlugin.GenerateSW({
       cacheId: 'cinespin-app',
       mode: 'production',
@@ -22,7 +30,7 @@ module.exports = {
             cacheName: 'google-fonts',
             expiration: {
               maxEntries: 20,
-              maxAgeSeconds: 60 * 60 * 24 * 365,
+              maxAgeSeconds: 60 * 60 * 24 * 365, // Cache for 1 year
             },
             cacheableResponse: {
               statuses: [0, 200],
@@ -38,7 +46,7 @@ module.exports = {
             networkTimeoutSeconds: 5,
             expiration: {
               maxEntries: 100,
-              maxAgeSeconds: 60 * 60 * 24 * 30,
+              maxAgeSeconds: 60 * 60 * 24 * 30, // Cache for 30 days
             },
             cacheableResponse: {
               statuses: [0, 200],
@@ -52,12 +60,12 @@ module.exports = {
             cacheName: 'tmdb-images',
             expiration: {
               maxEntries: 100,
-              maxAgeSeconds: 60 * 60 * 24 * 90,
+              maxAgeSeconds: 60 * 60 * 24 * 90, // Cache for 90 days
             },
             cacheableResponse: {
               statuses: [0, 200],
             },
-            rangeRequests: true,
+            rangeRequests: true, // Enable range requests for images
           },
         },
         {
@@ -67,7 +75,7 @@ module.exports = {
             cacheName: 'html-cache',
             expiration: {
               maxEntries: 50,
-              maxAgeSeconds: 60 * 60 * 24 * 7, // 7 days
+              maxAgeSeconds: 60 * 60 * 24 * 7, // Cache HTML for 7 days
             },
             cacheableResponse: {
               statuses: [0, 200],
@@ -81,7 +89,7 @@ module.exports = {
             cacheName: 'offline-images',
             expiration: {
               maxEntries: 50,
-              maxAgeSeconds: 60 * 60 * 24 * 60, // 60 days
+              maxAgeSeconds: 60 * 60 * 24 * 60, // Cache images for 60 days
             },
             cacheableResponse: {
               statuses: [0, 200],
@@ -92,6 +100,12 @@ module.exports = {
           },
         },
       ],
+    }),
+
+    // Inject a custom service worker (this allows for more fine-grained control)
+    new WorkboxPlugin.InjectManifest({
+      swSrc: './public/service-worker.js', // Path to custom service worker
+      swDest: 'service-worker.js', // Output file for the service worker
     }),
   ],
 };
