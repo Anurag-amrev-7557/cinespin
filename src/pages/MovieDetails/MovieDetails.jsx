@@ -44,7 +44,10 @@ const MovieDetails = () => {
     const [movie, setMovie] = useState(null);
     const [logoUrl, setLogoUrl] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [logoLoading, setLogoLoading] = useState(true); // Added to track if logo is loading
     const [error, setError] = useState(null);
+    const [logoChecked, setLogoChecked] = useState(false);
+    const [titleReady, setTitleReady] = useState(false);
     const [showTrailer, setShowTrailer] = useState(false);
     const [trailerPosition, setTrailerPosition] = useState({ x: 0, y: 0 });
 
@@ -169,21 +172,41 @@ const MovieDetails = () => {
     }, [cacheKey]);
 
     useEffect(() => {
+        // Reset logo URL, and loading states
+        setLogoUrl(null);
+        setLogoLoading(true); // Indicate logo is loading
+        setLogoChecked(false); // Reset the logo check state
+      
+        // Show the title immediately when movie changes
+        setTitleReady(true);
+      
         const fetchLogo = async () => {
-            try {
-                const response = await fetch(
-                    `${TMDB_BASE_URL}/movie/${id}/images?api_key=${TMDB_API_KEY}&include_image_language=en,null`
-                );
-                const data = await response.json();
-                const logo = data.logos.find(l => l.file_path.endsWith('.webp')) || data.logos[0];
-                if (logo) setLogoUrl(`${IMAGE_BASE_URL}/original${logo.file_path}`);
-            } catch (e) {
-                console.error("Error fetching logo:", e);
+          try {
+            const response = await fetch(
+              `${TMDB_BASE_URL}/movie/${id}/images?api_key=${TMDB_API_KEY}&include_image_language=en,null`
+            );
+            const data = await response.json();
+            const logo = data.logos.find(l => l.file_path.endsWith('.webp')) || data.logos[0];
+            if (logo) {
+              setLogoUrl(`${IMAGE_BASE_URL}/original${logo.file_path}`); // Set logo URL when found
             }
+            setLogoChecked(true); // Mark logo fetching as complete
+          } catch (e) {
+            console.error("Error fetching logo:", e);
+            setLogoChecked(true); // If the fetch fails, we still mark logoChecked as true
+          } finally {
+            setLogoLoading(false); // Indicate that logo fetching is complete
+          }
         };
+      
+        fetchLogo(); // Run the logo fetch when movie id changes
+      }, [id]); // Trigger logo fetch when movie id changes
 
-        fetchLogo();
-    }, [id]);
+    useEffect(() => {
+      if (logoChecked && movie?.title) {
+        setTitleReady(true);
+      }
+    }, [logoChecked, movie]);
 
     const downloadLink = useMemo(() => {
         const key = Object.keys(movieDownloadLinks).find(k =>
@@ -252,9 +275,15 @@ const MovieDetails = () => {
 
             <motion.div className="movie-content" variants={animations.fadeUp}>
                 <motion.div className="movie-info" variants={animations.fadeUp}>
-                    <motion.h1 variants={animations.fadeUp}>
-                        {logoUrl ? <img src={logoUrl} alt="Movie Logo" className="movie-title" /> : movie.title}
-                    </motion.h1>
+                <motion.h1 variants={animations.fadeUp}>
+                    {logoLoading ? (
+                        <div className="loading-logo-placeholder"></div> // Show loading text while logo is being fetched
+                    ) : logoUrl ? (
+                        <img src={logoUrl} alt="Movie Logo" className="movie-title" />
+                    ) : titleReady ? (
+                        <span className="movie-title-text">{movie.title}</span> // Show title if logo is not available
+                    ) : null}
+                </motion.h1>
 
                     <div className="movie-meta">
                         <motion.span variants={animations.fadeUp}><FaStar /> {movie.vote_average.toFixed(1)}</motion.span>
